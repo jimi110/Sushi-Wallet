@@ -11,7 +11,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
 body{background:var(--bg);color:var(--tx);font:16px/1.4 -apple-system,"SF Pro Display","Inter",system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
-body.glass::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(40vmax 40vmax at 15% 5%,#f2573f33,transparent),radial-gradient(45vmax 45vmax at 90% 60%,#0a84ff2b,transparent)}
+body.glass::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(40vmax 40vmax at 15% 5%,color-mix(in srgb,var(--ac) 20%,transparent),transparent),radial-gradient(45vmax 45vmax at 90% 60%,color-mix(in srgb,color-mix(in srgb,var(--ac) 30%,#0a84ff) 17%,transparent),transparent)}
 #app{max-width:760px;margin:0 auto;padding:12px 18px 110px}
 header{display:flex;justify-content:space-between;align-items:center;padding:10px 0 14px}
 h1{font-size:30px;margin:0;letter-spacing:-.02em}
@@ -33,17 +33,17 @@ svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke
 .row:last-child{border:0}
 .row .t{flex:1;min-width:0}.row .t b{font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pill{font-size:13px;font-weight:600;background:var(--fill);border-radius:99px;padding:3px 10px;white-space:nowrap}
-.pill.rec{background:#f2573f22;color:var(--ac)}
+.pill.rec{background:color-mix(in srgb,var(--ac) 14%,transparent);color:var(--ac)}
 input[type=search],input[type=text],input[type=number],textarea,select{width:100%;font:inherit;color:var(--tx);background:var(--fill);border:0;border-radius:12px;padding:11px 14px;outline:none}
 textarea{min-height:140px;font-size:13px}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0;scrollbar-width:none}
 .chip{flex:none;padding:7px 14px;border-radius:99px;background:var(--fill);font-size:14px}
 .chip.on{background:var(--tx);color:var(--bg)}
-.btn{display:block;width:100%;padding:15px;border-radius:16px;background:var(--ac);color:#fff;font-weight:600;text-align:center}
+.btn{display:block;width:100%;padding:15px;border-radius:16px;background:var(--ac);color:var(--on-ac,#fff);font-weight:600;text-align:center}
 .btn.sec{background:var(--fill);color:var(--tx)}
 .step{display:flex;align-items:center;gap:10px}
 .step button{width:32px;height:32px;border-radius:50%;background:var(--fill);font-size:20px;line-height:1}
-.step button.p{background:var(--ac);color:#fff}
+.step button.p{background:var(--ac);color:var(--on-ac,#fff)}
 .step span{min-width:20px;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
 .empty{text-align:center;padding:40px 20px;color:var(--tx2)}
 .empty h3{color:var(--tx);margin:8px 0}
@@ -83,7 +83,7 @@ h1{font:600 36px/1.1 ui-serif,"New York","Iowan Old Style",Georgia,serif;letter-
 h2{font:600 13px/1 -apple-system,"SF Pro Text",system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2);margin:28px 0 10px}
 .ic{width:44px;height:44px}
 .chip{min-height:36px;display:inline-flex;align-items:center}
-.wallet{position:relative;overflow:hidden;color:#f7f3ea;border-radius:28px;min-height:210px;padding:24px;background:radial-gradient(110% 80% at 100% 0,#e8553a 0,#e8553a00 58%),linear-gradient(160deg,#20302a,#0b1210);box-shadow:inset 0 1px 0 #ffffff26,0 20px 40px -20px #000a}
+.wallet{position:relative;overflow:hidden;color:#f7f3ea;border-radius:28px;min-height:210px;padding:24px;background:radial-gradient(110% 80% at 100% 0,color-mix(in srgb,var(--ac) 92%,#000) 0,transparent 58%),linear-gradient(160deg,#20302a,#0b1210);box-shadow:inset 0 1px 0 #ffffff26,0 20px 40px -20px #000a}
 .ripple{position:absolute;right:-70px;top:-70px;width:290px;height:290px;border-radius:50%;background:repeating-radial-gradient(circle,#ffffff1c 0 1px,transparent 1px 15px);-webkit-mask:radial-gradient(circle,#000 25%,transparent 70%);mask:radial-gradient(circle,#000 25%,transparent 70%)}
 .wallet small{position:relative;opacity:.7;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
 .wallet .big{position:relative;font:600 76px/1 ui-serif,"New York",Georgia,serif;letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin:6px 0 auto}
@@ -95,10 +95,8 @@ h2{font:600 13px/1 -apple-system,"SF Pro Text",system-ui,sans-serif;letter-spaci
 .list{border-radius:22px}
 .row{padding:13px 16px;min-height:60px}
 .row .t b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.25}
-.row.has{box-shadow:inset 3px 0 0 var(--ac)}
 .row .sub b{color:var(--tx)}
 i.rec{font-style:normal;color:var(--ac);font-weight:600}
-.stick{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);padding-bottom:2px}
 .sum{position:static;background:var(--card);margin:0 0 4px}
 .sum b{font:600 24px/1.2 ui-serif,"New York",Georgia,serif;font-variant-numeric:tabular-nums}
 .sum span{font-size:11px;color:var(--tx2)}
@@ -107,27 +105,149 @@ i.rec{font-style:normal;color:var(--ac);font-weight:600}
 .step button:disabled{opacity:.3}
 .step span.pop{animation:bump .25s}
 .fbar{position:sticky;bottom:calc(92px + env(safe-area-inset-bottom,0px));margin-top:18px;z-index:4}
-.fbar .btn{box-shadow:0 12px 24px -10px #f2573faa}
+.fbar .btn{box-shadow:0 12px 24px -10px color-mix(in srgb,var(--ac) 67%,transparent)}
 .btn{min-height:52px}
 nav{width:min(92vw,390px);gap:0;padding:6px;bottom:calc(12px + env(safe-area-inset-bottom,0px));touch-action:pan-y;user-select:none;-webkit-user-select:none}
 nav button{flex:1;position:relative;z-index:2;padding:8px 0;min-height:52px;justify-content:center;background:none!important;transition:color .2s}
 nav button.on{color:var(--tx)}nav button.on svg{color:var(--ac)}
-.bub{position:absolute;left:0;top:6px;bottom:6px;z-index:1;border-radius:22px;background:var(--fill);pointer-events:none;will-change:transform;transform-origin:50% 60%}
+.bub{position:absolute;left:0;top:6px;bottom:6px;z-index:1;border-radius:22px;background:var(--fill);pointer-events:none;padding:.08em .1em .2em;margin:-.08em -.1em -.2em;will-change:transform;transform-origin:50% 60%}
 body.glass .bub{background:linear-gradient(180deg,#ffffff70,#ffffff1c 60%,#ffffff2e);-webkit-backdrop-filter:blur(8px) saturate(200%);backdrop-filter:blur(8px) saturate(200%);box-shadow:inset 0 1px 0 #fffc,inset 0 -1px 1px #0002,inset 0 0 10px #ffffff40,0 6px 16px -4px #0003}
-body.glass .stick{background:color-mix(in srgb,var(--bg) 78%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
 #sh{overscroll-behavior:contain}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ===== Fase 3: contenedores integrados + Sesión minimalista ===== */
+/* Contenedor de buscador y categorías: transparente. Solo un desvanecido sin color propio para que el contenido que pasa por debajo no choque con el texto. */
+.stick{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:none;padding:0 0 2px;isolation:isolate}
+.stick::before{content:"";position:absolute;z-index:-1;pointer-events:none;left:-24px;right:-24px;top:calc(-1*env(safe-area-inset-top,0px));bottom:-14px;background:linear-gradient(var(--bg) 0 58%,transparent)}
+body.glass .stick::before{background:none;-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);-webkit-mask-image:linear-gradient(#000 52%,transparent),linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(#000 52%,transparent),linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);mask-composite:intersect}
+.tools{background:none;padding:0;border:0}
+.tools input[type=search],.ptools input[type=search]{-webkit-appearance:none;appearance:none;min-height:44px;padding:11px 14px 11px 40px;border:.5px solid var(--line);border-radius:14px;background-color:color-mix(in srgb,var(--tx) 7%,transparent);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:13px 50%;background-size:18px}
+body.glass .tools input[type=search],body.glass .ptools input[type=search]{-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);box-shadow:inset 0 1px 0 #ffffff1f}
+.chips{background:none;margin:0 -18px;padding:8px 18px 10px;scroll-padding:0 18px;overscroll-behavior-x:contain;-webkit-mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent);mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)}
+.chips::-webkit-scrollbar{display:none}
+.chip{background:color-mix(in srgb,var(--tx) 7%,transparent);border:.5px solid var(--line)}
+.chip.on{background:var(--tx);color:var(--bg);border-color:transparent}
+
+/* Sesión: puntuación protagonista */
+#v-sess::after{height:210px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hero{position:relative;text-align:center;padding:clamp(18px,6vh,52px) 0 4px;background:radial-gradient(closest-side,color-mix(in srgb,var(--tx) 6%,transparent),transparent)}
+.hero .lbl{font-size:15px;color:var(--tx2)}
+.scorebox{position:relative;display:inline-block;max-width:100%;margin:8px 0 6px;padding:0 6px}
+.glow{position:absolute;inset:-18% -14%;border-radius:50%;pointer-events:none;opacity:0;background:radial-gradient(closest-side,color-mix(in srgb,var(--ac) 42%,transparent),transparent)}
+.score{position:relative;display:block;overflow:visible;white-space:nowrap;font:500 min(120px,27vw,calc(78vw/(var(--n,3)*.7)))/1.15 ui-serif,"New York","Iowan Old Style",Georgia,serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums lining-nums;color:var(--tx);padding:.06em .14em .12em;transform-origin:50% 60%}
+.hsum{font-size:17px;color:var(--tx2);font-variant-numeric:tabular-nums}
+.fin{margin-top:16px;padding:9px 18px;min-height:40px;border-radius:99px;font-size:15px;font-weight:600;background:color-mix(in srgb,var(--tx) 8%,transparent);border:.5px solid var(--line);transition:opacity .2s,transform .15s}
+.fin.off{opacity:0;pointer-events:none}
+#v-sess h2{font:600 15px/1 -apple-system,"SF Pro Text",system-ui,sans-serif;letter-spacing:0;text-transform:none;margin:34px 0 4px}
+.rl{display:block}
+.rr{display:flex;align-items:center;gap:12px;min-height:64px;padding:12px 2px;border-top:.5px solid var(--line);cursor:pointer;border-radius:0;transition:background .15s}
+.rr:first-child{border-top:0}
+.rr:active{background:color-mix(in srgb,var(--tx) 5%,transparent)}
+.rr .t{flex:1;min-width:0}
+.rr b,.pd b,.eb b{font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rr small,.pd small,.eb small,.psel small{display:block;color:var(--tx2);font-size:13px;margin-top:1px}
+.rr .v{font:600 22px/1 ui-serif,"New York",Georgia,serif;font-variant-numeric:tabular-nums;text-align:right}
+.rr .v small{display:inline;font:500 12px -apple-system,system-ui,sans-serif;color:var(--tx2)}
+.none{text-align:center;color:var(--tx2);padding:34px 12px;font-size:15px}
+.fab{position:fixed;left:50%;margin-left:-32px;bottom:calc(94px + env(safe-area-inset-bottom,0px));width:64px;height:64px;border-radius:50%;display:grid;place-items:center;color:var(--on-ac,#fff);background:var(--ac);box-shadow:inset 0 1px 0 #ffffff55,0 14px 28px -10px color-mix(in srgb,var(--ac) 80%,transparent),0 4px 10px #0004;z-index:7;transition:transform .25s cubic-bezier(.3,1.5,.5,1),opacity .15s}
+.fab svg{width:28px;height:28px;stroke-width:2.3}
+body.glass .fab{background:linear-gradient(180deg,color-mix(in srgb,var(--ac) 78%,#fff),color-mix(in srgb,var(--ac) 88%,transparent));-webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);box-shadow:inset 0 1px 0 #ffffffb0,inset 0 -1px 2px #0003,0 14px 28px -10px color-mix(in srgb,var(--ac) 80%,transparent)}
+
+/* Panel inferior (añadir / editar registro) */
+.ao{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center;visibility:hidden;pointer-events:none;transition:visibility 0s .5s}
+.ao.show{visibility:visible;pointer-events:auto;transition-delay:0s}
+.scrim{position:absolute;inset:0;background:#0000;transition:background .35s,backdrop-filter .35s,-webkit-backdrop-filter .35s}
+.ao.show .scrim{background:#0006}
+body.glass .scrim{-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}
+body.glass .ao.show .scrim{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+#as{position:relative;z-index:1;width:100%;max-width:640px;display:flex;flex-direction:column;overflow:hidden;background:var(--card);border-radius:28px 28px 0 0;box-shadow:0 -24px 60px -24px #000b;transform:translateY(100%);transition:transform .46s cubic-bezier(.32,.72,0,1);outline:none;will-change:transform}
+.ao.show #as{transform:none}
+#as.add{height:min(86vh,740px);height:min(86dvh,740px)}
+#as.edit{padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}
+body.glass #as{background:color-mix(in srgb,var(--card) 58%,transparent);-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);box-shadow:inset 0 1px 0 #ffffff40,0 -24px 60px -24px #000b}
+.grab{width:38px;height:5px;border-radius:9px;background:color-mix(in srgb,var(--tx) 22%,transparent);margin:8px auto 2px;flex:none}
+[data-drag]{touch-action:none}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 10px;flex:none}
+.ph h3{margin:0;font:600 22px/1.2 ui-serif,"New York",Georgia,serif;letter-spacing:-.01em}
+.tx{font-size:16px;font-weight:600;color:var(--tx);padding:8px 4px;min-height:40px}
+.ptools{flex:none;padding:0}
+.ptools input[type=search]{width:calc(100% - 36px);margin:0 18px}
+.ptools .chips{margin:0}
+.plist{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-bottom:8px}
+.pd{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;padding:11px 18px;text-align:left;border-top:.5px solid var(--line);transition:background .15s}
+.pd:first-child{border-top:0}
+.pd:active{transform:none;opacity:1;background:color-mix(in srgb,var(--tx) 6%,transparent)}
+.pd.on{background:color-mix(in srgb,var(--tx) 8%,transparent)}
+.pd .t{flex:1;min-width:0}
+.pd .pv{font-size:15px;color:var(--tx2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pd .ck{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--tx) 28%,transparent);transition:background .18s,border-color .18s,transform .25s cubic-bezier(.3,1.6,.5,1)}
+.pd.on .ck{background:var(--tx) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/14px no-repeat;border-color:var(--tx);transform:scale(1.06)}
+.pmore{display:block;margin:10px auto 6px;padding:9px 16px;border-radius:99px;font-size:14px;background:color-mix(in srgb,var(--tx) 7%,transparent)}
+.pfoot{flex:none;padding:12px 18px calc(14px + env(safe-area-inset-bottom,0px));border-top:.5px solid var(--line);display:grid;gap:12px}
+.psel{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.psel .t{flex:1;min-width:0}
+.psel b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qty{display:flex;align-items:center;gap:2px;padding:4px;border-radius:99px;background:color-mix(in srgb,var(--tx) 8%,transparent);flex:none}
+.qty button{width:44px;height:44px;border-radius:50%;font-size:24px;line-height:1;background:color-mix(in srgb,var(--tx) 10%,transparent)}
+.qty button:disabled{opacity:.3}
+.qty output{min-width:40px;text-align:center;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.btn.go{min-height:56px;border-radius:18px;font-size:17px;box-shadow:0 12px 24px -12px color-mix(in srgb,var(--ac) 67%,transparent)}
+.btn:disabled{background:color-mix(in srgb,var(--tx) 9%,transparent);color:var(--tx2);box-shadow:none;opacity:1}
+.eb{padding:6px 18px 4px;display:grid;gap:14px}
+.eb>.t b{font-size:20px}
+.erow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.etot{font:600 34px/1 ui-serif,"New York",Georgia,serif;font-variant-numeric:tabular-nums}
+.etot small{display:inline;font:500 14px -apple-system,system-ui,sans-serif;margin-left:4px}
+.eb p{margin:0}
+.dng{display:block;width:100%;min-height:52px;border-radius:16px;font-weight:600;color:#ff5a4f;background:color-mix(in srgb,#ff453a 12%,transparent)}
+
+/* Símbolos sencillos delante de textos */
+h2::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.55;margin-right:9px;vertical-align:.12em}
+.hsum{display:flex;justify-content:center;flex-wrap:wrap;gap:4px 18px}
+.hsum .ti{display:inline-flex;align-items:center}
+.hsum svg,small svg,.sub svg{width:14px;height:14px;stroke-width:2;margin-right:6px;flex:none;opacity:.72;vertical-align:-2px}
+small:has(>svg),.sub:has(>svg){display:flex;align-items:center}
+p.sub:has(>svg){display:flex;align-items:center}
+.none .sym{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ac);color:var(--on-ac,#fff);font-size:16px;line-height:1;vertical-align:-4px;margin:0 2px}
+/* Selector de color del tema */
+.sw{display:flex;gap:12px;flex-wrap:wrap;width:100%}
+.swb{position:relative;display:block;width:34px;height:34px;padding:0;border-radius:50%;background:var(--c);flex:none;box-shadow:inset 0 0 0 1px #ffffff26;transition:transform .2s cubic-bezier(.3,1.5,.5,1),box-shadow .2s}
+.swb.on{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--c)}
+.swb.cust{background:conic-gradient(#ff5f6d,#ffc371,#47e5a0,#4facfe,#a770ef,#ff5f6d);cursor:pointer}
+.swb.cust.on{background:var(--c)}
+.swb.cust input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;padding:0;border:0}
+
+/* ===== Transferencias por QR ===== */
+.wbtns{position:relative;display:flex;gap:10px;margin:18px 0 0}
+.wbtns button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:99px;font-weight:600;font-size:15px;color:#f7f3ea;background:#ffffff1f;border:.5px solid #ffffff38;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 #ffffff2e}
+.wbtns button:active{transform:scale(.97)}
+.wbtns svg{width:18px;height:18px;stroke-width:2.2}
+.wallet .wf{margin-top:16px}
+.qrcard{position:relative;margin:16px auto 6px;max-width:300px;padding:18px 18px 14px;border-radius:28px;text-align:center;color:#161616;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(150deg,var(--ac),#ffd9a0 55%,var(--ac)) border-box;border:3px solid transparent;box-shadow:0 22px 44px -22px color-mix(in srgb,var(--ac) 80%,#000)}
+.qrcard .qamt{font:600 40px/1 ui-serif,"New York",Georgia,serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.qrcard .qlbl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#6b6b70;margin-bottom:6px}
+.qrcard svg.qr{display:block;width:100%;height:auto;margin:12px 0 10px;stroke:none;fill:#111}
+.qrcard .qfoot{font-size:13px;color:#6b6b70;font-variant-numeric:tabular-nums}
+.qrcard.dead svg.qr{opacity:.15;filter:blur(2px)}
+.scanbox{position:relative;border-radius:22px;overflow:hidden;background:#000;aspect-ratio:1/1;margin:14px 0}
+.scanbox video{width:100%;height:100%;object-fit:cover;display:block}
+.scanbox::after{content:"";position:absolute;inset:16%;border-radius:22px;border:3px solid #fffd;box-shadow:0 0 0 999px #0005;pointer-events:none}
+.okmark{width:76px;height:76px;margin:10px auto 6px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--ac) 20%,transparent);color:var(--ac);animation:bump .4s cubic-bezier(.3,1.6,.5,1)}
+.okmark svg{width:38px;height:38px;stroke-width:2.6}
+.center{text-align:center}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <nav id="nav"></nav>
 <div id="ov"><div id="sh"></div></div>
+<div id="ao" class="ao" aria-hidden="true"><div class="scrim"></div><div id="as" role="dialog" aria-modal="true" aria-labelledby="as-t" tabindex="-1"></div></div>
 <script>
 // ---------- Capa de almacenamiento (sustituible por una base de datos) ----------
 const Store={get(k,d){try{const v=localStorage.getItem('sw:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('sw:'+k,JSON.stringify(v))}catch(e){}}};
 // ---------- Estado ----------
-const st={tab:'home',catalog:Store.get('catalog',[]),pts:Store.get('pts',{}),hist:Store.get('hist',[]),sess:Store.get('sess',null),set:Store.get('set',{glass:true,theme:'auto'}),q:'',cat:'Todas',lim:60,all:false,shown:0};
+const st={adj:Store.get('adj',[]),out:Store.get('out',[]),used:Store.get('used',[]),tab:'home',catalog:Store.get('catalog',[]),pts:Store.get('pts',{}),hist:Store.get('hist',[]),sess:Store.get('sess',null),set:Store.get('set',{glass:true,theme:'auto'}),q:'',cat:'Todas',lim:60,all:false,shown:0};
 const $=s=>document.querySelector(s);
 const fmt=n=>(+n).toLocaleString('es-ES',{maximumFractionDigits:2});
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -135,19 +255,21 @@ const dish=id=>st.catalog.find(d=>d.id===id);
 const pts=d=>st.pts[d.id]??d.points??1;
 const save=k=>Store.set(k,st[k==='set'?'set':k]);
 // ---------- Estadísticas (derivadas del historial) ----------
-function stats(){const n=st.hist.length,p=st.hist.reduce((a,h)=>a+h.points,0),pc=st.hist.reduce((a,h)=>a+h.pieces,0);return{n,p,pc,ap:n?p/n:0,apc:n?pc/n:0,last:st.hist[0]}}
+function stats(){const n=st.hist.length,p=st.hist.reduce((a,h)=>a+h.points,0),pc=st.hist.reduce((a,h)=>a+h.pieces,0);return{n,p,pc,ap:n?p/n:0,apc:n?pc/n:0,last:st.hist[0],bal:p+st.adj.reduce((a,m)=>a+m.pts,0)}}
 const dt=t=>new Date(t).toLocaleString('es-ES',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
 // ---------- Iconos ----------
-const I={home:'<path d="M4 11l8-7 8 7v9H4z"/>',menu:'<path d="M5 4h14v16H5zM9 9h6M9 13h6"/>',sess:'<path d="M12 5v14M5 12h14"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>'};
+const I={piece:'<rect x="3.5" y="8" width="17" height="9" rx="4.5"/>',dish:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/>',tag:'<path d="M3.5 12.5V4.5h8l8.5 8.5-8 8z"/><circle cx="8" cy="9" r="1"/>',find:'<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',home:'<path d="M4 11l8-7 8 7v9H4z"/>',menu:'<path d="M5 4h14v16H5zM9 9h6M9 13h6"/>',sess:'<path d="M12 5v14M5 12h14"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>'};
 const ico=n=>`<svg viewBox="0 0 24 24">${I[n]}</svg>`;
 // ---------- Aplicar preferencias ----------
-function applyPrefs(){document.body.classList.toggle('glass',!!st.set.glass);const r=document.documentElement;st.set.theme==='auto'?r.removeAttribute('data-theme'):r.setAttribute('data-theme',st.set.theme)}
+function applyPrefs(){document.body.classList.toggle('glass',!!st.set.glass);const r=document.documentElement;st.set.theme==='auto'?r.removeAttribute('data-theme'):r.setAttribute('data-theme',st.set.theme);
+  const ac=/^#[0-9a-f]{6}$/i.test(st.set.accent||'')?st.set.accent:'';ac?r.style.setProperty('--ac',ac):r.style.removeProperty('--ac');
+  const L=ac?[1,3,5].map(i=>{let c=parseInt(ac.substr(i,2),16)/255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)}):[0,0,0],lum=.2126*L[0]+.7152*L[1]+.0722*L[2];r.style.setProperty('--on-ac',ac&&lum>.5?'#161616':'#fff')}
 // ---------- Hojas modales ----------
 function sheet(h){$('#sh').innerHTML=h;$('#ov').classList.add('show')}
-function close(){$('#ov').classList.remove('show')}
+function close(){$('#ov').classList.remove('show');try{stopCam();clearInterval(QT.t)}catch(e){}}
 function settings(){sheet(`<h1 style="font-size:24px">Ajustes</h1>
 <h2>Apariencia</h2><div class="list"><div class="row"><div class="t"><b>Liquid Glass</b><span class="sub">Superficies translúcidas en barras y paneles</span></div><button class="tog ${st.set.glass?'on':''}" data-a="glass" aria-label="Liquid Glass"></button></div>
-<div class="row"><div class="t"><b>Tema</b></div><select id="theme" style="width:auto">${[['auto','Automático'],['light','Claro'],['dark','Oscuro']].map(([v,l])=>`<option value="${v}" ${st.set.theme===v?'selected':''}>${l}</option>`).join('')}</select></div></div>
+<div class="row"><div class="t"><b>Tema</b></div><select id="theme" style="width:auto">${[['auto','Automático'],['light','Claro'],['dark','Oscuro']].map(([v,l])=>`<option value="${v}" ${st.set.theme===v?'selected':''}>${l}</option>`).join('')}</select></div>${accentRow()}</div>
 <h2>Carta y puntuaciones</h2><div class="list"><button class="row" style="width:100%;text-align:left" data-a="import"><div class="t"><b>Importar o añadir platos</b></div></button><button class="row" style="width:100%;text-align:left" data-a="resetpts"><div class="t"><b>Restablecer puntuaciones editadas</b><span class="sub">${Object.keys(st.pts).length} personalizadas. El historial no cambia.</span></div></button></div>
 <h2>Información</h2><p class="sub">Sushi Wallet v0.1. Tus datos se guardan solo en este navegador (sin sincronización entre dispositivios). Los puntos son un sistema personal, no una medida nutricional.</p>`.replace('dispositivios','dispositivos'))}
 function importSheet(){sheet(`<h1 style="font-size:24px">Importar carta</h1><p class="sub">Pega un JSON (lista de objetos con name, category, points, description, ingredients, image) o CSV con columnas: nombre;categoría;puntos;descripción;ingredientes;imagen. Los platos sin puntos reciben 1 punto como estimación inicial, editable.</p><textarea id="imp" placeholder='[{"name":"…","category":"…"}]'></textarea><input type="file" id="file" accept=".json,.csv,.txt" style="margin:10px 0"><button class="btn" data-a="doimp">Importar</button><h2>Añadir un plato</h2><div style="display:grid;gap:8px"><input type="text" id="nn" placeholder="Nombre"><input type="text" id="nc" placeholder="Categoría"><input type="number" id="np" step="0.25" placeholder="Puntos por unidad"><button class="btn sec" data-a="add1">Añadir</button></div>`)}
@@ -198,29 +320,31 @@ const cats=()=>['Todas',...new Set(st.catalog.map(d=>d.category).filter(Boolean)
 const tools=k=>`<div class="tools"><input type="search" data-q="${k}" placeholder="Buscar plato" value="${esc(V[k].q)}" autocomplete="off" aria-label="Buscar plato"><div class="chips">${cats().map(c=>`<button class="chip ${c===V[k].cat?'on':''}" data-a="cat" data-k="${k}" data-id="${esc(c)}">${esc(c)}</button>`).join('')}</div></div>`;
 function totals(){const it=st.sess?.items||{};let p=0,c=0,k=0;for(const id in it){const d=dish(id);if(d&&it[id]>0){p+=it[id]*pts(d);c+=it[id];k++}}return{p,c,k}}
 const pp=(d,n)=>`${fmt(pts(d))} pts${n?` · <b>${fmt(n*pts(d))}</b>`:''}`;
-function row(d,k){const s=k==='sess',n=s?st.sess.items[d.id]||0:0,i=esc(d.id),nm=esc(d.name);
- return `<div class="row${n?' has':''}" data-d="${i}" ${s?'':`data-a="det" data-id="${i}" role="button" tabindex="0"`}><div class="t"><b>${nm}</b><span class="sub">${esc(d.category||'')}${RC.has(d.id)?' · <i class="rec">reciente</i>':''}</span></div>`+(s?`<span class="sub pp" data-a="det" data-id="${i}">${pp(d,n)}</span><div class="step"><button data-a="dec" data-id="${i}" aria-label="Quitar una unidad de ${nm}" ${n?'':'disabled'}>−</button><span class="q" aria-live="polite">${n}</span><button class="p" data-a="inc" data-id="${i}" aria-label="Añadir una unidad de ${nm}">+</button></div>`:`<span class="pill">${fmt(pts(d))} pts</span>`)+'</div>'}
-function list(k,top){const L=$('#l-'+k);if(!L||(k==='sess'&&!st.sess))return;const v=V[k],q=v.q.trim().toLowerCase();RC=new Set(st.hist.slice(0,3).flatMap(h=>h.items.map(i=>i.id)));
- let a=st.catalog.filter(d=>(v.cat==='Todas'||d.category===v.cat)&&(!q||d.name.toLowerCase().includes(q)));if(k==='sess'&&v.sel)a=a.filter(d=>st.sess.items[d.id]>0);
- L.innerHTML=a.slice(0,v.lim).map(d=>row(d,k)).join('')||'<div class="empty">Sin resultados</div>';
- $('#m-'+k).innerHTML=a.length>v.lim?`<button class="chip" style="margin-top:10px" data-a="more" data-k="${k}">Mostrar más (${a.length-v.lim})</button>`:'';
- if(top)$('#v-'+k).scrollTop=0;if(k==='sess')sum()}
-function sum(){const t=totals(),e=$('#sum');if(!e)return;e.innerHTML=`<div><b>${fmt(t.p)}</b><span>Puntos</span></div><div><b>${t.c}</b><span>Piezas</span></div><div><b>${t.k}</b><span>Platos</span></div><button class="chip ${V.sess.sel?'on':''}" data-a="sel" style="align-self:center">Mi selección</button>`;
- $('#fb').innerHTML=t.c?`<button class="btn" data-a="finish">Finalizar y guardar · ${fmt(t.p)} pts</button>`:''}
+function row(d){const i=esc(d.id);
+ return `<div class="row" data-d="${i}" data-a="det" data-id="${i}" role="button" tabindex="0"><div class="t"><b>${esc(d.name)}</b><span class="sub">${esc(d.category||'')}${RC.has(d.id)?' · <i class="rec">reciente</i>':''}</span></div><span class="pill">${fmt(pts(d))} pts</span></div>`}
+function list(k,top){if(k!=='menu')return;const L=$('#l-menu');if(!L)return;const v=V.menu,q=norm(v.q.trim());RC=new Set(st.hist.slice(0,3).flatMap(h=>h.items.map(i=>i.id)));
+ const a=st.catalog.filter(d=>(v.cat==='Todas'||d.category===v.cat)&&(!q||norm(d.name).includes(q)));
+ L.innerHTML=a.slice(0,v.lim).map(d=>row(d)).join('')||'<div class="empty">Sin resultados</div>';
+ $('#m-menu').innerHTML=a.length>v.lim?`<button class="chip" style="margin-top:10px" data-a="more" data-k="menu">Mostrar más (${a.length-v.lim})</button>`:'';
+ if(top)$('#v-menu').scrollTop=0}
+function sum(){const t=totals(),h=$('#hsum'),f=$('#fin');if(!h)return;
+ h.innerHTML=t.c?`<span class="ti">${ico('piece')}${pieces(t.c)}</span><span class="ti">${ico('dish')}${t.k===1?'1 plato diferente':t.k+' platos diferentes'}</span>`:`<span class="ti">${ico('piece')}Todavía sin piezas</span>`;
+ f.classList.toggle('off',!t.c);f.disabled=!t.c;f.tabIndex=t.c?0:-1}
 function paneHome(){const s=stats(),h=new Date().getHours(),g=h<13?'Buenos días':h<20?'Buenas tardes':'Buenas noches';
- const w=`<div class="wallet"><div class="ripple"></div><small>Puntos acumulados en total</small><div class="big" id="tot">0</div><div class="wf"><span>Sushi Wallet</span><span>${s.n?'Última · '+dt(s.last.date):'Sin sesiones todavía'}</span></div></div>`;
+ const w=`<div class="wallet"><div class="ripple"></div><small>Puntos acumulados en total</small><div class="big" id="tot">0</div><div class="wbtns"><button data-a="wsend">${ico('send')}Enviar</button><button data-a="wrecv">${ico('recv')}Recibir</button></div><div class="wf"><span>Sushi Wallet</span><span>${s.n?'Última · '+dt(s.last.date):'Sin sesiones todavía'}</span></div></div>`;
  const b=!s.n?`<div class="card empty" style="margin-top:12px"><h3>Aún no hay sesiones</h3><p>Inicia una sesión, añade lo que vayas comiendo y aquí verás tus estadísticas reales.</p><button class="btn" data-a="startgo">${st.sess?'Continuar sesión':'Iniciar sesión'}</button></div>`:
  `<div class="strip card">${[[fmt(s.pc),'Piezas'],[s.n,'Sesiones'],[fmt(s.ap),'Pts / sesión'],[fmt(s.apc),'Pzs / sesión']].map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}</div><h2>Sesiones recientes</h2><div class="list">${(st.all?st.hist:st.hist.slice(0,5)).map(x=>`<div class="row"><div class="t"><b>${dt(x.date)}</b><span class="sub">${fmt(x.pieces)} piezas</span></div><span class="pill">${fmt(x.points)} pts</span></div>`).join('')}</div>${st.hist.length>5?`<button class="chip" style="margin-top:10px" data-a="all">${st.all?'Ver menos':'Ver todas ('+st.hist.length+')'}</button>`:''}`;
- $('#v-home').innerHTML=head(g,'Tu panel')+w+b;countUp()}
-function countUp(){const el=$('#tot');if(!el)return;const to=stats().p,from=st.shown;st.shown=to;el.textContent=fmt(from);if(from===to||rm.matches){el.textContent=fmt(to);return}const t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/600),e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(f)})(t0)}
+ $('#v-home').innerHTML=head(g,'Tu panel')+w+b+movs();countUp()}
+function countUp(){const el=$('#tot');if(!el)return;const to=stats().bal,from=st.shown;st.shown=to;el.textContent=fmt(from);if(from===to||rm.matches){el.textContent=fmt(to);return}const t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/600),e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(f)})(t0)}
 function paneMenu(){const p=$('#v-menu');if(!st.catalog.length){p.innerHTML=head('Carta','Catálogo')+`<div class="card empty"><h3>La carta está vacía</h3><p>Importa los platos desde Ajustes o añade uno a mano.</p><button class="btn" data-a="import">Importar carta</button></div>`;return}
  p.innerHTML=head('Carta',st.catalog.length+' platos')+`<div class="stick">${tools('menu')}</div><div class="list" id="l-menu"></div><div id="m-menu"></div>`;list('menu')}
-function paneSess(){const p=$('#v-sess');if(!st.sess){p.innerHTML=head('Sesión','Registro en vivo')+`<div class="card empty"><h3>Registra tu comida</h3><p>Empieza una sesión y ve sumando piezas en tiempo real.</p><button class="btn" data-a="start">Comenzar sesión</button></div>`;return}
- p.innerHTML=head('Sesión','Desde '+dt(st.sess.start),'<button class="chip" data-a="cancel">Cancelar</button>')+`<div class="stick"><div class="sum" id="sum"></div>${tools('sess')}</div><div class="list" id="l-sess"></div><div id="m-sess"></div><div class="fbar" id="fb"></div>`;list('sess')}
-function setQty(id,dl){if(!st.sess)return;const n=Math.max(0,(st.sess.items[id]||0)+dl);n?st.sess.items[id]=n:delete st.sess.items[id];save('sess');
- const r=document.querySelector(`#l-sess [data-d="${CSS.escape(id)}"]`),d=dish(id);if(r&&d){const q=r.querySelector('.q');q.textContent=n;q.classList.remove('pop');void q.offsetWidth;q.classList.add('pop');r.querySelector('.pp').innerHTML=pp(d,n);r.querySelector('[data-a=dec]').disabled=!n;r.classList.toggle('has',n>0)}
- sum();const b=document.querySelector('#sum b');if(b){b.classList.add('bump')}}
-const fillList=()=>{list('menu');list('sess')};
+function paneSess(){const p=$('#v-sess'),y=p.scrollTop;
+ if(!st.sess){S.cur=0;cancelAnimationFrame(S.raf);clearTimeout(S.tm);p.innerHTML=head('Sesión','Registro en vivo')+`<div class="empty"><h3>Registra tu comida</h3><p>Empieza una sesión y suma piezas mientras comes.</p><button class="btn" data-a="start">Comenzar sesión</button></div>`;p.scrollTop=y;return}
+ p.innerHTML=head('Sesión','Desde '+dt(st.sess.start),'<button class="chip" data-a="cancel">Cancelar</button>')+
+ `<section class="hero"><div class="lbl">Puntos de la sesión</div><div class="scorebox"><i class="glow" id="glow"></i><div class="score" id="score">0</div></div><div class="hsum" id="hsum"></div><button class="fin off" id="fin" data-a="finish">Finalizar y guardar</button><span class="sr" id="sr" aria-live="polite"></span></section><div class="reg"><h2>Platos registrados</h2><div class="rl" id="l-sess"></div></div><button class="fab" data-a="addopen" aria-label="Añadir sushi">${ico('sess')}</button>`;
+ const t=totals().p;S.cur=t;S.to=t;cancelAnimationFrame(S.raf);clearTimeout(S.tm);regList();sum();paintScore(t);p.scrollTop=y}
+const setQty=(id,dl)=>changeQty(id,dl);
+const fillList=()=>{list('menu');if(st.sess&&$('#l-sess'))refreshSess(false)};
 // ---- Burbuja Liquid Glass (muelle ligeramente subamortiguado + arrastre) ----
 const B={x:0,v:0,t:0,raf:0,drag:null,ready:false,skip:false};
 const nav=$('#nav');
@@ -232,7 +356,7 @@ function sync(){const ai=TABS.indexOf(st.tab),s=slot();TABS.forEach((k,i)=>{cons
  nav.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('on',i===ai);i===ai?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
  $('.bub').style.width=s.w+'px';B.t=s.x(ai);spring()}
 function shell(){$('#app').innerHTML=TABS.map(k=>`<section class="view" id="v-${k}"></section>`).join('');nav.innerHTML='<i class="bub"></i>'+TABS.map(k=>`<button data-a="tab" data-id="${k}" aria-label="${LBL[k]}">${ico(k)}<span>${LBL[k]}</span></button>`).join('')}
-function render(){if(!$('#v-home'))shell();paneHome();paneMenu();paneSess();sync();B.ready=true}
+function render(){if(!$('#v-home'))shell();const y=TABS.map(k=>$('#v-'+k).scrollTop);paneHome();paneMenu();paneSess();TABS.forEach((k,i)=>$('#v-'+k).scrollTop=y[i]);sync();B.ready=true;if(typeof AS!=='undefined'&&AS.open&&AS.mode==='add')alist()}
 nav.addEventListener('pointerdown',e=>{const a=nav.querySelectorAll('button')[TABS.indexOf(st.tab)];if(a&&a.contains(e.target))B.drag={id:e.pointerId,sx:e.clientX,bx:B.x,on:false,t:e.timeStamp}});
 nav.addEventListener('pointermove',e=>{const d=B.drag;if(!d||e.pointerId!==d.id)return;const dx=e.clientX-d.sx;
  if(!d.on){if(Math.abs(dx)<7)return;d.on=true;nav.setPointerCapture(e.pointerId);cancelAnimationFrame(B.raf)}
@@ -248,12 +372,176 @@ Object.assign(A,{
  discard(){st.sess=null;save('sess');close();paneSess()},
  all(){st.all=!st.all;paneHome()},
  cat(id,b){const k=b.dataset.k;V[k].cat=id;V[k].lim=60;b.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b));list(k,true)},
- more(id,b){const k=b.dataset.k;V[k].lim+=60;list(k)},
- sel(){V.sess.sel=!V.sess.sel;list('sess',true)}
+ more(id,b){const k=b.dataset.k;V[k].lim+=60;list(k)}
 });
 document.addEventListener('input',e=>{const k=e.target.dataset?.q;if(k){V[k].q=e.target.value;V[k].lim=60;list(k,true)}});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches?.('[role=button]')){e.preventDefault();e.target.click()}});
-applyPrefs();render();
+// ===== Fase 3: Sesión minimalista, panel inferior y animación de la puntuación =====
+const norm=s=>String(s??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const pieces=n=>n===1?'1 pieza':`${n} piezas`;
+const ptsWord=v=>`${fmt(v)} ${Math.abs(v-1)<.005?'punto':'puntos'}`;
+const pnl=$('#as'),ao=$('#ao'),appEl=$('#app');
+// -- Puntuación animada (el estado real ya está actualizado; esto solo es la representación) --
+const S={cur:0,to:0,raf:0,tm:0};
+const dec=v=>{const r=Math.round(v*100);return r%100===0?0:r%10===0?1:2};
+const fx=(v,dp)=>v.toLocaleString('es-ES',{minimumFractionDigits:dp,maximumFractionDigits:dp});
+function paintScore(v,dp){const e=$('#score');if(!e)return;const t=dp==null?fmt(v):fx(v,dp);if(e.textContent!==t)e.textContent=t;e.style.setProperty('--n',t.length)}
+function announce(v){const e=$('#sr');if(e)e.textContent=`Total: ${ptsWord(v)}`}
+function bounce(up,delay){const el=$('#score'),g=$('#glow');if(!el||!el.animate)return;let cur=1;try{cur=new DOMMatrix(getComputedStyle(el).transform).a||1}catch(e){}
+ el.getAnimations().forEach(a=>a.cancel());
+ el.animate(up?[{transform:`scale(${cur})`},{transform:'scale(1.065)',offset:.3},{transform:'scale(.992)',offset:.62},{transform:'scale(1)'}]:[{transform:`scale(${cur})`},{transform:'scale(.978)',offset:.35},{transform:'scale(1)'}],{duration:up?640:380,delay,easing:'cubic-bezier(.2,.8,.25,1)',fill:'backwards'});
+ if(up&&g){g.getAnimations().forEach(a=>a.cancel());g.animate([{opacity:0,transform:'scale(.9)'},{opacity:.85,transform:'scale(1.04)',offset:.35},{opacity:0,transform:'scale(1.18)'}],{duration:800,delay,easing:'ease-out'})}}
+function setScore(to,o={}){cancelAnimationFrame(S.raf);clearTimeout(S.tm);S.to=to;const el=$('#score');
+ if(!el){S.cur=to;return}
+ const from=S.cur;
+ if(!o.animate||rm.matches||Math.abs(to-from)<.005){S.cur=to;paintScore(to);announce(to);return}
+ const dp=Math.max(dec(from),dec(to)),dur=Math.min(900,420+Math.abs(to-from)*45);
+ bounce(to>from,o.delay||0);
+ S.tm=setTimeout(()=>{const t0=performance.now();const f=t=>{const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);
+  if(k<1){S.cur=from+(to-from)*e;paintScore(S.cur,dp);S.raf=requestAnimationFrame(f)}else{S.cur=to;paintScore(to);announce(to)}};S.raf=requestAnimationFrame(f)},o.delay||0)}
+// -- Registro de la sesión --
+function regIds(){const s=st.sess;if(!s)return[];const it=s.items,o=(s.order||[]).filter(i=>it[i]>0);for(const i in it)if(it[i]>0&&!o.includes(i))o.push(i);return o.filter(i=>dish(i))}
+function regList(){const L=$('#l-sess');if(!L||!st.sess)return;const ids=regIds();
+ L.innerHTML=ids.length?ids.map(id=>{const d=dish(id),n=st.sess.items[id],i=esc(id);return `<div class="rr" role="button" tabindex="0" data-a="regedit" data-id="${i}" aria-label="Editar ${esc(d.name)}, ${pieces(n)}"><div class="t"><b>${esc(d.name)}</b><small>${pieces(n)}</small></div><div class="v">${fmt(n*pts(d))}<small> pts</small></div></div>`}).join(''):`<div class="none">Aún no has añadido nada.<br>Toca <b class="sym">+</b> para empezar.</div>`}
+function refreshSess(anim,delay){if(!st.sess||!$('#l-sess'))return;const p=$('#v-sess'),y=p.scrollTop;regList();sum();p.scrollTop=y;setScore(totals().p,{animate:anim,delay});if(AS.open&&AS.mode==='edit')editUpdate()}
+// Única vía para modificar cantidades: actualiza estado, orden, historial de la sesión y guarda al instante.
+function changeQty(id,dl,o={}){if(!st.sess||!dl)return;const d=dish(id);if(!d)return;const s=st.sess,cur=s.items[id]||0,n=Math.max(0,cur+dl),real=n-cur;if(!real)return;
+ n?s.items[id]=n:delete s.items[id];
+ let ord=(s.order||[]).filter(i=>s.items[i]>0);
+ if(n){if(o.top){ord=ord.filter(i=>i!==id);ord.unshift(id)}else if(!ord.includes(id))ord.unshift(id)}
+ s.order=ord;(s.log=s.log||[]).push({t:Date.now(),id,q:real,u:pts(d)});if(s.log.length>500)s.log.splice(0,s.log.length-500);
+ save('sess');refreshSess(true,o.delay||0)}
+// -- Panel inferior --
+const AS={open:false,mode:'',q:'',cat:'Todas',lim:40,sel:null,qty:1,busy:false,id:null,opener:null};
+const addHTML=()=>`<div class="grab" data-drag></div><div class="ph" data-drag><h3 id="as-t">Añadir sushi</h3><button class="tx" data-a="pclose">Cancelar</button></div>
+<div class="ptools tools"><input type="search" id="aq" placeholder="Buscar plato" autocomplete="off" enterkeyhint="search" aria-label="Buscar plato"><div class="chips">${cats().map(c=>`<button class="chip ${c==='Todas'?'on':''}" data-a="pcat" data-id="${esc(c)}">${esc(c)}</button>`).join('')}</div></div>
+<div class="plist" id="al" role="listbox" aria-label="Platos"></div>
+<div class="pfoot"><div class="psel"><div class="t"><b id="fn"></b><small id="fs"></small></div><div class="qty" role="group" aria-label="Cantidad"><button id="fm" data-a="qdec" aria-label="Quitar una pieza">−</button><output id="fq" aria-live="polite">1</output><button id="fp" data-a="qinc" aria-label="Añadir una pieza">+</button></div></div><button class="btn go" id="fgo" data-a="pgo"></button></div>`;
+const editHTML=()=>{const d=dish(AS.id);return `<div class="grab" data-drag></div><div class="ph" data-drag><h3 id="as-t">Editar registro</h3><button class="tx" data-a="pclose">Hecho</button></div>
+<div class="eb"><div class="t"><b>${esc(d.name)}</b><small>${esc(d.category||'')}</small></div><div class="erow"><div class="qty" role="group" aria-label="Cantidad"><button id="em" data-a="regdec" aria-label="Quitar una pieza">−</button><output id="eq" aria-live="polite"></output><button data-a="reginc" aria-label="Añadir una pieza">+</button></div><div class="etot"><span id="ev"></span><small>pts</small></div></div><p class="sub" id="ef"></p><button class="dng" data-a="regdel">Eliminar del registro</button></div>`};
+function alist(){const L=$('#al');if(!L)return;const q=norm(AS.q.trim());
+ const a=st.catalog.filter(d=>(AS.cat==='Todas'||d.category===AS.cat)&&(!q||norm(d.name).includes(q)));
+ L.innerHTML=a.slice(0,AS.lim).map(d=>{const on=d.id===AS.sel,i=esc(d.id);return `<button class="pd${on?' on':''}" role="option" aria-selected="${on}" data-a="psel" data-id="${i}"><span class="t"><b>${esc(d.name)}</b><small>${esc(d.category||'')}</small></span><span class="pv">${fmt(pts(d))} pts</span><span class="ck" aria-hidden="true"></span></button>`}).join('')||`<div class="none">${st.catalog.length?'Sin resultados':'La carta está vacía. Importa platos desde Ajustes.'}</div>`;
+ if(a.length>AS.lim)L.insertAdjacentHTML('beforeend',`<button class="pmore" data-a="pmore">Mostrar más (${a.length-AS.lim})</button>`)}
+function afoot(){const d=AS.sel&&dish(AS.sel),q=AS.qty;if(!$('#fgo'))return;
+ $('#fn').textContent=d?d.name:'Elige un plato';$('#fs').innerHTML=d?`${ico('tag')}${fmt(pts(d))} pts por pieza`:`${ico('find')}Búscalo o filtra por categoría`;
+ $('#fq').textContent=d?q:'–';$('#fm').disabled=!d||q<=1;$('#fp').disabled=!d||q>=99;
+ const g=$('#fgo');g.disabled=!d;g.textContent=d?`Añadir ${pieces(q)} · ${ptsWord(q*pts(d))}`:'Añadir a la sesión'}
+function editUpdate(){const d=dish(AS.id),n=st.sess?.items[AS.id]||0;if(!d||!$('#eq'))return;
+ $('#eq').textContent=n;$('#em').disabled=n<=1;$('#ev').textContent=fmt(n*pts(d));$('#ef').innerHTML=`${ico('tag')}${n} × ${fmt(pts(d))} pts por pieza`}
+function openPanel(mode,id){if(AS.open||!st.sess)return;if(mode==='edit'&&!dish(id))return;
+ Object.assign(AS,{open:true,mode,q:'',cat:'Todas',lim:40,sel:null,qty:1,id:id||null,opener:document.activeElement});
+ pnl.className=mode;pnl.style.transform='';pnl.innerHTML=mode==='add'?addHTML():editHTML();
+ if(mode==='add'){alist();afoot()}else editUpdate();
+ appEl.inert=true;nav.inert=true;ao.setAttribute('aria-hidden','false');ao.classList.add('show');pnl.focus({preventScroll:true})}
+function closePanel(){if(!AS.open)return;AS.open=false;ao.classList.remove('show');ao.setAttribute('aria-hidden','true');appEl.inert=false;nav.inert=false;
+ const o=AS.opener;AS.opener=null;if(o&&o.isConnected&&o.focus)o.focus({preventScroll:true})}
+Object.assign(A,{
+ addopen(){openPanel('add')},
+ regedit(id){openPanel('edit',id)},
+ pclose:closePanel,
+ pcat(id,b){AS.cat=id;AS.lim=40;b.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b));alist();$('#al').scrollTop=0},
+ pmore(){AS.lim+=40;alist()},
+ psel(id){if(id===AS.sel)return;AS.sel=id;AS.qty=1;$('#al').querySelectorAll('.pd').forEach(b=>{const on=b.dataset.id===id;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});afoot()},
+ qinc(){if(AS.sel&&AS.qty<99){AS.qty++;afoot()}},
+ qdec(){if(AS.sel&&AS.qty>1){AS.qty--;afoot()}},
+ pgo(){if(AS.busy||!AS.sel||!st.sess)return;const d=dish(AS.sel);if(!d)return;AS.busy=true;const n=AS.qty,id=d.id;AS.sel=null;
+  changeQty(id,n,{top:true,delay:160});closePanel();setTimeout(()=>{AS.busy=false},420)},
+ reginc(){changeQty(AS.id,1)},
+ regdec(){if((st.sess?.items[AS.id]||0)>1)changeQty(AS.id,-1)},
+ regdel(){const n=st.sess?.items[AS.id]||0;if(n)changeQty(AS.id,-n);closePanel()}
+});
+document.addEventListener('input',e=>{if(e.target.id==='aq'){AS.q=e.target.value;AS.lim=40;alist();$('#al').scrollTop=0}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&AS.open){closePanel()}if(e.key==='Enter'&&e.target.id==='aq')e.target.blur()});
+ao.querySelector('.scrim').addEventListener('click',closePanel);
+// Cerrar arrastrando hacia abajo desde el asa o el encabezado
+let PD=null;
+pnl.addEventListener('pointerdown',e=>{if(!e.target.closest('[data-drag]')||e.target.closest('button'))return;PD={id:e.pointerId,y:e.clientY,t:e.timeStamp,dy:0,v:0};pnl.setPointerCapture(e.pointerId);pnl.style.transition='none'});
+pnl.addEventListener('pointermove',e=>{if(!PD||e.pointerId!==PD.id)return;const dy=Math.max(0,e.clientY-PD.y);PD.v=(dy-PD.dy)/Math.max(8,e.timeStamp-PD.t);PD.dy=dy;PD.t=e.timeStamp;pnl.style.transform=`translateY(${dy}px)`});
+function endPD(){if(!PD)return;const d=PD;PD=null;pnl.style.transition='';pnl.style.transform='';if(d.dy>110||d.v>.7)closePanel()}
+pnl.addEventListener('pointerup',endPD);pnl.addEventListener('pointercancel',endPD);
+// ===== Tema de color personalizado =====
+const DEF_AC='#f2573f',PRESETS=[['Naranja','#f2573f'],['Rosa','#ff4f81'],['Violeta','#8b6cff'],['Azul','#0a84ff'],['Verde','#2fb36a'],['Dorado','#e0a526'],['Grafito','#8d929b']];
+function accentRow(){const cur=(st.set.accent||DEF_AC).toLowerCase(),custom=!PRESETS.some(p=>p[1]===cur);
+ return `<div class="row" style="flex-direction:column;align-items:stretch;gap:12px"><div class="t"><b>Color del tema</b><span class="sub">Botones, acentos y resplandor del fondo</span></div><div class="sw">${PRESETS.map(([n,c])=>`<button class="swb${!custom&&cur===c?' on':''}" data-a="accent" data-id="${c}" style="--c:${c}" aria-label="${n}" aria-pressed="${!custom&&cur===c}"></button>`).join('')}<label class="swb cust${custom?' on':''}" style="--c:${cur}" aria-label="Color personalizado"><input type="color" id="accent-c" value="${cur}"></label></div></div>`}
+A.accent=(id)=>{st.set.accent=id===DEF_AC?'':id;save('set');applyPrefs();settings()};
+document.addEventListener('input',e=>{if(e.target.id!=='accent-c')return;const v=e.target.value;st.set.accent=v.toLowerCase()===DEF_AC?'':v;save('set');applyPrefs();
+ document.querySelectorAll('.swb[data-id]').forEach(b=>{b.classList.remove('on');b.setAttribute('aria-pressed','false')});const l=e.target.parentNode;l.classList.add('on');l.style.setProperty('--c',v)});
+
+// ===== Enviar / recibir puntos por QR (un solo uso) =====
+const QT={t:0,exp:10*60*1000};
+I.send='<path d="M12 19V5M6 11l6-6 6 6"/>';I.recv='<path d="M12 5v14M6 13l6 6 6-6"/>';I.ok='<path d="M5 12.5l4.5 4.5L19 7.5"/>';
+const rid=()=>Array.from(crypto.getRandomValues(new Uint8Array(8)),b=>(b%36).toString(36)).join('');
+const loaded={};
+function loadJs(urls){const k=urls[0];return loaded[k]||(loaded[k]=new Promise((ok,ko)=>{let i=0;const go=()=>{if(i>=urls.length){delete loaded[k];return ko(new Error('lib'))}const e=document.createElement('script');e.src=urls[i++];e.onload=()=>ok();e.onerror=go;document.head.appendChild(e)};go()}))}
+const libQR=()=>window.qrcode?Promise.resolve():loadJs(['https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js','https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js']);
+const libScan=()=>window.jsQR?Promise.resolve():loadJs(['https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js','https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js']);
+const payload=t=>{const raw=['SW1',t.id,t.pts,encodeURIComponent(t.name||''),t.exp].join('|');return /^https?:$/.test(location.protocol)?location.origin+location.pathname+'#sw='+encodeURIComponent(raw):raw};
+function qrSvg(text){const q=qrcode(0,'M');q.addData(text);q.make();const n=q.getModuleCount(),m=2;let d='';
+ for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))d+=`<rect x="${c+m}" y="${r+m}" width="1" height="1" rx=".28"/>`;
+ return `<svg class="qr" viewBox="0 0 ${n+2*m} ${n+2*m}" shape-rendering="geometricPrecision">${d}</svg>`}
+const left=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const saveAll=()=>{save('adj');save('out');save('used')};
+function movs(){if(!st.adj.length)return '';return `<h2>Movimientos</h2><div class="list">${st.adj.slice(0,5).map(m=>`<div class="row"><div class="t"><b>${m.pts>0?'Recibido':'Enviado'}${m.who?(m.pts>0?' de ':' · ')+esc(m.who):''}</b><span class="sub">${dt(m.date)}</span></div><span class="pill">${m.pts>0?'+':''}${fmt(m.pts)} pts</span></div>`).join('')}</div>`}
+function pendRows(){const now=Date.now();return st.out.map(o=>`<div class="row"><div class="t"><b>${fmt(o.pts)} pts</b><span class="sub">${o.exp>now?'Caduca en '+left(o.exp-now):'Caducado'}</span></div><div style="display:flex;gap:6px">${o.exp>now?`<button class="chip" data-a="qshow" data-id="${o.id}">Ver QR</button>`:''}<button class="chip" data-a="qrefund" data-id="${o.id}">Recuperar</button></div></div>`).join('')}
+function sendSheet(){const bal=stats().bal;
+ sheet(`<h1 style="font-size:24px">Enviar puntos</h1><p class="sub">Saldo: <b>${fmt(bal)}</b> pts. Se descuentan al generar el QR y solo lo puede canjear una persona.</p>
+ <h2>Cantidad</h2><input type="number" id="qa" inputmode="decimal" step="0.25" min="0" placeholder="Puntos a enviar">
+ <h2>Tu nombre (opcional)</h2><input type="text" id="qn" maxlength="20" placeholder="Para que sepan quién lo envía" value="${esc(st.set.name||'')}">
+ <div style="display:grid;gap:8px;margin-top:14px"><button class="btn" data-a="qgen">Generar QR</button></div>
+ ${st.out.length?`<h2>QR pendientes</h2><div class="list">${pendRows()}</div>`:''}`)}
+async function qshow(id){const o=st.out.find(x=>x.id===id);if(!o)return;
+ sheet(`<div class="center"><p class="sub">Preparando QR…</p></div>`);
+ try{await libQR()}catch(e){return sheet(`<h1 style="font-size:24px">Sin conexión</h1><p class="sub">Necesito conectarme una vez para cargar el generador de QR. Inténtalo de nuevo con internet.</p><button class="btn sec" data-a="close">Cerrar</button>`)}
+ sheet(`<div class="qrcard" id="qc"><div class="qlbl">Sushi Wallet</div><div class="qamt">${fmt(o.pts)} pts</div>${qrSvg(payload(o))}<div class="qfoot" id="qf"></div></div>
+ <p class="sub center" style="margin:10px 0 14px">Pide que escaneen este código con Sushi Wallet → Recibir. Un solo uso.</p>
+ <div style="display:grid;gap:8px"><button class="btn" data-a="close">Listo</button><button class="btn sec" data-a="qrefund" data-id="${o.id}">Cancelar y recuperar puntos</button></div>`);
+ clearInterval(QT.t);const tick=()=>{const f=$('#qf'),c=$('#qc');if(!f){clearInterval(QT.t);return}const r=o.exp-Date.now();if(r<=0){f.textContent='Caducado';c.classList.add('dead');clearInterval(QT.t)}else f.textContent='Caduca en '+left(r)};tick();QT.t=setInterval(tick,1000)}
+function recvSheet(){
+ sheet(`<h1 style="font-size:24px">Recibir puntos</h1><p class="sub">Escanea el QR de la otra persona.</p>
+ <div class="scanbox" id="sb"><video id="cam" playsinline muted></video></div><p class="sub center" id="cs">Iniciando cámara…</p>
+ <h2>¿Sin cámara?</h2><input type="text" id="qp" placeholder="Pega aquí el código o el enlace"><div style="display:grid;gap:8px;margin-top:10px"><button class="btn sec" data-a="qpaste">Canjear código</button></div>`);startCam()}
+let cam={s:null,raf:0,on:false};
+function stopCam(){cam.on=false;cancelAnimationFrame(cam.raf);if(cam.s){cam.s.getTracks().forEach(t=>t.stop());cam.s=null}}
+async function startCam(){const msg=t=>{const e=$('#cs');if(e)e.textContent=t};
+ try{
+  if(!navigator.mediaDevices?.getUserMedia)throw 0;
+  const bd=('BarcodeDetector' in window)?new BarcodeDetector({formats:['qr_code']}):null;if(!bd)await libScan();
+  cam.s=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
+  const v=$('#cam');if(!v){stopCam();return}v.srcObject=cam.s;await v.play();cam.on=true;msg('Apunta al código QR');
+  const cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});let busy=false;
+  const loop=async()=>{if(!cam.on)return;
+   if(!busy&&v.videoWidth){busy=true;let txt='';
+    try{if(bd){const r=await bd.detect(v);txt=r[0]?.rawValue||''}else{const w=Math.min(640,v.videoWidth),h=Math.round(w*v.videoHeight/v.videoWidth);cv.width=w;cv.height=h;cx.drawImage(v,0,0,w,h);const r=jsQR(cx.getImageData(0,0,w,h).data,w,h);txt=r?.data||''}}catch(e){}
+    busy=false;if(txt&&cam.on&&claim(txt))return}
+   cam.raf=requestAnimationFrame(loop)};loop();
+ }catch(e){msg('No he podido usar la cámara. Revisa el permiso o pega el código abajo.')}}
+function parse(txt){let t=String(txt||'').trim();const i=t.indexOf('#sw=');if(i>=0)t=decodeURIComponent(t.slice(i+4));else if(/^sw=/.test(t))t=decodeURIComponent(t.slice(3));
+ const p=t.split('|');if(p[0]!=='SW1'||p.length<5)return null;const pts=parseFloat(p[2]),exp=parseInt(p[4],10);
+ if(!(pts>0)||!p[1]||!(exp>0))return null;let name='';try{name=decodeURIComponent(p[3])}catch(e){}return{id:p[1],pts,name,exp}}
+function fail(t,sub){stopCam();sheet(`<div class="center"><h1 style="font-size:24px">${t}</h1><p class="sub">${sub}</p></div><div style="display:grid;gap:8px;margin-top:14px"><button class="btn" data-a="wrecv">Escanear otro</button><button class="btn sec" data-a="close">Cerrar</button></div>`);return true}
+function claim(txt){const o=parse(txt);if(!o)return false;stopCam();
+ if(st.out.some(x=>x.id===o.id))return fail('Es tu propio código','Este QR lo generaste tú. Pide a otra persona que lo escanee.');
+ if(st.used.includes(o.id))return fail('Código ya usado','Este QR ya se canjeó en este dispositivo.');
+ if(Date.now()>o.exp)return fail('Código caducado','Pide a la otra persona que genere uno nuevo.');
+ st.used.unshift(o.id);st.used=st.used.slice(0,300);st.adj.unshift({id:o.id,date:Date.now(),pts:o.pts,who:o.name});saveAll();
+ st.tab='home';render();
+ sheet(`<div class="center"><div class="okmark">${ico('ok')}</div><h1 style="font-size:28px">+${fmt(o.pts)} puntos</h1><p class="sub">${o.name?'De '+esc(o.name)+'. ':''}Ya están en tu cartera.</p></div><button class="btn" data-a="close" style="margin-top:14px">Genial</button>`);return true}
+Object.assign(A,{
+ wsend:sendSheet,wrecv:recvSheet,qshow,
+ qgen(){const v=parseFloat($('#qa').value),bal=stats().bal;
+  if(!(v>0))return alert('Escribe una cantidad mayor que 0.');
+  if(v>bal+1e-9)return alert('No tienes tantos puntos. Saldo: '+fmt(bal));
+  const nm=$('#qn').value.trim();st.set.name=nm;save('set');
+  const o={id:rid(),pts:Math.round(v*100)/100,name:nm,exp:Date.now()+QT.exp};
+  st.out.unshift(o);st.adj.unshift({id:o.id,date:Date.now(),pts:-o.pts,who:''});saveAll();render();qshow(o.id)},
+ qrefund(id){const i=st.out.findIndex(x=>x.id===id);if(i<0)return;const o=st.out[i];st.out.splice(i,1);
+  st.adj=st.adj.filter(m=>m.id!==id);saveAll();render();sendSheet()},
+ qpaste(){if(!claim($('#qp').value))alert('Ese código no es válido.')}
+});
+function hashClaim(){const h=location.hash;if(!/^#sw=/.test(h))return;const raw=h.slice(1);history.replaceState(null,'',location.pathname+location.search);claim(raw)}
+addEventListener('hashchange',hashClaim);
+applyPrefs();render();hashClaim();
 // Carga automática de carta.txt (misma carpeta del repositorio)
 fetch('carta.txt',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(t=>{const rows=t?parseImport(t):[];if(rows.length){addDishes(rows,'carta.txt');render()}}).catch(()=>{});
 </script>
