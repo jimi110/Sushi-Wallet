@@ -64,6 +64,59 @@ nav button.on{color:var(--ac);background:var(--fill)}
 img.dish{width:100%;border-radius:14px;max-height:200px;object-fit:cover;margin-bottom:12px}
 body.glass nav,body.glass .sum,body.glass #sh{background:color-mix(in srgb,var(--card) 55%,transparent);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);box-shadow:inset 0 1px 0 #ffffff55,0 8px 30px #0002}
 body.glass #ov{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+
+/* ===== Fase 2 ===== */
+:root{--bg:#f3efe8;--card:#fffdf9;--tx:#1b1d1b;--tx2:#66665f;padding:0}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0e0c;--card:#151b18;--tx:#f4f1ea;--tx2:#a3a69f}}
+:root[data-theme="dark"]{--bg:#0a0e0c;--card:#151b18;--tx:#f4f1ea;--tx2:#a3a69f}
+html,body{height:100%;overflow:hidden}
+button{touch-action:manipulation}
+#app{padding:0;max-width:none}
+.view{position:fixed;inset:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:0 max(18px,calc((100% - 724px)/2));opacity:0;visibility:hidden;transform:translate3d(22px,0,0);transition:opacity .2s,transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s .32s}
+.view::after{content:"";display:block;height:150px}
+.view.l{transform:translate3d(-22px,0,0)}
+.view.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+header{padding:calc(env(safe-area-inset-top,0px) + 14px) 0 12px;align-items:flex-end}
+.hx{display:flex;gap:8px;align-items:center}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx2);font-weight:600}
+h1{font:600 36px/1.1 ui-serif,"New York","Iowan Old Style",Georgia,serif;letter-spacing:-.02em}
+h2{font:600 13px/1 -apple-system,"SF Pro Text",system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2);margin:28px 0 10px}
+.ic{width:44px;height:44px}
+.chip{min-height:36px;display:inline-flex;align-items:center}
+.wallet{position:relative;overflow:hidden;color:#f7f3ea;border-radius:28px;min-height:210px;padding:24px;background:radial-gradient(110% 80% at 100% 0,#e8553a 0,#e8553a00 58%),linear-gradient(160deg,#20302a,#0b1210);box-shadow:inset 0 1px 0 #ffffff26,0 20px 40px -20px #000a}
+.ripple{position:absolute;right:-70px;top:-70px;width:290px;height:290px;border-radius:50%;background:repeating-radial-gradient(circle,#ffffff1c 0 1px,transparent 1px 15px);-webkit-mask:radial-gradient(circle,#000 25%,transparent 70%);mask:radial-gradient(circle,#000 25%,transparent 70%)}
+.wallet small{position:relative;opacity:.7;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.wallet .big{position:relative;font:600 76px/1 ui-serif,"New York",Georgia,serif;letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin:6px 0 auto}
+.wf{position:relative;display:flex;justify-content:space-between;font-size:12px;opacity:.65;margin-top:22px}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);padding:14px 4px;margin-top:12px;border-radius:22px}
+.strip>div{text-align:center;padding:0 4px;border-left:.5px solid var(--line)}.strip>div:first-child{border:0}
+.strip b{display:block;font:600 22px/1.2 ui-serif,"New York",Georgia,serif;font-variant-numeric:tabular-nums}
+.strip span{font-size:11px;color:var(--tx2)}
+.list{border-radius:22px}
+.row{padding:13px 16px;min-height:60px}
+.row .t b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.25}
+.row.has{box-shadow:inset 3px 0 0 var(--ac)}
+.row .sub b{color:var(--tx)}
+i.rec{font-style:normal;color:var(--ac);font-weight:600}
+.stick{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);padding-bottom:2px}
+.sum{position:static;background:var(--card);margin:0 0 4px}
+.sum b{font:600 24px/1.2 ui-serif,"New York",Georgia,serif;font-variant-numeric:tabular-nums}
+.sum span{font-size:11px;color:var(--tx2)}
+.bump{animation:bump .28s cubic-bezier(.3,1.6,.5,1)}@keyframes bump{from{transform:scale(1.18)}}
+.step button{width:40px;height:40px;font-size:22px}
+.step button:disabled{opacity:.3}
+.step span.pop{animation:bump .25s}
+.fbar{position:sticky;bottom:calc(92px + env(safe-area-inset-bottom,0px));margin-top:18px;z-index:4}
+.fbar .btn{box-shadow:0 12px 24px -10px #f2573faa}
+.btn{min-height:52px}
+nav{width:min(92vw,390px);gap:0;padding:6px;bottom:calc(12px + env(safe-area-inset-bottom,0px));touch-action:pan-y;user-select:none;-webkit-user-select:none}
+nav button{flex:1;position:relative;z-index:2;padding:8px 0;min-height:52px;justify-content:center;background:none!important;transition:color .2s}
+nav button.on{color:var(--tx)}nav button.on svg{color:var(--ac)}
+.bub{position:absolute;left:0;top:6px;bottom:6px;z-index:1;border-radius:22px;background:var(--fill);pointer-events:none;will-change:transform;transform-origin:50% 60%}
+body.glass .bub{background:linear-gradient(180deg,#ffffff70,#ffffff1c 60%,#ffffff2e);-webkit-backdrop-filter:blur(8px) saturate(200%);backdrop-filter:blur(8px) saturate(200%);box-shadow:inset 0 1px 0 #fffc,inset 0 -1px 1px #0002,inset 0 0 10px #ffffff40,0 6px 16px -4px #0003}
+body.glass .stick{background:color-mix(in srgb,var(--bg) 78%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+#sh{overscroll-behavior:contain}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
@@ -89,53 +142,6 @@ const I={home:'<path d="M4 11l8-7 8 7v9H4z"/>',menu:'<path d="M5 4h14v16H5zM9 9h
 const ico=n=>`<svg viewBox="0 0 24 24">${I[n]}</svg>`;
 // ---------- Aplicar preferencias ----------
 function applyPrefs(){document.body.classList.toggle('glass',!!st.set.glass);const r=document.documentElement;st.set.theme==='auto'?r.removeAttribute('data-theme'):r.setAttribute('data-theme',st.set.theme)}
-// ---------- Render ----------
-function head(t,s){return `<header><div><h1>${t}</h1><div class="sub">${s||''}</div></div><button class="ic" data-a="settings" aria-label="Ajustes">${ico('gear')}</button></header>`}
-function render(){
-  $('#nav').innerHTML=[['home','Inicio'],['menu','Carta'],['sess','Sesión']].map(([k,l])=>`<button class="${(st.tab==={home:'home',menu:'menu',sess:'sess'}[k])?'on':''}" data-a="tab" data-id="${k}">${ico(k)}${l}</button>`).join('');
-  $('#app').innerHTML=`<div class="view">${{home:home,menu:menu,sess:session}[st.tab]()}</div>`;
-  if(st.tab==='home')countUp(); else fillList();
-  window.scrollTo(0,0);
-}
-function home(){
-  const s=stats(),h=new Date().getHours(),g=h<13?'Buenos días':h<20?'Buenas tardes':'Buenas noches';
-  const w=`<div class="wallet"><small>Sushi Wallet</small><div><div class="big" id="tot">0</div><small>Puntos acumulados en total</small></div></div>`;
-  if(!s.n)return head(g,'Tu panel personal')+w+`<div class="card empty" style="margin-top:12px"><h3>Aún no hay sesiones</h3><p>Inicia una sesión, añade lo que vayas comiendo y aquí verás tus estadísticas reales.</p><button class="btn" data-a="startgo">${st.sess?'Continuar sesión':'Iniciar sesión'}</button></div>`;
-  const rec=(st.all?st.hist:st.hist.slice(0,5)).map(x=>`<div class="row"><div class="t"><b>${dt(x.date)}</b><span class="sub">${fmt(x.pieces)} piezas</span></div><span class="pill">${fmt(x.points)} pts</span></div>`).join('');
-  return head(g,'Tu panel personal')+w+`<div class="grid">
-  <div class="card stat"><b>${fmt(s.pc)}</b><span class="sub">Piezas consumidas</span></div>
-  <div class="card stat"><b>${s.n}</b><span class="sub">Sesiones</span></div>
-  <div class="card stat"><b>${fmt(s.ap)}</b><span class="sub">Puntos por sesión</span></div>
-  <div class="card stat"><b>${fmt(s.apc)}</b><span class="sub">Piezas por sesión</span></div>
-  <div class="card stat"><b style="font-size:20px">${dt(s.last.date)}</b><span class="sub">Última sesión</span></div></div>
-  <h2>Sesiones recientes</h2><div class="list">${rec}</div>
-  ${st.hist.length>5?`<button class="chip" style="margin-top:10px" data-a="all">${st.all?'Ver menos':'Ver todas ('+st.hist.length+')'}</button>`:''}`;
-}
-function countUp(){const el=$('#tot');if(!el)return;const to=stats().p,from=st.shown,t0=performance.now();st.shown=to;
-  (function f(t){const k=Math.min(1,(t-t0)/600),e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(f)})(t0)}
-const cats=()=>['Todas',...new Set(st.catalog.map(d=>d.category).filter(Boolean))];
-function filters(){return `<input type="search" id="q" placeholder="Buscar plato" value="${esc(st.q)}" autocomplete="off"><div class="chips">${cats().map(c=>`<button class="chip ${c===st.cat?'on':''}" data-a="cat" data-id="${esc(c)}">${esc(c)}</button>`).join('')}</div>`}
-function menu(){
-  if(!st.catalog.length)return head('Carta')+`<div class="card empty"><h3>La carta está vacía</h3><p>No se ha podido extraer automáticamente la carta de Toki Mallorca (se carga de forma dinámica). Importa los platos desde Ajustes o añade uno a mano.</p><button class="btn" data-a="import">Importar carta</button></div>`;
-  return head('Carta',st.catalog.length+' platos')+filters()+'<div class="list" id="lst"></div><div id="more"></div>';
-}
-function session(){
-  if(!st.sess)return head('Sesión')+`<div class="card empty"><h3>Registra tu comida</h3><p>Empieza una sesión y ve sumando piezas en tiempo real.</p><button class="btn" data-a="start">Comenzar sesión</button></div>`+(st.hist.length?'':'');
-  return head('Sesión','En curso desde '+dt(st.sess.start))+'<div class="sum" id="sum"></div>'+filters()+'<div class="list" id="lst"></div><div id="more"></div>'+
-  `<div style="display:grid;gap:10px;margin-top:20px"><button class="btn" data-a="finish">Finalizar y guardar</button><button class="btn sec" data-a="cancel">Cancelar sesión</button></div>`;
-}
-function totals(){const it=st.sess?.items||{};let p=0,c=0,k=0;for(const id in it){const d=dish(id);if(d&&it[id]>0){p+=it[id]*pts(d);c+=it[id];k++}}return{p,c,k}}
-function fillList(){
-  const L=$('#lst');if(!L)return;const q=st.q.trim().toLowerCase(),sess=st.tab==='sess';
-  let a=st.catalog.filter(d=>(st.cat==='Todas'||d.category===st.cat)&&(!q||d.name.toLowerCase().includes(q)));
-  if(sess&&st.view==='sel')a=a.filter(d=>st.sess.items[d.id]>0);
-  const rc=new Set(st.hist.slice(0,3).flatMap(h=>h.items.map(i=>i.id)));
-  L.innerHTML=a.slice(0,st.lim).map(d=>{const n=st.sess?.items[d.id]||0;
-    return `<div class="row" ${sess?'':`data-a="det" data-id="${esc(d.id)}"`}><div class="t"><b>${esc(d.name)}</b><span class="sub">${esc(d.category||'')} ${rc.has(d.id)?'<span class="pill rec">reciente</span>':''}</span></div>`+
-    (sess?`<span class="sub" data-a="det" data-id="${esc(d.id)}">${fmt(pts(d))} pts${n?` · <b style="color:var(--tx)">${fmt(n*pts(d))}</b>`:''}</span><div class="step"><button data-a="dec" data-id="${esc(d.id)}" ${n?'':'disabled style="opacity:.3"'}>−</button><span>${n}</span><button class="p" data-a="inc" data-id="${esc(d.id)}">+</button></div>`:`<span class="pill">${fmt(pts(d))} pts</span>`)+'</div>'}).join('')||'<div class="empty">Sin resultados</div>';
-  $('#more').innerHTML=a.length>st.lim?`<button class="chip" style="margin-top:10px" data-a="more">Mostrar más (${a.length-st.lim})</button>`:'';
-  if(sess){const t=totals();$('#sum').innerHTML=`<div><b>${fmt(t.p)}</b><span class="sub">Puntos</span></div><div><b>${t.c}</b><span class="sub">Piezas</span></div><div><b>${t.k}</b><span class="sub">Platos</span></div><button class="chip ${st.view==='sel'?'on':''}" data-a="sel" style="align-self:center">Mi selección</button>`}
-}
 // ---------- Hojas modales ----------
 function sheet(h){$('#sh').innerHTML=h;$('#ov').classList.add('show')}
 function close(){$('#ov').classList.remove('show')}
@@ -157,7 +163,6 @@ function finishSheet(){const it=st.sess.items,t=totals();if(!t.c)return sheet('<
   sheet(`<h1 style="font-size:24px">Resumen</h1><div class="list" style="margin:14px 0">${Object.keys(it).filter(i=>it[i]>0&&dish(i)).map(i=>{const d=dish(i);return `<div class="row"><div class="t"><b>${esc(d.name)}</b><span class="sub">${it[i]} × ${fmt(pts(d))}</span></div><span class="pill">${fmt(it[i]*pts(d))}</span></div>`}).join('')}</div><p><b>${t.c} piezas · ${fmt(t.p)} puntos</b></p><div style="display:grid;gap:8px"><button class="btn" id="ok" data-a="confirm">Confirmar y guardar</button><button class="btn sec" data-a="close">Volver</button></div>`)}
 // ---------- Acciones ----------
 let saving=false;
-function setQty(id,dlt){if(!st.sess)return;const n=Math.max(0,(st.sess.items[id]||0)+dlt);n?st.sess.items[id]=n:delete st.sess.items[id];save('sess');fillList()}
 const A={
  tab(id){st.tab=id;st.q='';st.cat='Todas';st.lim=60;st.view='';render()},
  settings,import:importSheet,close,
@@ -178,11 +183,76 @@ const A={
  confirm(){if(saving||!st.sess)return;saving=true;const it=st.sess.items,items=Object.keys(it).filter(i=>it[i]>0&&dish(i)).map(i=>({id:i,name:dish(i).name,qty:it[i],pts:pts(dish(i))})),t=totals();
   st.hist.unshift({id:st.sess.id,date:Date.now(),items,pieces:t.c,points:t.p});st.sess=null;save('hist');save('sess');close();st.tab='home';render();saving=false}
 };
-function render2(){const q=$('#q');render();const n=$('#q');if(n&&q)n.value=st.q}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&A[b.dataset.a])A[b.dataset.a](b.dataset.id);else if(e.target.id==='ov')close()});
+document.addEventListener('click',e=>{if(B.skip)return;const b=e.target.closest('[data-a]');if(b&&A[b.dataset.a])A[b.dataset.a](b.dataset.id,b);else if(e.target.id==='ov')close()});
 document.addEventListener('input',e=>{if(e.target.id==='q'){st.q=e.target.value;st.lim=60;fillList()}});
 document.addEventListener('change',e=>{if(e.target.id==='theme'){st.set.theme=e.target.value;save('set');applyPrefs()}
  if(e.target.id==='file'){const f=e.target.files[0];if(f)f.text().then(t=>$('#imp').value=t)}});
+
+// ===== Fase 2: vistas persistentes (scroll propio por pantalla), actualización en sitio y burbuja de navegación =====
+const TABS=['home','menu','sess'],LBL={home:'Inicio',menu:'Carta',sess:'Sesión'};
+const V={menu:{q:'',cat:'Todas',lim:60},sess:{q:'',cat:'Todas',lim:60,sel:false}};
+const rm=matchMedia('(prefers-reduced-motion: reduce)');
+let RC=new Set();
+const head=(t,s,x)=>`<header><div><div class="eyebrow">${s||''}</div><h1>${t}</h1></div><div class="hx">${x||''}<button class="ic" data-a="settings" aria-label="Ajustes">${ico('gear')}</button></div></header>`;
+const cats=()=>['Todas',...new Set(st.catalog.map(d=>d.category).filter(Boolean))];
+const tools=k=>`<div class="tools"><input type="search" data-q="${k}" placeholder="Buscar plato" value="${esc(V[k].q)}" autocomplete="off" aria-label="Buscar plato"><div class="chips">${cats().map(c=>`<button class="chip ${c===V[k].cat?'on':''}" data-a="cat" data-k="${k}" data-id="${esc(c)}">${esc(c)}</button>`).join('')}</div></div>`;
+function totals(){const it=st.sess?.items||{};let p=0,c=0,k=0;for(const id in it){const d=dish(id);if(d&&it[id]>0){p+=it[id]*pts(d);c+=it[id];k++}}return{p,c,k}}
+const pp=(d,n)=>`${fmt(pts(d))} pts${n?` · <b>${fmt(n*pts(d))}</b>`:''}`;
+function row(d,k){const s=k==='sess',n=s?st.sess.items[d.id]||0:0,i=esc(d.id),nm=esc(d.name);
+ return `<div class="row${n?' has':''}" data-d="${i}" ${s?'':`data-a="det" data-id="${i}" role="button" tabindex="0"`}><div class="t"><b>${nm}</b><span class="sub">${esc(d.category||'')}${RC.has(d.id)?' · <i class="rec">reciente</i>':''}</span></div>`+(s?`<span class="sub pp" data-a="det" data-id="${i}">${pp(d,n)}</span><div class="step"><button data-a="dec" data-id="${i}" aria-label="Quitar una unidad de ${nm}" ${n?'':'disabled'}>−</button><span class="q" aria-live="polite">${n}</span><button class="p" data-a="inc" data-id="${i}" aria-label="Añadir una unidad de ${nm}">+</button></div>`:`<span class="pill">${fmt(pts(d))} pts</span>`)+'</div>'}
+function list(k,top){const L=$('#l-'+k);if(!L||(k==='sess'&&!st.sess))return;const v=V[k],q=v.q.trim().toLowerCase();RC=new Set(st.hist.slice(0,3).flatMap(h=>h.items.map(i=>i.id)));
+ let a=st.catalog.filter(d=>(v.cat==='Todas'||d.category===v.cat)&&(!q||d.name.toLowerCase().includes(q)));if(k==='sess'&&v.sel)a=a.filter(d=>st.sess.items[d.id]>0);
+ L.innerHTML=a.slice(0,v.lim).map(d=>row(d,k)).join('')||'<div class="empty">Sin resultados</div>';
+ $('#m-'+k).innerHTML=a.length>v.lim?`<button class="chip" style="margin-top:10px" data-a="more" data-k="${k}">Mostrar más (${a.length-v.lim})</button>`:'';
+ if(top)$('#v-'+k).scrollTop=0;if(k==='sess')sum()}
+function sum(){const t=totals(),e=$('#sum');if(!e)return;e.innerHTML=`<div><b>${fmt(t.p)}</b><span>Puntos</span></div><div><b>${t.c}</b><span>Piezas</span></div><div><b>${t.k}</b><span>Platos</span></div><button class="chip ${V.sess.sel?'on':''}" data-a="sel" style="align-self:center">Mi selección</button>`;
+ $('#fb').innerHTML=t.c?`<button class="btn" data-a="finish">Finalizar y guardar · ${fmt(t.p)} pts</button>`:''}
+function paneHome(){const s=stats(),h=new Date().getHours(),g=h<13?'Buenos días':h<20?'Buenas tardes':'Buenas noches';
+ const w=`<div class="wallet"><div class="ripple"></div><small>Puntos acumulados en total</small><div class="big" id="tot">0</div><div class="wf"><span>Sushi Wallet</span><span>${s.n?'Última · '+dt(s.last.date):'Sin sesiones todavía'}</span></div></div>`;
+ const b=!s.n?`<div class="card empty" style="margin-top:12px"><h3>Aún no hay sesiones</h3><p>Inicia una sesión, añade lo que vayas comiendo y aquí verás tus estadísticas reales.</p><button class="btn" data-a="startgo">${st.sess?'Continuar sesión':'Iniciar sesión'}</button></div>`:
+ `<div class="strip card">${[[fmt(s.pc),'Piezas'],[s.n,'Sesiones'],[fmt(s.ap),'Pts / sesión'],[fmt(s.apc),'Pzs / sesión']].map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}</div><h2>Sesiones recientes</h2><div class="list">${(st.all?st.hist:st.hist.slice(0,5)).map(x=>`<div class="row"><div class="t"><b>${dt(x.date)}</b><span class="sub">${fmt(x.pieces)} piezas</span></div><span class="pill">${fmt(x.points)} pts</span></div>`).join('')}</div>${st.hist.length>5?`<button class="chip" style="margin-top:10px" data-a="all">${st.all?'Ver menos':'Ver todas ('+st.hist.length+')'}</button>`:''}`;
+ $('#v-home').innerHTML=head(g,'Tu panel')+w+b;countUp()}
+function countUp(){const el=$('#tot');if(!el)return;const to=stats().p,from=st.shown;st.shown=to;el.textContent=fmt(from);if(from===to||rm.matches){el.textContent=fmt(to);return}const t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/600),e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(f)})(t0)}
+function paneMenu(){const p=$('#v-menu');if(!st.catalog.length){p.innerHTML=head('Carta','Catálogo')+`<div class="card empty"><h3>La carta está vacía</h3><p>Importa los platos desde Ajustes o añade uno a mano.</p><button class="btn" data-a="import">Importar carta</button></div>`;return}
+ p.innerHTML=head('Carta',st.catalog.length+' platos')+`<div class="stick">${tools('menu')}</div><div class="list" id="l-menu"></div><div id="m-menu"></div>`;list('menu')}
+function paneSess(){const p=$('#v-sess');if(!st.sess){p.innerHTML=head('Sesión','Registro en vivo')+`<div class="card empty"><h3>Registra tu comida</h3><p>Empieza una sesión y ve sumando piezas en tiempo real.</p><button class="btn" data-a="start">Comenzar sesión</button></div>`;return}
+ p.innerHTML=head('Sesión','Desde '+dt(st.sess.start),'<button class="chip" data-a="cancel">Cancelar</button>')+`<div class="stick"><div class="sum" id="sum"></div>${tools('sess')}</div><div class="list" id="l-sess"></div><div id="m-sess"></div><div class="fbar" id="fb"></div>`;list('sess')}
+function setQty(id,dl){if(!st.sess)return;const n=Math.max(0,(st.sess.items[id]||0)+dl);n?st.sess.items[id]=n:delete st.sess.items[id];save('sess');
+ const r=document.querySelector(`#l-sess [data-d="${CSS.escape(id)}"]`),d=dish(id);if(r&&d){const q=r.querySelector('.q');q.textContent=n;q.classList.remove('pop');void q.offsetWidth;q.classList.add('pop');r.querySelector('.pp').innerHTML=pp(d,n);r.querySelector('[data-a=dec]').disabled=!n;r.classList.toggle('has',n>0)}
+ sum();const b=document.querySelector('#sum b');if(b){b.classList.add('bump')}}
+const fillList=()=>{list('menu');list('sess')};
+// ---- Burbuja Liquid Glass (muelle ligeramente subamortiguado + arrastre) ----
+const B={x:0,v:0,t:0,raf:0,drag:null,ready:false,skip:false};
+const nav=$('#nav');
+const slot=()=>{const b=nav.querySelectorAll('button');return{w:b[0].offsetWidth,x:i=>b[i].offsetLeft}};
+function paint(){const sp=Math.min(.16,Math.abs(B.v)/5200),g=B.drag?.on?1.07:1;$('.bub').style.transform=`translate3d(${B.x}px,0,0) scale(${g+sp},${g-sp*.7})`}
+function spring(){cancelAnimationFrame(B.raf);if(rm.matches||!B.ready){B.x=B.t;B.v=0;paint();return}let last=performance.now();
+ const step=now=>{const dt=Math.min(.032,(now-last)/1000);last=now;B.v+=(380*(B.t-B.x)-24*B.v)*dt;B.x+=B.v*dt;paint();if(Math.abs(B.t-B.x)<.3&&Math.abs(B.v)<8){B.x=B.t;B.v=0;paint();return}B.raf=requestAnimationFrame(step)};B.raf=requestAnimationFrame(step)}
+function sync(){const ai=TABS.indexOf(st.tab),s=slot();TABS.forEach((k,i)=>{const p=$('#v-'+k);p.classList.toggle('on',i===ai);p.classList.toggle('l',i<ai);p.setAttribute('aria-hidden',i!==ai);p.inert=i!==ai});
+ nav.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('on',i===ai);i===ai?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
+ $('.bub').style.width=s.w+'px';B.t=s.x(ai);spring()}
+function shell(){$('#app').innerHTML=TABS.map(k=>`<section class="view" id="v-${k}"></section>`).join('');nav.innerHTML='<i class="bub"></i>'+TABS.map(k=>`<button data-a="tab" data-id="${k}" aria-label="${LBL[k]}">${ico(k)}<span>${LBL[k]}</span></button>`).join('')}
+function render(){if(!$('#v-home'))shell();paneHome();paneMenu();paneSess();sync();B.ready=true}
+nav.addEventListener('pointerdown',e=>{const a=nav.querySelectorAll('button')[TABS.indexOf(st.tab)];if(a&&a.contains(e.target))B.drag={id:e.pointerId,sx:e.clientX,bx:B.x,on:false,t:e.timeStamp}});
+nav.addEventListener('pointermove',e=>{const d=B.drag;if(!d||e.pointerId!==d.id)return;const dx=e.clientX-d.sx;
+ if(!d.on){if(Math.abs(dx)<7)return;d.on=true;nav.setPointerCapture(e.pointerId);cancelAnimationFrame(B.raf)}
+ const s=slot(),p=B.x;B.x=Math.max(0,Math.min(s.x(2),d.bx+dx));B.v=.6*B.v+.4*((B.x-p)/Math.max(.008,(e.timeStamp-d.t)/1000));d.t=e.timeStamp;paint()});
+function endDrag(c){const d=B.drag;B.drag=null;if(!d||!d.on)return;const s=slot(),pitch=s.x(1)-s.x(0),v=Math.max(-1800,Math.min(1800,B.v));
+ const i=c?TABS.indexOf(st.tab):Math.max(0,Math.min(2,Math.round((B.x+v*.07)/pitch)));B.skip=true;setTimeout(()=>B.skip=false,60);st.tab=TABS[i];sync()}
+nav.addEventListener('pointerup',()=>endDrag(false));nav.addEventListener('pointercancel',()=>endDrag(true));
+addEventListener('resize',()=>{if(!B.ready)return;sync();B.x=B.t;B.v=0;paint()});
+Object.assign(A,{
+ tab(id){if(id===st.tab)return;st.tab=id;sync()},
+ start(){st.sess={id:Date.now(),start:Date.now(),items:{}};save('sess');paneSess()},
+ startgo(){if(!st.sess){st.sess={id:Date.now(),start:Date.now(),items:{}};save('sess');paneSess()}st.tab='sess';sync()},
+ discard(){st.sess=null;save('sess');close();paneSess()},
+ all(){st.all=!st.all;paneHome()},
+ cat(id,b){const k=b.dataset.k;V[k].cat=id;V[k].lim=60;b.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b));list(k,true)},
+ more(id,b){const k=b.dataset.k;V[k].lim+=60;list(k)},
+ sel(){V.sess.sel=!V.sess.sel;list('sess',true)}
+});
+document.addEventListener('input',e=>{const k=e.target.dataset?.q;if(k){V[k].q=e.target.value;V[k].lim=60;list(k,true)}});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches?.('[role=button]')){e.preventDefault();e.target.click()}});
 applyPrefs();render();
 // Carga automática de carta.txt (misma carpeta del repositorio)
 fetch('carta.txt',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(t=>{const rows=t?parseImport(t):[];if(rows.length){addDishes(rows,'carta.txt');render()}}).catch(()=>{});
