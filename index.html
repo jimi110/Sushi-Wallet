@@ -126,7 +126,7 @@ body.glass .bub{background:linear-gradient(180deg,#ffffff70,#ffffff1c 60%,#fffff
 /* ===== Fase 3: contenedores integrados + Sesión minimalista ===== */
 /* Contenedor de buscador y categorías: transparente. Solo un desvanecido sin color propio para que el contenido que pasa por debajo no choque con el texto. */
 .stick{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:none;padding:0 0 2px;isolation:isolate}
-.stick::before{content:"";position:absolute;z-index:-1;pointer-events:none;left:-24px;right:-24px;top:calc(-1*env(safe-area-inset-top,0px));bottom:-14px;background:linear-gradient(var(--bg) 0 58%,transparent)}
+.stick::before{content:"";position:absolute;z-index:-1;pointer-events:none;left:-24px;right:-24px;top:0;bottom:-14px;background:linear-gradient(var(--bg) 0 58%,transparent)}
 body.glass .stick::before{background:none;-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);-webkit-mask-image:linear-gradient(#000 52%,transparent),linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(#000 52%,transparent),linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);mask-composite:intersect}
 .tools{background:none;padding:0;border:0}
 .tools input[type=search],.ptools input[type=search]{-webkit-appearance:none;appearance:none;min-height:44px;padding:11px 14px 11px 40px;border:.5px solid var(--line);border-radius:14px;background-color:color-mix(in srgb,var(--tx) 7%,transparent);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:13px 50%;background-size:18px}
@@ -352,6 +352,22 @@ body.glass #toast{background:color-mix(in srgb,var(--card) 70%,transparent);-web
 @media(min-width:1100px){.view{--w:960px}.rg{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-height:480px) and (orientation:landscape){nav{bottom:6px}.hero{padding-top:8px}}
 @media(hover:hover) and (pointer:fine){.chip:hover,.rc:hover,.row[data-a]:hover,.rr:hover,.pd:hover,.ar:hover{background:color-mix(in srgb,var(--tx) 7%,var(--card))}.chip.on:hover{background:var(--tx)}.btn:hover{filter:brightness(1.06)}button,[data-a]{cursor:pointer}}
+
+/* ===== Fase 7: superficies con vida (todo desactivable en Ajustes) ===== */
+.stick.stuck::before{top:calc(-1*env(safe-area-inset-top,0px))}
+body{--ta:0%;--tb:0%;--al:100%}
+body.fx-tint{--ta:12%;--tb:3%}
+body.fx-trans{--al:70%}
+body{--s1:color-mix(in srgb,color-mix(in srgb,var(--ac) var(--ta),var(--card)) var(--al),transparent);--s2:color-mix(in srgb,color-mix(in srgb,var(--ac) var(--tb),var(--card)) var(--al),transparent)}
+body.fx-tint :is(.card,.list,.ar,.rc,.ah),body.fx-trans :is(.card,.list,.ar,.rc,.ah){background:linear-gradient(150deg,var(--s1),var(--s2) 72%)}
+body.fx-edge :is(.card,.list,.ar,.rc,.ah){box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 16%,transparent),inset 0 0 0 .5px color-mix(in srgb,var(--tx) 10%,transparent),0 12px 28px -20px #000a}
+body.fx-edge .ar.ok{box-shadow:inset 0 0 0 1.5px var(--ac),0 12px 28px -20px #000a}
+body.fx-tint .ae{background:color-mix(in srgb,var(--ac) 16%,transparent)}
+body.fx-tint .chip:not(.on){background:color-mix(in srgb,var(--ac) 9%,transparent);border-color:color-mix(in srgb,var(--ac) 20%,transparent)}
+body.fx-tint .pill:not(.rec){background:color-mix(in srgb,var(--ac) 15%,transparent)}
+body.fx-tint .tools input[type=search],body.fx-tint .ptools input[type=search]{background-color:color-mix(in srgb,var(--ac) 8%,transparent);border-color:color-mix(in srgb,var(--ac) 18%,transparent)}
+body.fx-tint .qty,body.fx-tint .pvw{background:color-mix(in srgb,var(--ac) 9%,transparent)}
+body.fx-trans::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(40vmax 40vmax at 15% 5%,color-mix(in srgb,var(--ac) 22%,transparent),transparent),radial-gradient(45vmax 45vmax at 90% 55%,color-mix(in srgb,color-mix(in srgb,var(--ac) 30%,#0a84ff) 18%,transparent),transparent),radial-gradient(38vmax 38vmax at 8% 92%,color-mix(in srgb,var(--ac) 12%,transparent),transparent)}
 </style>
 </head>
 <body>
@@ -380,7 +396,7 @@ const dt=t=>new Date(t).toLocaleString('es-ES',{day:'numeric',month:'short',hour
 const I={piece:'<rect x="3.5" y="8" width="17" height="9" rx="4.5"/>',dish:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/>',tag:'<path d="M3.5 12.5V4.5h8l8.5 8.5-8 8z"/><circle cx="8" cy="9" r="1"/>',find:'<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',home:'<path d="M4 11l8-7 8 7v9H4z"/>',menu:'<path d="M5 4h14v16H5zM9 9h6M9 13h6"/>',sess:'<path d="M12 5v14M5 12h14"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>'};
 const ico=n=>`<svg viewBox="0 0 24 24">${I[n]}</svg>`;
 // ---------- Aplicar preferencias ----------
-function applyPrefs(){document.body.classList.toggle('glass',!!st.set.glass);const r=document.documentElement;st.set.theme==='auto'?r.removeAttribute('data-theme'):r.setAttribute('data-theme',st.set.theme);
+function applyPrefs(){document.body.classList.toggle('glass',!!st.set.glass);['trans','tint','edge'].forEach(k=>document.body.classList.toggle('fx-'+k,st.set[k]!==false));const r=document.documentElement;st.set.theme==='auto'?r.removeAttribute('data-theme'):r.setAttribute('data-theme',st.set.theme);
   const ac=/^#[0-9a-f]{6}$/i.test(st.set.accent||'')?st.set.accent:'';ac?r.style.setProperty('--ac',ac):r.style.removeProperty('--ac');
   const L=ac?[1,3,5].map(i=>{let c=parseInt(ac.substr(i,2),16)/255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)}):[0,0,0],lum=.2126*L[0]+.7152*L[1]+.0722*L[2];r.style.setProperty('--on-ac',ac&&lum>.5?'#161616':'#fff')}
 // ---------- Hojas modales ----------
@@ -391,6 +407,7 @@ function settings(){sheet(`<h1 style="font-size:24px">Ajustes</h1>
 <div class="row"><div class="t"><b>Sonidos</b><span class="sub">Un toque suave al pulsar y al completar acciones</span></div><button class="tog ${st.set.sound===true?'on':''}" data-a="sound" aria-label="Sonidos"></button></div>
 <div class="row"><div class="t"><b>Vibración</b><span class="sub">Respuesta háptica al tocar (según el dispositivo)</span></div><button class="tog ${st.set.haptic!==false?'on':''}" data-a="haptic" aria-label="Vibración"></button></div>
 <div class="row"><div class="t"><b>Tema</b></div><select id="theme" style="width:auto">${[['auto','Automático'],['light','Claro'],['dark','Oscuro']].map(([v,l])=>`<option value="${v}" ${st.set.theme===v?'selected':''}>${l}</option>`).join('')}</select></div>${accentRow()}</div>
+<h2>Superficies</h2><div class="list"><div class="row"><div class="t"><b>Transparencia</b><span class="sub">Tarjetas semitransparentes que dejan ver el fondo</span></div><button class="tog ${st.set.trans!==false?'on':''}" data-a="fx" data-id="trans" aria-label="Transparencia"></button></div><div class="row"><div class="t"><b>Color en las tarjetas</b><span class="sub">Un toque del color del tema en tarjetas, etiquetas e iconos</span></div><button class="tog ${st.set.tint!==false?'on':''}" data-a="fx" data-id="tint" aria-label="Color en las tarjetas"></button></div><div class="row"><div class="t"><b>Bordes con brillo</b><span class="sub">Luz suave en los bordes y sombra bajo las tarjetas</span></div><button class="tog ${st.set.edge!==false?'on':''}" data-a="fx" data-id="edge" aria-label="Bordes con brillo"></button></div></div>
 <h2>Carta y puntuaciones</h2><div class="list"><button class="row" style="width:100%;text-align:left" data-a="import"><div class="t"><b>Importar o añadir platos</b></div></button><button class="row" style="width:100%;text-align:left" data-a="resetpts"><div class="t"><b>Restablecer puntuaciones editadas</b><span class="sub">${Object.keys(st.pts).length} personalizadas. El historial no cambia.</span></div></button></div>
 <h2>Información</h2><p class="sub">Sushi Wallet v0.1. Tus datos se guardan solo en este navegador (sin sincronización entre dispositivios). Los puntos son un sistema personal, no una medida nutricional.</p>`.replace('dispositivios','dispositivos'))}
 function importSheet(){sheet(`<h1 style="font-size:24px">Importar carta</h1><p class="sub">Pega un JSON (lista de objetos con name, category, points, description, ingredients, image) o CSV con columnas: nombre;categoría;puntos;descripción;ingredientes;imagen. Los platos sin puntos reciben 1 punto como estimación inicial, editable.</p><textarea id="imp" placeholder='[{"name":"…","category":"…"}]'></textarea><input type="file" id="file" accept=".json,.csv,.txt" style="margin:10px 0"><button class="btn" data-a="doimp">Importar</button><h2>Añadir un plato</h2><div style="display:grid;gap:8px"><input type="text" id="nn" placeholder="Nombre"><input type="text" id="nc" placeholder="Categoría"><input type="number" id="np" step="0.25" placeholder="Puntos por unidad"><button class="btn sec" data-a="add1">Añadir</button></div>`)}
@@ -477,7 +494,7 @@ function sync(){const ai=TABS.indexOf(st.tab),s=slot();TABS.forEach((k,i)=>{cons
  nav.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('on',i===ai);i===ai?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
  $('.bub').style.width=s.w+'px';B.t=s.x(ai);spring()}
 function shell(){$('#app').innerHTML=TABS.map(k=>`<section class="view" id="v-${k}"></section>`).join('');nav.innerHTML='<i class="bub"></i>'+TABS.map(k=>`<button data-a="tab" data-id="${k}" aria-label="${LBL[k]}">${ico(k)}<span>${LBL[k]}</span>${k==='ach'?'<b class="bdg" id="bd-ach"></b>':''}</button>`).join('')}
-function render(){if(!$('#v-home'))shell();const y=TABS.map(k=>$('#v-'+k).scrollTop);paneHome();paneMenu();paneSess();paneAch();paneRew();badge(pend().length);TABS.forEach((k,i)=>$('#v-'+k).scrollTop=y[i]);sync();B.ready=true;if(typeof AS!=='undefined'&&AS.open&&AS.mode==='add')alist()}
+function render(){if(!$('#v-home'))shell();const y=TABS.map(k=>$('#v-'+k).scrollTop);paneHome();paneMenu();paneSess();paneAch();paneRew();badge(pend().length);stk();TABS.forEach((k,i)=>$('#v-'+k).scrollTop=y[i]);sync();B.ready=true;if(typeof AS!=='undefined'&&AS.open&&AS.mode==='add')alist()}
 nav.addEventListener('pointerdown',e=>{const r=nav.getBoundingClientRect(),a=nav.querySelectorAll('button')[TABS.indexOf(st.tab)];B.drag={id:e.pointerId,sx:e.clientX,rx:e.clientX-r.left-nav.clientLeft,bx:B.x,on:false,t:e.timeStamp,onb:!!(a&&a.contains(e.target)),sm:false}});
 nav.addEventListener('pointermove',e=>{const d=B.drag;if(!d||e.pointerId!==d.id)return;const dx=e.clientX-d.sx;
  if(!d.on){if(Math.abs(dx)<7)return;d.on=true;d.sm=!d.onb;nav.setPointerCapture(e.pointerId);cancelAnimationFrame(B.raf);hap(6)}
@@ -787,7 +804,7 @@ function tone(f,t0,d,g,ty,f2){const c=SND.ctx,t=c.currentTime+t0,o=c.createOscil
 const SNDS={tap:()=>tone(1500,0,.05,.045,'sine',1000),nav:()=>tone(560,0,.08,.06,'sine',760),ok:()=>{tone(784,0,.1,.06);tone(1175,.09,.18,.06)},err:()=>{tone(210,0,.1,.08,'triangle');tone(170,.12,.13,.08,'triangle')},win:()=>[659,784,988,1319].forEach((f,i)=>tone(f,i*.075,.2,.05))};
 function snd(k){if(st.set.sound!==true)return;const n=Date.now();if(k==='tap'&&n-SND.last<40)return;SND.last=n;const c=ac();if(!c)return;try{SNDS[k]()}catch(e){}}
 ['touchend','pointerup','click','keydown'].forEach(t=>addEventListener(t,()=>{if(st.set.sound===true)ac()},{passive:true,capture:true}));
-Object.assign(A,{sound(){st.set.sound=st.set.sound!==true;save('set');settings();snd('ok')},haptic(){st.set.haptic=st.set.haptic===false;save('set');settings();hap(12)}});
+Object.assign(A,{fx(k){st.set[k]=st.set[k]===false;save('set');applyPrefs();settings();hap(8)},sound(){st.set.sound=st.set.sound!==true;save('set');settings();snd('ok')},haptic(){st.set.haptic=st.set.haptic===false;save('set');settings();hap(12)}});
 // ===== Aviso deslizable hacia arriba =====
 {const t=$('#toast');let g=null;
  t.addEventListener('pointerdown',e=>{if(!t.classList.contains('show'))return;g={id:e.pointerId,y:e.clientY,dy:0,t:e.timeStamp,v:0,moved:false};clearTimeout(TT);t.style.transition='none';try{t.setPointerCapture(e.pointerId)}catch(x){}});
@@ -795,6 +812,7 @@ Object.assign(A,{sound(){st.set.sound=st.set.sound!==true;save('set');settings()
  const end=()=>{if(!g)return;const d=g;g=null;t.style.transition='';t.style.transform='';if(d.moved){B.skip=true;setTimeout(()=>B.skip=false,120)}if(d.dy<-26||d.v<-.5)t.classList.remove('show');else TT=setTimeout(()=>t.classList.remove('show'),3200)};
  t.addEventListener('pointerup',end);t.addEventListener('pointercancel',end)}
 
+function stk(){const k=document.querySelector('#v-menu .stick');if(!k)return;const t=parseFloat(getComputedStyle(k).top)||0;k.classList.toggle('stuck',k.getBoundingClientRect().top<=t+1)}
 // ===== Sin zoom (iOS ignora user-scalable=no) + respuesta háptica =====
 ['gesturestart','gesturechange','gestureend'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 document.addEventListener('touchmove',e=>{if(e.touches.length>1||(e.scale&&e.scale!==1))e.preventDefault()},{passive:false});
@@ -806,7 +824,7 @@ function hap(ms){if(st.set.haptic===false)return;const n=Date.now();if(n-HP.last
  try{if(!HP.el){const l=document.createElement('label');l.setAttribute('aria-hidden','true');l.style.cssText='position:fixed;left:-99px;top:-99px;opacity:0;pointer-events:none';const i=document.createElement('input');i.type='checkbox';i.setAttribute('switch','');l.appendChild(i);document.body.appendChild(l);HP.el=l}HP.el.click()}catch(e){}}
 document.addEventListener('pointerdown',e=>{const b=e.target.closest('button:not(:disabled),[data-a],[role=button],.swb');if(b&&!b.closest('nav')){hap(8);snd('tap')}},{passive:true});
 nav.addEventListener('pointerdown',()=>{hap(10);snd('nav')},{passive:true});
-applyPrefs();render();hashClaim();setTimeout(()=>checkAch(),900);
+applyPrefs();render();$('#v-menu').addEventListener('scroll',stk,{passive:true});hashClaim();setTimeout(()=>checkAch(),900);
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 // Carga automática de carta.txt (misma carpeta del repositorio)
 fetch('carta.txt',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(t=>{const rows=t?parseImport(t):[];if(rows.length){addDishes(rows,'carta.txt');render()}}).catch(()=>{});
