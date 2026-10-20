@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sushi Wallet</title>
+<style>
+:root{--bg:#f2f2f7;--card:#fff;--tx:#1c1c1e;--tx2:#8a8a8e;--line:#0000000f;--ac:#f2573f;--fill:#7878801f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--card:#1c1c1e;--tx:#f5f5f7;--tx2:#98989d;--line:#ffffff14;--fill:#7878805c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000;--card:#1c1c1e;--tx:#f5f5f7;--tx2:#98989d;--line:#ffffff14;--fill:#7878805c;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:16px/1.4 -apple-system,"SF Pro Display","Inter",system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+body.glass::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(40vmax 40vmax at 15% 5%,#f2573f33,transparent),radial-gradient(45vmax 45vmax at 90% 60%,#0a84ff2b,transparent)}
+#app{max-width:760px;margin:0 auto;padding:12px 18px 110px}
+header{display:flex;justify-content:space-between;align-items:center;padding:10px 0 14px}
+h1{font-size:30px;margin:0;letter-spacing:-.02em}
+h2{font-size:20px;margin:26px 0 10px;letter-spacing:-.01em}
+.sub{color:var(--tx2);font-size:14px}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;transition:transform .15s,opacity .15s}
+button:active{transform:scale(.94);opacity:.7}
+.ic{width:38px;height:38px;border-radius:50%;background:var(--fill);display:grid;place-items:center}
+svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card{background:var(--card);border-radius:20px;padding:16px}
+.wallet{background:linear-gradient(150deg,#2b2b30,#111);color:#fff;border-radius:24px;padding:24px;min-height:190px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 10px 30px #0003}
+.wallet .big{font-size:64px;font-weight:700;letter-spacing:-.04em;line-height:1}
+.wallet small{opacity:.65;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.grid .card:last-child:nth-child(odd){grid-column:span 2}
+.stat b{display:block;font-size:26px;letter-spacing:-.02em}
+.list{background:var(--card);border-radius:18px;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:.5px solid var(--line)}
+.row:last-child{border:0}
+.row .t{flex:1;min-width:0}.row .t b{font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pill{font-size:13px;font-weight:600;background:var(--fill);border-radius:99px;padding:3px 10px;white-space:nowrap}
+.pill.rec{background:#f2573f22;color:var(--ac)}
+input[type=search],input[type=text],input[type=number],textarea,select{width:100%;font:inherit;color:var(--tx);background:var(--fill);border:0;border-radius:12px;padding:11px 14px;outline:none}
+textarea{min-height:140px;font-size:13px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0;scrollbar-width:none}
+.chip{flex:none;padding:7px 14px;border-radius:99px;background:var(--fill);font-size:14px}
+.chip.on{background:var(--tx);color:var(--bg)}
+.btn{display:block;width:100%;padding:15px;border-radius:16px;background:var(--ac);color:#fff;font-weight:600;text-align:center}
+.btn.sec{background:var(--fill);color:var(--tx)}
+.step{display:flex;align-items:center;gap:10px}
+.step button{width:32px;height:32px;border-radius:50%;background:var(--fill);font-size:20px;line-height:1}
+.step button.p{background:var(--ac);color:#fff}
+.step span{min-width:20px;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
+.empty{text-align:center;padding:40px 20px;color:var(--tx2)}
+.empty h3{color:var(--tx);margin:8px 0}
+.empty .btn{margin-top:16px;display:inline-block;width:auto;padding:13px 26px}
+.sum{position:sticky;top:0;z-index:5;display:flex;justify-content:space-around;text-align:center;background:var(--card);border-radius:18px;padding:12px;margin-bottom:8px}
+.sum b{display:block;font-size:22px}
+nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:4px;padding:6px;border-radius:26px;background:var(--card);box-shadow:0 6px 24px #0002;z-index:10}
+nav button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;padding:7px 22px;border-radius:20px;color:var(--tx2)}
+nav button.on{color:var(--ac);background:var(--fill)}
+#ov{position:fixed;inset:0;background:#0006;z-index:20;display:none;align-items:flex-end;justify-content:center}
+#ov.show{display:flex}
+#sh{background:var(--bg);width:100%;max-width:640px;max-height:88vh;overflow:auto;border-radius:26px 26px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom,0px));animation:up .28s cubic-bezier(.2,.9,.3,1)}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.view{animation:fade .25s ease}@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+.tog{width:51px;height:31px;border-radius:99px;background:var(--fill);position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 4px #0003;transition:transform .2s}
+.tog.on{background:#34c759}.tog.on::after{transform:translateX(20px)}
+img.dish{width:100%;border-radius:14px;max-height:200px;object-fit:cover;margin-bottom:12px}
+body.glass nav,body.glass .sum,body.glass #sh{background:color-mix(in srgb,var(--card) 55%,transparent);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);box-shadow:inset 0 1px 0 #ffffff55,0 8px 30px #0002}
+body.glass #ov{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav id="nav"></nav>
+<div id="ov"><div id="sh"></div></div>
+<script>
+// ---------- Capa de almacenamiento (sustituible por una base de datos) ----------
+const Store={get(k,d){try{const v=localStorage.getItem('sw:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('sw:'+k,JSON.stringify(v))}catch(e){}}};
+// ---------- Estado ----------
+const st={tab:'home',catalog:Store.get('catalog',[]),pts:Store.get('pts',{}),hist:Store.get('hist',[]),sess:Store.get('sess',null),set:Store.get('set',{glass:true,theme:'auto'}),q:'',cat:'Todas',lim:60,all:false,shown:0};
+const $=s=>document.querySelector(s);
+const fmt=n=>(+n).toLocaleString('es-ES',{maximumFractionDigits:2});
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dish=id=>st.catalog.find(d=>d.id===id);
+const pts=d=>st.pts[d.id]??d.points??1;
+const save=k=>Store.set(k,st[k==='set'?'set':k]);
+// ---------- Estadísticas (derivadas del historial) ----------
+function stats(){const n=st.hist.length,p=st.hist.reduce((a,h)=>a+h.points,0),pc=st.hist.reduce((a,h)=>a+h.pieces,0);return{n,p,pc,ap:n?p/n:0,apc:n?pc/n:0,last:st.hist[0]}}
+const dt=t=>new Date(t).toLocaleString('es-ES',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+// ---------- Iconos ----------
+const I={home:'<path d="M4 11l8-7 8 7v9H4z"/>',menu:'<path d="M5 4h14v16H5zM9 9h6M9 13h6"/>',sess:'<path d="M12 5v14M5 12h14"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>'};
+const ico=n=>`<svg viewBox="0 0 24 24">${I[n]}</svg>`;
+// ---------- Aplicar preferencias ----------
+function applyPrefs(){document.body.classList.toggle('glass',!!st.set.glass);const r=document.documentElement;st.set.theme==='auto'?r.removeAttribute('data-theme'):r.setAttribute('data-theme',st.set.theme)}
+// ---------- Render ----------
+function head(t,s){return `<header><div><h1>${t}</h1><div class="sub">${s||''}</div></div><button class="ic" data-a="settings" aria-label="Ajustes">${ico('gear')}</button></header>`}
+function render(){
+  $('#nav').innerHTML=[['home','Inicio'],['menu','Carta'],['sess','Sesión']].map(([k,l])=>`<button class="${(st.tab==={home:'home',menu:'menu',sess:'sess'}[k])?'on':''}" data-a="tab" data-id="${k}">${ico(k)}${l}</button>`).join('');
+  $('#app').innerHTML=`<div class="view">${{home:home,menu:menu,sess:session}[st.tab]()}</div>`;
+  if(st.tab==='home')countUp(); else fillList();
+  window.scrollTo(0,0);
+}
+function home(){
+  const s=stats(),h=new Date().getHours(),g=h<13?'Buenos días':h<20?'Buenas tardes':'Buenas noches';
+  const w=`<div class="wallet"><small>Sushi Wallet</small><div><div class="big" id="tot">0</div><small>Puntos acumulados en total</small></div></div>`;
+  if(!s.n)return head(g,'Tu panel personal')+w+`<div class="card empty" style="margin-top:12px"><h3>Aún no hay sesiones</h3><p>Inicia una sesión, añade lo que vayas comiendo y aquí verás tus estadísticas reales.</p><button class="btn" data-a="startgo">${st.sess?'Continuar sesión':'Iniciar sesión'}</button></div>`;
+  const rec=(st.all?st.hist:st.hist.slice(0,5)).map(x=>`<div class="row"><div class="t"><b>${dt(x.date)}</b><span class="sub">${fmt(x.pieces)} piezas</span></div><span class="pill">${fmt(x.points)} pts</span></div>`).join('');
+  return head(g,'Tu panel personal')+w+`<div class="grid">
+  <div class="card stat"><b>${fmt(s.pc)}</b><span class="sub">Piezas consumidas</span></div>
+  <div class="card stat"><b>${s.n}</b><span class="sub">Sesiones</span></div>
+  <div class="card stat"><b>${fmt(s.ap)}</b><span class="sub">Puntos por sesión</span></div>
+  <div class="card stat"><b>${fmt(s.apc)}</b><span class="sub">Piezas por sesión</span></div>
+  <div class="card stat"><b style="font-size:20px">${dt(s.last.date)}</b><span class="sub">Última sesión</span></div></div>
+  <h2>Sesiones recientes</h2><div class="list">${rec}</div>
+  ${st.hist.length>5?`<button class="chip" style="margin-top:10px" data-a="all">${st.all?'Ver menos':'Ver todas ('+st.hist.length+')'}</button>`:''}`;
+}
+function countUp(){const el=$('#tot');if(!el)return;const to=stats().p,from=st.shown,t0=performance.now();st.shown=to;
+  (function f(t){const k=Math.min(1,(t-t0)/600),e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(f)})(t0)}
+const cats=()=>['Todas',...new Set(st.catalog.map(d=>d.category).filter(Boolean))];
+function filters(){return `<input type="search" id="q" placeholder="Buscar plato" value="${esc(st.q)}" autocomplete="off"><div class="chips">${cats().map(c=>`<button class="chip ${c===st.cat?'on':''}" data-a="cat" data-id="${esc(c)}">${esc(c)}</button>`).join('')}</div>`}
+function menu(){
+  if(!st.catalog.length)return head('Carta')+`<div class="card empty"><h3>La carta está vacía</h3><p>No se ha podido extraer automáticamente la carta de Toki Mallorca (se carga de forma dinámica). Importa los platos desde Ajustes o añade uno a mano.</p><button class="btn" data-a="import">Importar carta</button></div>`;
+  return head('Carta',st.catalog.length+' platos')+filters()+'<div class="list" id="lst"></div><div id="more"></div>';
+}
+function session(){
+  if(!st.sess)return head('Sesión')+`<div class="card empty"><h3>Registra tu comida</h3><p>Empieza una sesión y ve sumando piezas en tiempo real.</p><button class="btn" data-a="start">Comenzar sesión</button></div>`+(st.hist.length?'':'');
+  return head('Sesión','En curso desde '+dt(st.sess.start))+'<div class="sum" id="sum"></div>'+filters()+'<div class="list" id="lst"></div><div id="more"></div>'+
+  `<div style="display:grid;gap:10px;margin-top:20px"><button class="btn" data-a="finish">Finalizar y guardar</button><button class="btn sec" data-a="cancel">Cancelar sesión</button></div>`;
+}
+function totals(){const it=st.sess?.items||{};let p=0,c=0,k=0;for(const id in it){const d=dish(id);if(d&&it[id]>0){p+=it[id]*pts(d);c+=it[id];k++}}return{p,c,k}}
+function fillList(){
+  const L=$('#lst');if(!L)return;const q=st.q.trim().toLowerCase(),sess=st.tab==='sess';
+  let a=st.catalog.filter(d=>(st.cat==='Todas'||d.category===st.cat)&&(!q||d.name.toLowerCase().includes(q)));
+  if(sess&&st.view==='sel')a=a.filter(d=>st.sess.items[d.id]>0);
+  const rc=new Set(st.hist.slice(0,3).flatMap(h=>h.items.map(i=>i.id)));
+  L.innerHTML=a.slice(0,st.lim).map(d=>{const n=st.sess?.items[d.id]||0;
+    return `<div class="row" ${sess?'':`data-a="det" data-id="${esc(d.id)}"`}><div class="t"><b>${esc(d.name)}</b><span class="sub">${esc(d.category||'')} ${rc.has(d.id)?'<span class="pill rec">reciente</span>':''}</span></div>`+
+    (sess?`<span class="sub" data-a="det" data-id="${esc(d.id)}">${fmt(pts(d))} pts${n?` · <b style="color:var(--tx)">${fmt(n*pts(d))}</b>`:''}</span><div class="step"><button data-a="dec" data-id="${esc(d.id)}" ${n?'':'disabled style="opacity:.3"'}>−</button><span>${n}</span><button class="p" data-a="inc" data-id="${esc(d.id)}">+</button></div>`:`<span class="pill">${fmt(pts(d))} pts</span>`)+'</div>'}).join('')||'<div class="empty">Sin resultados</div>';
+  $('#more').innerHTML=a.length>st.lim?`<button class="chip" style="margin-top:10px" data-a="more">Mostrar más (${a.length-st.lim})</button>`:'';
+  if(sess){const t=totals();$('#sum').innerHTML=`<div><b>${fmt(t.p)}</b><span class="sub">Puntos</span></div><div><b>${t.c}</b><span class="sub">Piezas</span></div><div><b>${t.k}</b><span class="sub">Platos</span></div><button class="chip ${st.view==='sel'?'on':''}" data-a="sel" style="align-self:center">Mi selección</button>`}
+}
+// ---------- Hojas modales ----------
+function sheet(h){$('#sh').innerHTML=h;$('#ov').classList.add('show')}
+function close(){$('#ov').classList.remove('show')}
+function settings(){sheet(`<h1 style="font-size:24px">Ajustes</h1>
+<h2>Apariencia</h2><div class="list"><div class="row"><div class="t"><b>Liquid Glass</b><span class="sub">Superficies translúcidas en barras y paneles</span></div><button class="tog ${st.set.glass?'on':''}" data-a="glass" aria-label="Liquid Glass"></button></div>
+<div class="row"><div class="t"><b>Tema</b></div><select id="theme" style="width:auto">${[['auto','Automático'],['light','Claro'],['dark','Oscuro']].map(([v,l])=>`<option value="${v}" ${st.set.theme===v?'selected':''}>${l}</option>`).join('')}</select></div></div>
+<h2>Carta y puntuaciones</h2><div class="list"><button class="row" style="width:100%;text-align:left" data-a="import"><div class="t"><b>Importar o añadir platos</b></div></button><button class="row" style="width:100%;text-align:left" data-a="resetpts"><div class="t"><b>Restablecer puntuaciones editadas</b><span class="sub">${Object.keys(st.pts).length} personalizadas. El historial no cambia.</span></div></button></div>
+<h2>Información</h2><p class="sub">Sushi Wallet v0.1. Tus datos se guardan solo en este navegador (sin sincronización entre dispositivios). Los puntos son un sistema personal, no una medida nutricional.</p>`.replace('dispositivios','dispositivos'))}
+function importSheet(){sheet(`<h1 style="font-size:24px">Importar carta</h1><p class="sub">Pega un JSON (lista de objetos con name, category, points, description, ingredients, image) o CSV con columnas: nombre;categoría;puntos;descripción;ingredientes;imagen. Los platos sin puntos reciben 1 punto como estimación inicial, editable.</p><textarea id="imp" placeholder='[{"name":"…","category":"…"}]'></textarea><input type="file" id="file" accept=".json,.csv,.txt" style="margin:10px 0"><button class="btn" data-a="doimp">Importar</button><h2>Añadir un plato</h2><div style="display:grid;gap:8px"><input type="text" id="nn" placeholder="Nombre"><input type="text" id="nc" placeholder="Categoría"><input type="number" id="np" step="0.25" placeholder="Puntos por unidad"><button class="btn sec" data-a="add1">Añadir</button></div>`)}
+function parseImport(t){t=t.trim();let rows=[];
+  try{const j=JSON.parse(t);rows=(Array.isArray(j)?j:j.dishes||[]).map(o=>({name:o.name||o.nombre,category:o.category||o.categoria||o['categoría'],points:o.points??o.puntos,description:o.description||o.descripcion||o['descripción'],ingredients:o.ingredients||o.ingredientes,image:o.image||o.imagen}))}
+  catch(e){const sep=t.includes(';')?';':t.includes('\t')?'\t':',';const ls=t.split(/\r?\n/).filter(l=>l.trim()&&!l.trim().startsWith('#'));if(/nombre|name/i.test(ls[0]))ls.shift();rows=ls.map(l=>{const c=l.split(sep).map(x=>x.trim());return{name:c[0],category:c[1],points:c[2]?parseFloat(c[2].replace(',','.')):undefined,description:c[3],ingredients:c[4],image:c[5],source:c[6]}})}
+  return rows.filter(r=>r.name)}
+function addDishes(rows,src){let n=0;for(const r of rows){const id=(r.name+'|'+(r.category||'')).toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g,'-');const d={id,name:String(r.name),category:r.category||'Sin categoría',description:r.description||'',ingredients:r.ingredients||'',image:r.image||'',points:Number.isFinite(+r.points)&&r.points!==''&&r.points!=null?+r.points:1,pointsSource:r.points!=null&&r.points!==''?'importada':'estimación',source:r.source||src};const i=st.catalog.findIndex(x=>x.id===id);i>=0?st.catalog[i]={...st.catalog[i],...d}:st.catalog.push(d);n++}save('catalog');return n}
+function detail(id){const d=dish(id);if(!d)return;const ed=id in st.pts;
+  sheet(`${d.image?`<img class="dish" src="${esc(d.image)}" alt="">`:''}<h1 style="font-size:24px">${esc(d.name)}</h1><div class="sub">${esc(d.category)}</div>${d.description?`<p>${esc(d.description)}</p>`:''}${d.ingredients?`<p class="sub">Ingredientes: ${esc(d.ingredients)}</p>`:''}
+  <h2>Puntos por unidad</h2><input type="number" id="pv" step="0.25" min="0" value="${pts(d)}"><p class="sub">${ed?'Editado por ti':/estim/i.test(d.source||'')?'Estimación propuesta (editable)':d.pointsSource==='importada'?'Valor importado':'Estimación inicial'}. El cambio solo afecta a registros futuros.</p><div style="display:grid;gap:8px"><button class="btn" data-a="savepts" data-id="${esc(id)}">Guardar puntuación</button>${ed?`<button class="btn sec" data-a="rst" data-id="${esc(id)}">Restaurar valor original</button>`:''}</div><p class="sub">Fuente: ${esc(d.source||'manual')}</p>`)}
+function finishSheet(){const it=st.sess.items,t=totals();if(!t.c)return sheet('<h1 style="font-size:24px">Sesión vacía</h1><p class="sub">Añade al menos una pieza antes de guardar.</p><button class="btn sec" data-a="close">Entendido</button>');
+  sheet(`<h1 style="font-size:24px">Resumen</h1><div class="list" style="margin:14px 0">${Object.keys(it).filter(i=>it[i]>0&&dish(i)).map(i=>{const d=dish(i);return `<div class="row"><div class="t"><b>${esc(d.name)}</b><span class="sub">${it[i]} × ${fmt(pts(d))}</span></div><span class="pill">${fmt(it[i]*pts(d))}</span></div>`}).join('')}</div><p><b>${t.c} piezas · ${fmt(t.p)} puntos</b></p><div style="display:grid;gap:8px"><button class="btn" id="ok" data-a="confirm">Confirmar y guardar</button><button class="btn sec" data-a="close">Volver</button></div>`)}
+// ---------- Acciones ----------
+let saving=false;
+function setQty(id,dlt){if(!st.sess)return;const n=Math.max(0,(st.sess.items[id]||0)+dlt);n?st.sess.items[id]=n:delete st.sess.items[id];save('sess');fillList()}
+const A={
+ tab(id){st.tab=id;st.q='';st.cat='Todas';st.lim=60;st.view='';render()},
+ settings,import:importSheet,close,
+ start(){st.sess={id:Date.now(),start:Date.now(),items:{}};save('sess');render()},
+ startgo(){st.tab='sess';if(!st.sess){st.sess={id:Date.now(),start:Date.now(),items:{}};save('sess')}render()},
+ all(){st.all=!st.all;render()},
+ cat(id){st.cat=id;st.lim=60;render2()},more(){st.lim+=60;fillList()},sel(){st.view=st.view==='sel'?'':'sel';fillList()},
+ det:detail,inc(id){setQty(id,1)},dec(id){setQty(id,-1)},
+ glass(){st.set.glass=!st.set.glass;save('set');applyPrefs();settings()},
+ savepts(id){const v=parseFloat($('#pv').value);if(!(v>=0))return;st.pts[id]=v;save('pts');close();fillList()},
+ rst(id){delete st.pts[id];save('pts');close();fillList()},
+ resetpts(){st.pts={};save('pts');settings()},
+ doimp(){const rows=parseImport($('#imp').value);if(!rows.length)return alert('No se ha encontrado ningún plato válido.');addDishes(rows,'importación manual');close();render()},
+ add1(){const n=$('#nn').value.trim();if(!n)return;const p=$('#np').value;addDishes([{name:n,category:$('#nc').value.trim(),points:p===''?undefined:parseFloat(p)}],'manual');close();render()},
+ finish:finishSheet,
+ cancel(){sheet(`<h1 style="font-size:24px">¿Cancelar sesión?</h1><p class="sub">Se perderán las piezas registradas.</p><div style="display:grid;gap:8px"><button class="btn" data-a="discard">Descartar sesión</button><button class="btn sec" data-a="close">Seguir con la sesión</button></div>`)},
+ discard(){st.sess=null;save('sess');close();render()},
+ confirm(){if(saving||!st.sess)return;saving=true;const it=st.sess.items,items=Object.keys(it).filter(i=>it[i]>0&&dish(i)).map(i=>({id:i,name:dish(i).name,qty:it[i],pts:pts(dish(i))})),t=totals();
+  st.hist.unshift({id:st.sess.id,date:Date.now(),items,pieces:t.c,points:t.p});st.sess=null;save('hist');save('sess');close();st.tab='home';render();saving=false}
+};
+function render2(){const q=$('#q');render();const n=$('#q');if(n&&q)n.value=st.q}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&A[b.dataset.a])A[b.dataset.a](b.dataset.id);else if(e.target.id==='ov')close()});
+document.addEventListener('input',e=>{if(e.target.id==='q'){st.q=e.target.value;st.lim=60;fillList()}});
+document.addEventListener('change',e=>{if(e.target.id==='theme'){st.set.theme=e.target.value;save('set');applyPrefs()}
+ if(e.target.id==='file'){const f=e.target.files[0];if(f)f.text().then(t=>$('#imp').value=t)}});
+applyPrefs();render();
+// Carga automática de carta.txt (misma carpeta del repositorio)
+fetch('carta.txt',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(t=>{const rows=t?parseImport(t):[];if(rows.length){addDishes(rows,'carta.txt');render()}}).catch(()=>{});
+</script>
+</body>
+</html>

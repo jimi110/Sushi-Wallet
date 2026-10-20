@@ -1,0 +1,307 @@
+# CARTA DE TOKI SUSHI (Palma) — Sushi Wallet carga este archivo automáticamente al abrirse (misma carpeta que index.html).
+# Formato: nombre;categoría;puntos;descripción;ingredientes;imagen;fuente
+# Las líneas que empiezan por # se ignoran.
+#
+# FUENTE: PDF «La carta de TOKI — noche, fin de semana y festivo» (294 platos numerados del 1 al 294).
+# Nombres, orden, categorías y textos descriptivos tal como figuran en el PDF. Las categorías se han asignado por la
+# secuencia de secciones de la carta. No se incluyen bebidas, cafés ni postres: no forman parte del buffet (se pagan aparte).
+# Imágenes: el PDF las contiene pero no se han extraído (columna vacía).
+#
+# PUNTOS: son una ESTIMACIÓN propia (no datos confirmados) por ración de plato, según categoría, nº aproximado de piezas
+# y preparación (frito/tempura/flameado). Edítalos en la app o aquí; la app guarda tus cambios y el historial no se altera.
+#
+nombre;categoría;puntos;descripción;ingredientes;imagen;fuente
+ROLLITO DE PRIMAVERA 2UDS;Entrantes;1;Verduras;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ROLLITO CON GAMBAS Y ZANAHORIAS 3UDS;Entrantes;1;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ROLLITO VIETNAMITA 3UDS;Entrantes;1;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ROLLITOS JAPONESES 3UDS;Entrantes;1;Carne y gambas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+PINZAS DE CANGREJO 3UDS;Entrantes;1;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GALLETAS DE GAMBAS;Entrantes;0,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BOLSITAS DE LA FORTUNA 3UDS;Entrantes;1;Verduras;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TAKOYAKI 3UDS;Entrantes;1;Bolitas suaves de pulpo fritas con mayonesa, algas y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BONIATOS FRITOS;Entrantes;0,75;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+EDAMAME;Entrantes;0,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ENSALADA DE ALGAS WAKAME;Ensalada;0,75;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ENSALADA WAKAME;Ensalada;0,75;Algas marinas naturales, salsa Toki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SUNOMONO;Ensalada;0,75;Wakame, gambas, pulpo, salsa ToKi;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ENSALADA MIXTA;Ensalada;0,75;Ensalada de pescado mixto con salsa de sésamo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ENSALADA MIXTA CON PULPO;Ensalada;0,75;Ensalada de pulpo con salsa de sésamo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SOPA MISO;Sopas;0,75;Sopa de soja con algas y tofu;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SOPA AGRIPICANTE;Sopas;0,75;Calabacín, zanahoria y huevo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SOPA DE MARISCOS;Sopas;0,75;Surimi, lubina y gambas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SOPA DE POLLO;Sopas;0,75;Maíz, pollo y huevo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+RAMEN CON POLLO;Sopas;1,5;Zanahoria, calabacín y pollo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+RAMEN NORMAL;Sopas;1,5;Zanahoria, calabacín y huevo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GYOZA DE CARNE 4 UDS;Dimsum;1;Carne al vapor;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GYOZA DE CARNE A LA PLANCHA 4UDS;Dimsum;1;Carne a la plancha;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GYOZA DE GAMBA 4 UDS;Dimsum;1;Gambas y carne;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GYOZA DE GAMBA A LA PLANCHA 4 UDS;Dimsum;1;Gambas y carne;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+EBI GYOZA;Dimsum;1;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+DIM SUM MIXTO 4 UDS;Dimsum;1;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GYOZA DE VERDURAS 4 UDS;Dimsum;1;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TORI BAO;Dimsum;1;Pollo frito, ensalada con mayonesa;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBAS BAO;Dimsum;1;Gambas fritas, ensalada con mayonesa;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+PAN CHINO 2UDS;Dimsum;1;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+PAN CHINO FRITO 2UDS;Dimsum;1;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+YUTU BAO 2UDS;Dimsum;1;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+XIAO LONG BAO 2UDS;Dimsum;1;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMPURA DE GAMBAS;Fritos;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMPURA MIXTA;Fritos;1,5;Gambas, calabacín, zanahoria, batata;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMPURA DE VERDURAS;Fritos;1,5;Calabacín, zanahoria, batata;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POLLO FRITO;Fritos;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CALAMAR FRITO;Fritos;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBAS FRITAS;Fritos;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+EBI KATAIFI 4UDS;Fritos;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+EBI ALMENDRAS 4UDS;Fritos;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TORTITAS DE PATATA 4UDS;Fritos;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BOLAS DE SÉSAMO;Fritos;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ESCALOPE A LA MILANESA;Fritos;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BROCHETA DE POLLO 4UDS;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BROCHETA DE GAMBAS 4UDS;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BROCHETA DE SEPIA 4UDS;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BROCHETA DE CALAMAR 4UDS;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBONES A LA PARRILLA 4UDS;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SALMÓN A LA PARRILLA;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+LUBINA A LA PARRILLA;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BROCHETAS TOUFU;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ESPÁRRAGOS A LA PLANCHA;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+VIEIRAS 2UDS;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ALMEJAS A LA PLANCHA;Parrilla/Plancha;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ARROZ BLANCO;Arroz & Fideos;2;Arroz blanco;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ARROZ VEGETARIANO;Arroz & Fideos;2;Arroz blanco, huevo, zanahoria, calabacín;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ARROZ CON GAMBAS;Arroz & Fideos;2;Arroz blanco, huevo, gambas, zanahoria, calabacín;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ARROZ CANTONÉS;Arroz & Fideos;2;Arroz blanco, judías, huevo, jamón cocido, zanahoria, calabacín;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ARROZ AL CURRY;Arroz & Fideos;2;Arroz blanco, salsa de curry, pollo, zanahoria, calabacín, huevo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ARROZ SALTEADO CON SALMÓN;Arroz & Fideos;2;Arroz blanco, salmón, zanahoria, calabacín, huevo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+UDON CON GAMBAS;Arroz & Fideos;2;Udon, zanahoria, calabacín, huevo, gambas y brotes de soja;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+UDON CON VERDURAS;Arroz & Fideos;2;Udon, zanahoria, calabacín, huevo y brotes de soja;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FIDEO CON GAMBAS;Arroz & Fideos;2;Fideos, zanahoria, calabacín, huevo, gambas y brotes de soja;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SOBA CON GAMBAS;Arroz & Fideos;2;Soba, zanahoria, calabacín, huevo, gambas y brotes de soja;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SOBA CON VERDURAS;Arroz & Fideos;2;Soba, zanahoria, calabacín, huevo y brotes de soja;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FIDEOS DE CRISTAL CON GAMBAS;Arroz & Fideos;2;Fideos de cristal, zanahoria, calabacín, gambas y brotes de soja;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FIDEOS DE CRISTAL CON VERDURAS;Arroz & Fideos;2;Fideos de cristal, zanahorias, calabacín y brotes de soja &;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ESPAGUETIS DE ARROZ CON GAMBAS;Arroz & Fideos;2;Spaghetti de arroz, huevo, zanahorias, calabacín, gambas y brotes de soja;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ESPAGUETIS DE ARROZ CON VERDURAS;Arroz & Fideos;2;Spaghetti de arroz, huevo, zanahorias, calabacín y brotes de soja;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+PASTEL DE ARROZ CON GAMBAS;Arroz & Fideos;2;Pastel de arroz, zanahorias, calabacín, huevo, gambas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+PASTEL DE ARROZ CON VERDURAS;Arroz & Fideos;2;Pastel de arroz, zanahorias, calabacín, huevo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+PAD THAI CON GAMBAS;Arroz & Fideos;2;Pad Thai con gambas y brotes de soja &;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POLLO CON ALMENDRAS;Salteado;2;Pollo, almendras y bambú;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POLLO CON SALSA CHILI;Salteado;2;Pollo, cebolla, pimiento verde y salsa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POLLO CON BAMBÚ Y SETAS;Salteado;2;Pollo, bambú y setas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POLLO EN SALSA AGRIDULCE;Salteado;2;Pollo, tomatitos, piña y salsa agridulce;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POLLO CON SALSA CURRY;Salteado;2;Pollo y bambú con salsa de curry;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POLLO AL LIMÓN;Salteado;2;Pollo y limón;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POLLO ESTILO THAI (CON BAMBÚ Y PIMIENTO);Salteado;2;Salsa tailandesa, bambú y cebolla;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CERDO CON BAMBÚ Y SETAS;Salteado;2;Cerdo, bambú y setas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CERDO EN SALSA AGRIDULCE;Salteado;2;Cerdo, tomatitos, piña y salsa agridulce;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CERDO CON SALSA CHILI;Salteado;2;Cebolla, pimiento verde y salsa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TERNERA CON BAMBÚ Y SETAS;Salteado;2;Ternera, bambú y setas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TERNERA AL CURRY;Salteado;2;Ternera y bambú con salsa de curry;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TERNERA CRUJIENTE PICANTE;Salteado;2;Ternera frita, salsa dulce picante y sésamo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TERNERA ESTILO THAI;Salteado;2;Salsa tailandesa, bambú y cebolla;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBAS CON SAL Y PIMIENTA;Salteado;2;Gambas y pimienta negra;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBAS AL CURRY;Salteado;2;Gambas y bambú con salsa de curry;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBAS CON MEZCLA DE VERDURAS;Salteado;2;Gambas, mezcla de verduras;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBAS CON BAMBÚ Y SETAS;Salteado;2;Gambas, bambú y setas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBAS PICANTES;Salteado;2;Cebolla, pimiento verde y salsa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBAS AL LIMÓN;Salteado;2;Gambas y limón;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBAS ESTILO THAI;Salteado;2;Salsa tailandesa, bambú y cebolla;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+PATO AGRIDULCE;Salteado;2;Tomatitos, piña y salsa agridulce;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+PATO ASADO;Salteado;2;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+PATO CON SAL Y PIMIENTA;Salteado;2;Pato, sal y pimienta;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CALAMARES CON VERDURAS;Salteado;2;Calamares y verduras;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CALAMARES CON SAL Y PIMIENTA;Salteado;2;Calamares, sal y pimienta;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+MIX DE VERDURAS SALTEADAS;Salteado;2;Verduras salteadas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BAMBÚ Y SETAS SALTEADOS;Salteado;2;Bambú y setas salteados;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BROTES DE SOJA SALTEADOS;Salteado;2;Brotes de soja salteados;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TAZÓN CON GAMBAS;Tazón;2,5;Langostinos, cebolla, pimiento verde y salsa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TAZÓN CON CALAMARES;Tazón;2,5;Calamares, cebolla, pimiento verde y salsa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TAZÓN CON TERNERA;Tazón;2,5;Ternera, cebolla, pimiento verde y salsa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TAZÓN CON POLLO;Tazón;2,5;Pollo, cebolla, pimiento verde y salsa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TAZÓN CON VERDURAS (COLIFLOR);Tazón;2,5;Coliflor;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+AGUACATE;Nigiri 2pzs;2,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SALMÓN;Nigiri 2pzs;2,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ATÚN;Nigiri 2pzs;2,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+LUBINA;Nigiri 2pzs;2,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GAMBA COCIDA;Nigiri 2pzs;2,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CANGREJO;Nigiri 2pzs;2,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ANGUILA;Nigiri 2pzs;2,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+PULPO;Nigiri 2pzs;2,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+AMAEBI (GAMBA DULCE);Nigiri 2pzs;2,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+AGUACATE ESPECIAL;Nigiri 2pzs;3;Aguacate, philadelphia, salsa de mango y harina de coco;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SALMÓN FLAMEADO;Nigiri 2pzs;3;Salmón flameado con salsa a base de leche condensada;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ATÚN FLAMEADO;Nigiri 2pzs;3;Atún flameado con salsa a base de leche condensada;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SALMÓN FLAMEADO TOKI;Nigiri 2pzs;3;Salmón flameado, philadelphia con salsa ToKi, picante y pistacho;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ATÚN FLAMEADO TOKI;Nigiri 2pzs;3;Atún flameado, philadelphia con salsa ToKi, picante y pistacho 2PZ;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ESPECIAL SALMÓN;Nigiri 2pzs;3;Salmón flameado, philadelphia, salsa teriyaki y kataifi;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ESPECIAL ATÚN;Nigiri 2pzs;3;Atún flameado, philadelphia, salsa teriyaki y kataifi;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK SALMÓN;Nigiri 2pzs;3;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK ATÚN;Nigiri 2pzs;3;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+NIGIRI MIX 7PZS;Sushi mixto;3,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SUSHI MIX A 8PZS;Sushi mixto;4;4 Nigiri y 4 Maki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SUSHI MIX B 14PZS;Sushi mixto;7;8 Nigiri y 6 Maki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SUSHI SASHIMI 20 PZS;Sushi mixto;10;9 Sashimi, 5 Nigiri y 6 Maki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+NIGIRI DE PESCADO MIXTO FLAMEADO;Sushi mixto;4;7 Nigiri con salsa de mango y teriyaki, y láminas de almendra;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TÁRTAR DE SALMÓN;Tártar;2;Salsa ponzu;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TÁRTAR MANGO;Tártar;2;Salmón, mango y salsa de maracuyá;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TÁRTAR MIXTO;Tártar;2;Salmón, atún, salsa ponzu;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TÁRTAR AMAEBI;Tártar;2;Gambas, algas, salsa warabi, aceite de oliva, puerro frito;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TÁRTAR DE LUBINA;Tártar;2;Aguacate, lubina, mango, salsa de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TÁRTAR DE SALMÓN SPECIAL WHITE;Tártar;2;Burrata, salmón, aguacate, aceite de shiso, puerro frito;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TÁRTAR PICANTE;Tártar;2;Arroz blanco, salmón picante, katsuobushi, salsa de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TÁRTAR TOKI;Tártar;2;Salmón, lubina, atún, aguacate, gambas rojas, aceite de oliva, salsa de maracuyá;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HAMBURGUESA TÁRTAR;Tártar;2;Tartar de salmón, arroz blanco, almendras, aguacate;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK TARTAR;Tártar;2;Arroz negro, salmón picante, aguacate, cebolla frita, salsa de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TÁRTAR SPECIAL RISO;Tártar;2;Atún, queso Philadelphia, arroz venere, cubierto con mayonesa y láminas de almendra;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SPICY SALMÓN;Gunkan;1,5;Tartar de salmón picante, envuelto en alga;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SPICY ATÚN;Gunkan;1,5;Tartar de atún picante, envuelto en alga;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TOBIKO;Gunkan;1,5;Huevas de pez volador, envuelto en alga;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+OUT SALMÓN;Gunkan;1,5;Tartar de salmón picante, envuelto en salmón;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+OUT GAMBAS;Gunkan;1,5;Gambas cocidas, tobiko, envuelto en salmón;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+OUTPHILADELPHIA;Gunkan;1,5;Queso Philadelphia envuelto en salmón;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SALMÓN PLUS;Gunkan;1,5;Crema de leche envuelta en salmón, pistacho;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+AMAEBI;Gunkan;1,5;Gambas crudas, salsa de picante, envuelto en salmón;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GUNKAN DE WAKAME;Gunkan;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BIGNE BURRATA;Gunkan;1,5;Salmón picante, burrata, salsa teriyaki, cebolla frita;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ZUCCHINE SAKO;Gunkan;1,5;Tartar de salmón picante envuelto en calabacín;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ZUCCHINE MANGO;Gunkan;1,5;Philadelphia, mango, envuelto en calabacín, salsa de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ZUCCHINE GAMBAS;Gunkan;1,5;Tartar de gambas cocidas, tobiko, envuelto en calabacín;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ZUCCHINE THAI;Gunkan;1,5;Lubina salteada, aceite de oliva, chalota;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CARPACCIO DE SALMÓN;Carpaccio;2;Salmón, Salsa ponzu;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CARPACCIO MIXTO;Carpaccio;2;Salmón, atún, lubina, salsa ponzu;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CARPACCIO MANGO;Carpaccio;2;Salmón, mango, salsa de mango, arroz inflado;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CARPACCIO SCOTTATO;Carpaccio;2;Salmón sellado, puerro frito, salsa de sésamo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CARPACCIO TOKI;Carpaccio;2;Salmón, atún, lubina, cigalas, gambas rojas, salsa de maracuyá, arroz inflado;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CARPACCIO BURRATA;Carpaccio;2;Salmón, atún, lubina, gambas rojas, burrata, salsa teriyaki, aceite verde;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CARPACCIO PULPO;Carpaccio;2;Pulpo, salsa yuzu wasabi, perejil;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CARPACCIO GREEN ATÚN;Carpaccio;2;Atún, salsa yuzu wasabi, aguacate, aceite verde, perejil;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CARPACCIO FLOWER;Carpaccio;2;Lubina, aguacate, tempura de flor de calabaza, salsa de maracuyá;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CARPACCIO SPECIALE;Carpaccio;2;Salmón, yuzu, aguacate, mango, salsa de sésamo, arroz inflado;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+DUTOU 1 - 4PZS;Dutou;3;Gambas fritas y salmón sellado, queso Philadelphia, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+DUTOU 2 - 4PZS;Dutou;3;Mango, salmón crudo, coco, salsa de mango, tobiko;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+DUTOU 3 - 4PZS;Dutou;3;Pepino, salmón frito, mayonesa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+DUTOU 4 - 4PZS;Dutou;3;Salmón frito, salmón sellado, Philadelphia, puerro frito;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+DUTOU 5 - 4PZS;Dutou;3;Boniato frito, salmón sellado, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+DUTOU 6 - 4PZS;Dutou;3;Flor de calabaza frita, mango, calbacines, aguacate, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POKÉ TOKI;Poké;3;Arroz blanco, mango, salmón crudo, aguacate, gambas cocidas, cebolla frita, algas wakame y tempura;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POKÉ CLUB;Poké;3;Arroz blanco, maíz, edamame, salmón, gambas fritas, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+POKÉ VEGETARIANO;Poké;3;Arroz blanco, mango, aguacate, edamame, maíz, tomates cherry, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TACOS SPICY SALMÓN 2PZS;Plato especial;2;Salmón, aguacate, mayonesa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TACOS MANGO 2PZS;Plato especial;2;Salmón, queso Philadelphia, mango, pistacho, salsa de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TACOS ATÚN 2PZS;Plato especial;2;Atún, aguacate, Philadelphia, mayonesa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CONO SALMÓN 2PZS;Plato especial;2;Salmón, Philadelphia, mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CONO SPICY ATÚN 2PZS;Plato especial;2;Atún picante, aguacate;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CRISP SALMÓN;Crisp;2;Tartar de salmón picante sobre patatita;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CRISP ATÚN;Crisp;2;Tartar de atún picante sobre patatita;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+MILLEFOGLIE SALMÓN;Crisp;2;Tartar de salmón picante, aguacate, tobiko, Philadelphia, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+MILLEFOGLIE ATÚN;Crisp;2;Tartar de atún picante, aguacate, tobiko, Philadelphia, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SALMÓN EVOLUTION;Crisp;2;Pan frito con salmón picante, tobiko, salsa y mayonesa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TUNA EVOLUTION;Crisp;2;Pan frito con tartar de atún picante, pistacho, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SURIMI EVOLUTION;Crisp;2;Pan frito con surimi, tobiko, mayonesa;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SPICY PURI BALL;Crisp;2;Puri ball relleno de salmón picante y Philadelphia, salsa mayonesa y aguacate;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+MAGURO PURI BALL;Crisp;2;Puri ball relleno de atún crudo, Philadelphia, salsa mayonesa, pistacho y aguacate;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI SALMÓN;Hosomaki;2;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI ATÚN;Hosomaki;2;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI GAMBAS COCIDAS;Hosomaki;2;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI AGUACATE;Hosomaki;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI PEPINO;Hosomaki;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI SURIMI;Hosomaki;1,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI EBI TEN;Hosomaki;2,5;Gambas fritas, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI TARTAR;Hosomaki;2,5;Pepino, salmón picante, patata frita, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI FRITO QUESO;Hosomaki;2,5;Salmón, philadelphia, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI FRITO MANGO;Hosomaki;2,5;Salmón, philadelphia, mango, salsa de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI FRITO TARTAR;Hosomaki;2,5;Tartare de salmón picante, tempura de harina y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI FRITO FRESA;Hosomaki;2,5;Philadelphia, fresa, salsa de yogur rosa;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+HOSOMAKI AVOCADO ESPECIAL;Hosomaki;2,5;Salmón, aguacate, cebolla frita, salsa de sésamo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMAKI SALMÓN;Temaki;2;Salmón, aguacate;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMAKI ATÚN;Temaki;2;Atún, aguacate;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMAKI SPICY ATÚN;Temaki;2;Tartar de atún picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMAKI SPICY SALMÓN;Temaki;2;Tartar de salmón picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMAKI CALIFORNIA;Temaki;2;Aguacate, surimi, tobiko, mayonesa;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMAKI MIURA;Temaki;2;Salmón cocido, philadelphia, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMAKI EBI;Temaki;2,5;Gambas fritas, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ONIGIRI EBI;Onigiri;2;Gambas fritas, harina tempura, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ONIGIRI SAKE;Onigiri;1,5;Salmón picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ONIGIRI MIURA;Onigiri;1,5;Salmón cocido, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ONIGIRI ATÚN;Onigiri;1,5;Atún picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FRESH FRY TEMPURA;Fresh (sin algas);2,5;Gambas fritas, escamas de tempura, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FRESH PHILADELPHIA;Fresh (sin algas);2,5;Salmón, philadelphia, escamas de tempura, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FRESH MANGO;Fresh (sin algas);2,5;Salmón, encima philadelphia, mango, salsa de mango, patatas fritas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FRESH SALMÓN PLUS;Fresh (sin algas);2,5;Rollo de salmón fresco relleno de salmón Philadelphia,Cubierto con salmón y crutones de tempura,Salsa teriyaki picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FUTOMAKI FRITO;Futomaki;3,5;Surimi, aguacate, salmón, phila, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FUTOMAKI EBITEN;Futomaki;3,5;Gambas fritas, mayonesa, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FUTOMAKI MIXTO;Futomaki;3;Lubina, atún y salmón;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FUTOMAKI SPICY SAKE;Futomaki;3;Salmón, aguacate, salsa mayonesa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+FUTOMAKI SPICY ATÚN;Futomaki;3;Atún, aguacate, mayonesa picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+NORI SAKE;Nori frito;2,5;Algas en tempura y tartar de salmón picante y Philadelphia;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+NORI EBI;Nori frito;2,5;Algas en tempura y gambas fritas con mayonesa Philadelphia;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+NORI SWEET;Nori frito;2,5;Algas en tempura, batata frita, salsa teriyaki y Philadelphia;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BURRATA ROLL;Uramaki special;3,5;Relleno de salmón y aguacate, decorado con burrata, gambas crudas, tobiko y cebolleta;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GUACA SALMON ROLL;Uramaki special;3,5;Relleno de aguacate y philadelphia, cubierto con tartar de salmón, guacamole;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+AMA EBI ROLL;Uramaki special;4;Rollo relleno de tempura de flor de calabacín con queso Philadelphia por encima, camarones crudos, salsa teriyaki y arroz frito;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BRANZINO ROLL;Uramaki special;4;Tempura de gambas, decorado con lubina marinada en aceite de oliva, pimienta negra y cebolleta;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SCAMPI ROLL;Uramaki special;4;Tempura de gambas, aguacate y scampi, arroz inflado, salsa mayonesa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SASHIMI ROLL;Uramaki special;4;Relleno con crumble de tempura y pepino, decorado con sashimi de salmón, crema de aguacate y salsa de sésamo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+VOLCANO ROLL;Uramaki special;4;Relleno de salmón frito y aguacate, envuelto con anguila y philadelphia, salsa teriyaki y almendras;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+MANGO ROLL;Uramaki special;3,5;Salmón, aguacate, envuelto con mango, philadelphia, tobiko, salsa mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SPECIALE MANGO ROLL;Uramaki special;4;Surimi frito, aguacate, envuelto con mango, decorado con gambas cocidas y tobiko TOKI;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+URAMAKI PHILA;Uramaki;3;Relleno de salmón y philadelphia;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+URAMAKI SAKE;Uramaki;3;Relleno de salmón y aguacate;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+URAMAKI SPICY SAKE;Uramaki;3;Relleno de salmón picante e ensalada;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+URAMAKI SPICY TUNA;Uramaki;3;Relleno de atún picante e ensalada, salsa de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+URAMAKI CALIFORNIA;Uramaki;3;Relleno de surimi y pepino, cubierto con tobiko;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+URAMAKI MIURA;Uramaki;3,5;Rollo con tempura crujiente sobre salmón con salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+AVOCADO ROLL;Uramaki;3;Aguacate, philadelphia, cubierto con salmón flambeado y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+URAMAKI EBITEN;Uramaki;3,5;Gambas fritas, cubiertas con kataifi y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+URAMAKI TIGER;Uramaki;3,5;Gambas fritas y mayonesa, cubierto con salmón, patatas fritas, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+URAMAKI RED;Uramaki;3,5;Fideos fritos por dentro, salmón por encima y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+RAINBOW;Uramaki;3;Relleno de surimi y aguacate, cubierto con salmón, atún y lubina;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SAKE YAKI;Uramaki;3;Salmón cocido, cubierto con salmón flambeado, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+VEGETARIANO;Uramaki;2,5;Aguacate, ensalada, pepino, philadelphia;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SAKE ROLL;Uramaki;3;Salmón, philadelphia y aguacate, cubierto con salmón;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+NEW ANGEL ROLL;Uramaki;3,5;Langostino cocido, aguacate con salmón a la plancha encima, queso Philadelphia, patatas fritas, salsa picante y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+GREEN ROLL;Uramaki;3;Mango, pepino, cubierto con aguacate, coco, salsa de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SALMÓN FRUIT;Uramaki;3;Salmón y aguacate, cubierto con philadelphia, mango, tobiko, salsa de mango y crema de leche;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+EBI FOL;Uramaki;3,5;Rollo con camarones fritos, cubierto con anguila kataifi y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+URA MOKA;Uramaki;3,5;Rollo con camarones cocidos, surimi, aguacate, cubierto con salmon y cebolla frita, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+EBI FRUIT;Uramaki;3,5;Gambas fritas, philadelphia, mango, pistacho y salsa de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CRISPY EBI;Uramaki;3,5;Gambas fritas, mayonesa, salmón picante y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CRAB ROLL;Uramaki;3,5;Cangrejo con surimi frito, aguacate, salmón sellado, camarones cocidos teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SALMON PLUS;Uramaki;3,5;Rollo de sake puls con salmón frito, cubierto con tartar de salmón, crutón de tempura, salsa teriyaki y salsa picante.;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CHORI MAGURO;Uramaki;3;Atún a la plancha, mayonesa, aguacate, salsa mayo picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SWEET POTATO ROLL;Uramaki;3,5;Patatas dulces fritas, philadelphia, tempura desmenuzada, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SPECIAL VEGAN;Uramaki;3;Relleno con verduras mixtas fritas, decorado con aguacate, philadelphia, patatas fritas y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+VENERE ROLL;Uramaki;3;Salmón, aguacate y philadelphia, cubierto con salmón;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK SPECIALE;Uramaki;3,5;Gambas fritas, cubierto con salmón picante y almendras;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK SPICY SALMÓN;Uramaki;3;Salmón picante, cubierto con philadelphia, pasta kataifi y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK MANGO ROLL;Uramaki;3;Salmón, cubierto con mango, philadelphia, salsa de mango y pistacho;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK MIURA;Uramaki;3;Salmón cocido, philadelphia y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK EBITEN;Uramaki;3,5;Gambas fritas con kataifi, salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK COCO;Uramaki;3;Coco black rollo con aguacate y salmón, coco rallado por encima, salsa Philadehlia de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK FLOWER;Uramaki;3,5;Rollito relleno de camarones fritos sobre crema de aguacate y flores de calabacín con salsa de sésamo y pistacho;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK TUNA GAMBAS FRITAS;Uramaki;3,5;Tartar de atún y aguacate, salsa picante y cebolleta;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ANGUILLA ROLL;Uramaki;3,5;Surimi frito, envuelto con anguila, decorado con philadelphia y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+DRAGON ROLL;Uramaki;3,5;Gambas fritas, envuelto con aguacate;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SAKE CHEES;Uramaki;3;Rollo de sake con queso, salmón, aguacate y queso gratinado por encima, camarones cocidos y salsa picante.;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SPECIALE ROLL;Uramaki;3,5;Salmón frito y aguacate, cubierto con philadelphia y crumble de tempura;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SPECIAL CHICKEN ROLL;Uramaki;3,5;Salmón y aguacate por dentro, burrata, pollo frito y salsa teriyaki por encima;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ANGUILA SPECIALE ROLL;Uramaki;3,5;Rollo con salmón frito, anguila de filadelfia encima salsa teriyaki de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CRISPY ROLL;Uramaki;3,5;Rollo relleno de salmón frito y aguacate, coronado con queso Philadelphia, almendras y salsa teriyaki picante;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CHICKEN ROLL;Uramaki;3,5;Pollo frito, ensalada, sésamo y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+EBI TOBIKO;Uramaki;3,5;Gambas fritas, tobiko, ensalada y salsa teriyaki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+EBI ESPECIAL;Uramaki;3,5;Gambas fritas, cubierto con salmón, atún y lubina, y salsa teriyaki.;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SALMÓN OSHIZUSHI;Oshizushi;3;Salmón, atún, lubina, philadelphia, salsa de sésamo;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+BLACK OSHIZUSHI;Oshizushi;3;Arroz venere, salmón, philadelphia, mango, coco, salsa de mango;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TEMPURA OSHIZUSHI;Oshizushi;3;Arroz en tempura, salmón picante, aguacate, salsa mayo, patatas fritas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SASHIMI SAKE;Sashimi;3;Salmón;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SASHIMI MISTO;Sashimi;3;Atún, salmón, lubina;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+SASHIMI PLUS;Sashimi;4;Salmón, atún, lubina, gambas rojas, cigalas;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+CIGALA;Sashimi;3;Cigalas crudas con salsa de Toki;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+ROLL WHITE MAZARA;Sashimi;3;Lubina y gamba roja de Mazara, wasabi fresco, salsa ponzu y arroz inflado;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TATAKI SALMÓN;Tataki;2,5;Salmón sellado;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TATAKI ATÚN;Tataki;2,5;Atún sellado;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TATAKI SALMÓN SCOTTATO;Tataki;2,5;Salmón flambeado con salsa mango y pistacho;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TATAKI ATÚN SCOTTATO;Tataki;2,5;Atún flambeado con salsa mango y pistacho;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TATAKI SALMÓN YOKI;Tataki;2,5;Salmón flambeado con salsa de sésamo y arroz inflado;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TATAKI ATÚN YOKI;Tataki;2,5;Atún flambeado con salsa de sésamo y arroz inflado;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
+TATAKI TUNA BURRATA;Tataki;2,5;;;;Carta TOKI noche/fin de semana/festivo (PDF) · puntos estimados
