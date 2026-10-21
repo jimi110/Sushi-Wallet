@@ -396,8 +396,8 @@ body.fx-trans::before{content:"";position:fixed;inset:0;z-index:-1;pointer-event
 .fold.open .fb{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .34s cubic-bezier(.2,.8,.2,1),visibility 0s}
 .fbi{overflow:hidden;min-height:0}.fbi>*:first-child{margin-top:10px}.fbi>*:last-child{margin-bottom:4px}
 
-@keyframes nudge{0%,100%{transform:scale(1);box-shadow:0 0 0 0 color-mix(in srgb,var(--ac) 0%,transparent)}50%{transform:scale(1.04);box-shadow:0 0 0 7px color-mix(in srgb,var(--ac) 20%,transparent)}}
-#v-sess[data-idle] #fin:not(.off){animation:nudge 2.2s ease-in-out infinite;background:color-mix(in srgb,var(--ac) 16%,transparent)}
+@keyframes nudge{0%,100%{transform:scale(1);background:color-mix(in srgb,var(--tx) 8%,transparent);box-shadow:inset 0 0 0 .5px color-mix(in srgb,var(--ac) 0%,transparent),0 0 0 0 color-mix(in srgb,var(--ac) 0%,transparent)}50%{transform:scale(1.07);background:color-mix(in srgb,var(--ac) 22%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 70%,transparent),0 0 0 9px color-mix(in srgb,var(--ac) 13%,transparent),0 10px 28px -10px color-mix(in srgb,var(--ac) 60%,transparent)}}
+#v-sess[data-idle] #fin:not(.off){animation:nudge 1.2s ease-in-out infinite}
 @media(prefers-reduced-motion:reduce){#v-sess[data-idle] #fin:not(.off){animation:none}}
 .none .sym{vertical-align:middle;position:relative;top:-1px;margin:0 4px;font-size:0}.none .sym svg{width:12px;height:12px;stroke-width:3.2}
 
@@ -405,6 +405,47 @@ body.fx-trans::before{content:"";position:fixed;inset:0;z-index:-1;pointer-event
 #lg{position:fixed;left:0;top:0;z-index:80;pointer-events:none;opacity:0;transform:scale(.9);transition:transform .4s cubic-bezier(.3,1.7,.5,1),opacity .22s ease;-webkit-backdrop-filter:saturate(190%) brightness(1.12);backdrop-filter:saturate(190%) brightness(1.12);background:radial-gradient(circle at var(--px,50%) var(--py,50%),rgba(255,255,255,.44),rgba(255,255,255,.13) 42%,rgba(255,255,255,.05) 75%),linear-gradient(160deg,color-mix(in srgb,var(--ac) 14%,transparent),transparent 60%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.32),inset 0 2px 1px rgba(255,255,255,.55),inset 0 -10px 16px -8px rgba(255,255,255,.22),0 12px 28px -10px rgba(0,0,0,.5)}
 #lg.on{opacity:1;transform:scale(var(--sx,1.04),var(--sy,1.04))}
 @media(prefers-reduced-motion:reduce){#lg{transition:opacity .15s}#lg.on{transform:none}}
+
+/* ===== Fase 9: paneles de cristal líquido (hojas, transferir, carta, añadir a la sesión) ===== */
+@keyframes ovin{from{opacity:0}}
+@keyframes shin{from{opacity:0;transform:translateY(26px) scale(.96)}}
+/* Fondo: velo con resplandores de color para que el cristal tenga algo que refractar */
+body.glass .ao .scrim{background:radial-gradient(60vmax 50vmax at 10% 6%,color-mix(in srgb,var(--ac) 38%,transparent),transparent 62%),radial-gradient(55vmax 55vmax at 94% 94%,color-mix(in srgb,color-mix(in srgb,var(--ac) 45%,#0a84ff) 32%,transparent),transparent 60%),radial-gradient(40vmax 40vmax at 90% 8%,color-mix(in srgb,var(--ac) 14%,transparent),transparent 65%),color-mix(in srgb,var(--bg) 38%,transparent);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);opacity:0;transition:opacity .4s ease}
+body.glass .ao.show .scrim{background:radial-gradient(60vmax 50vmax at 10% 6%,color-mix(in srgb,var(--ac) 38%,transparent),transparent 62%),radial-gradient(55vmax 55vmax at 94% 94%,color-mix(in srgb,color-mix(in srgb,var(--ac) 45%,#0a84ff) 32%,transparent),transparent 60%),radial-gradient(40vmax 40vmax at 90% 8%,color-mix(in srgb,var(--ac) 14%,transparent),transparent 65%),color-mix(in srgb,var(--bg) 38%,transparent);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);opacity:1}
+body.glass #ov.show{background:radial-gradient(60vmax 50vmax at 10% 6%,color-mix(in srgb,var(--ac) 38%,transparent),transparent 62%),radial-gradient(55vmax 55vmax at 94% 94%,color-mix(in srgb,color-mix(in srgb,var(--ac) 45%,#0a84ff) 32%,transparent),transparent 60%),radial-gradient(40vmax 40vmax at 90% 8%,color-mix(in srgb,var(--ac) 14%,transparent),transparent 65%),color-mix(in srgb,var(--bg) 38%,transparent);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);animation:ovin .35s ease}
+/* Panel de cristal: reflejo superior, tinte de color inferior, borde luminoso y profundidad */
+body.glass :is(#sh,#as){background:radial-gradient(130% 62% at 14% -8%,rgba(255,255,255,.14),transparent 56%),radial-gradient(90% 60% at 100% 108%,color-mix(in srgb,var(--ac) 30%,transparent),transparent 66%),radial-gradient(70% 50% at -5% 70%,color-mix(in srgb,var(--ac) 10%,transparent),transparent 70%),linear-gradient(160deg,color-mix(in srgb,var(--card) 50%,transparent),color-mix(in srgb,var(--card) 32%,transparent));-webkit-backdrop-filter:blur(46px) saturate(190%);backdrop-filter:blur(46px) saturate(190%);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 0 0 1px rgba(255,255,255,.12),inset 0 -18px 34px -22px rgba(255,255,255,.1),0 40px 90px -30px rgba(0,0,0,.7),0 0 0 .5px rgba(0,0,0,.28)}
+/* Elementos internos translúcidos */
+body.glass :is(#sh,#as) :is(.list,.pvw,.card){background:color-mix(in srgb,var(--tx) 6%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 0 0 .5px rgba(255,255,255,.16)}
+body.glass :is(#sh,#as) .qty{background:color-mix(in srgb,var(--tx) 7%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 0 0 .5px rgba(255,255,255,.16)}
+body.glass :is(#sh,#as) .qty button{background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.07));box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 4px 10px -6px rgba(0,0,0,.4)}
+body.glass :is(#sh,#as) input:not([type=color]):not([type=file]),body.glass :is(#sh,#as) :is(select,textarea){background-color:color-mix(in srgb,var(--tx) 8%,transparent);border:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 0 0 .5px rgba(255,255,255,.18);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+body.glass :is(#sh,#as) :is(input,textarea,select):focus{box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 0 0 1.5px color-mix(in srgb,var(--ac) 75%,transparent),0 0 0 4px color-mix(in srgb,var(--ac) 18%,transparent)}
+body.glass :is(#sh,#as) .chip:not(.on){background:color-mix(in srgb,var(--tx) 8%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 0 0 .5px rgba(255,255,255,.16)}
+body.glass :is(#sh,#as) .chip.on{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 18px -10px rgba(0,0,0,.6)}
+body.glass :is(#sh,#as) .btn:not(.sec):not(.dng):not(:disabled){background:linear-gradient(180deg,color-mix(in srgb,var(--ac) 92%,#fff),var(--ac) 60%,color-mix(in srgb,var(--ac) 90%,#000));box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 2px rgba(0,0,0,.18),0 14px 26px -12px color-mix(in srgb,var(--ac) 80%,transparent)}
+body.glass :is(#sh,#as) .btn.sec{background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 0 0 .5px rgba(255,255,255,.18)}
+body.glass :is(#sh,#as) .btn:disabled{background:color-mix(in srgb,var(--tx) 8%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+body.glass :is(#sh,#as) .dng{background:linear-gradient(180deg,color-mix(in srgb,#ff453a 22%,transparent),color-mix(in srgb,#ff453a 9%,transparent));box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 0 0 .5px color-mix(in srgb,#ff453a 35%,transparent)}
+body.glass :is(#sh,#as) .pd.on{background:linear-gradient(90deg,color-mix(in srgb,var(--ac) 20%,transparent),color-mix(in srgb,var(--ac) 6%,transparent))}
+body.glass :is(#sh,#as) .pd.on .ck{background-color:var(--ac);border-color:var(--ac)}
+body.glass :is(#sh,#as) :is(.row,.pd,.pfoot){border-color:rgba(255,255,255,.14)}
+body.glass #as .pfoot{background:linear-gradient(transparent,color-mix(in srgb,var(--card) 26%,transparent));-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+body.glass :is(#sh,#as) .grab{background:color-mix(in srgb,var(--tx) 30%,transparent)}
+body.glass :is(#sh,#as) .tog:not(.on){background:color-mix(in srgb,var(--tx) 14%,transparent);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.18)}
+body.glass :is(#sh,#as) .tic,body.glass :is(#sh,#as) .ae{box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+@media(hover:hover) and (pointer:fine){body.glass :is(#sh,#as) :is(.pd,.row[data-a],button.row):hover{background:color-mix(in srgb,var(--tx) 8%,transparent)}body.glass :is(#sh,#as) .btn.sec:hover{background:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,.1))}}
+/* Tarjeta QR: marco de cristal alrededor */
+body.glass #sh .qrcard{box-shadow:0 0 0 1px rgba(255,255,255,.4),0 30px 60px -26px color-mix(in srgb,var(--ac) 85%,#000),0 0 60px -10px color-mix(in srgb,var(--ac) 45%,transparent)}
+/* PC y tablet: los paneles centrados aparecen con fundido y escala, no deslizándose desde abajo */
+@media(min-width:760px){
+ #as{opacity:0;transform:translateY(24px) scale(.96);transition:transform .5s cubic-bezier(.32,.72,0,1),opacity .3s ease}
+ .ao.show #as{opacity:1;transform:none}
+ #sh{animation:shin .42s cubic-bezier(.2,.9,.3,1)}
+ #sh,#as{border-radius:30px;max-width:600px}
+ #as.edit{padding-bottom:20px}
+}
+@media(prefers-reduced-motion:reduce){#sh{animation:none}#ov.show{animation:none}}
 </style>
 </head>
 <body>
@@ -877,7 +918,7 @@ const SY={last:null};
 function foldReset(){st.fold={};document.querySelectorAll('#v-home .fold.open').forEach(f=>{f.classList.remove('open');const h=f.querySelector('.fh');if(h)h.setAttribute('aria-expanded','false')})}
 // ===== Botón de finalizar: late suavemente tras 3 s sin tocar nada =====
 let IDLE=0;
-function idleArm(){const v=$('#v-sess');if(!v)return;v.removeAttribute('data-idle');clearTimeout(IDLE);IDLE=setTimeout(()=>{const f=$('#fin');if(st.tab==='sess'&&st.sess&&f&&!f.classList.contains('off')&&!AS.open&&!$('#ov.show'))v.setAttribute('data-idle','')},3000)}
+function idleArm(){const v=$('#v-sess');if(!v)return;v.removeAttribute('data-idle');clearTimeout(IDLE);IDLE=setTimeout(()=>{const f=$('#fin');if(st.tab==='sess'&&st.sess&&f&&!f.classList.contains('off')&&!AS.open&&!$('#ov.show'))v.setAttribute('data-idle','')},5000)}
 ['pointerdown','touchstart','keydown','wheel'].forEach(t=>addEventListener(t,idleArm,{passive:true,capture:true}));
 addEventListener('scroll',idleArm,{passive:true,capture:true});
 // ===== Cristal líquido al tocar: una lente de cristal que se infla bajo el dedo =====
