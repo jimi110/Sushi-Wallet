@@ -230,6 +230,8 @@ p.sub:has(>svg){display:flex;align-items:center}
 .wbtns{position:relative;display:flex;gap:10px;margin:18px 0 0}
 .wbtns button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:99px;font-weight:600;font-size:15px;color:#f7f3ea;background:#ffffff1f;border:.5px solid #ffffff38;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 #ffffff2e}
 .wbtns button:active{transform:scale(.97)}
+.wbtns button{position:relative}
+.wbtns .nd{position:absolute;top:-2px;right:12px;width:12px;height:12px;border-radius:50%;background:#ff3b30;box-shadow:0 0 0 2px var(--card);pointer-events:none}
 .wbtns svg{width:18px;height:18px;stroke-width:2.2}
 .wallet .wf{margin-top:16px}
 .qrcard{position:relative;margin:16px auto 6px;max-width:300px;padding:18px 18px 14px;border-radius:28px;text-align:center;color:#161616;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(150deg,var(--ac),#ffd9a0 55%,var(--ac)) border-box;border:3px solid transparent;box-shadow:0 22px 44px -22px color-mix(in srgb,var(--ac) 80%,#000)}
@@ -238,6 +240,11 @@ p.sub:has(>svg){display:flex;align-items:center}
 .qrcard svg.qr{display:block;width:100%;height:auto;margin:12px 0 10px;stroke:none;fill:#111}
 .qrcard .qfoot{font-size:13px;color:#6b6b70;font-variant-numeric:tabular-nums}
 .qrcard.dead svg.qr{opacity:.15;filter:blur(2px)}
+.qrcard .qbar{height:5px;margin-top:10px;border-radius:99px;background:#0000001a;overflow:hidden}
+.qrcard .qbar i{display:block;height:100%;width:100%;border-radius:inherit;background:var(--ac);transition:width .25s linear,background .3s}
+.qrcard.low .qfoot{color:#d70015;font-weight:600}
+.qrcard.low .qbar i{background:#ff3b30}
+.qrcard.dead .qbar i{width:0}
 .scanbox{position:relative;border-radius:22px;overflow:hidden;background:#000;aspect-ratio:1/1;margin:14px 0}
 .scanbox video{width:100%;height:100%;object-fit:cover;display:block}
 .scanbox::after{content:"";position:absolute;inset:16%;border-radius:22px;border:3px solid #fffd;box-shadow:0 0 0 999px #0005;pointer-events:none}
@@ -431,7 +438,7 @@ function applyPrefs(){document.body.classList.toggle('glass',!!st.set.glass);['t
   const L=ac?[1,3,5].map(i=>{let c=parseInt(ac.substr(i,2),16)/255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)}):[0,0,0],lum=.2126*L[0]+.7152*L[1]+.0722*L[2];r.style.setProperty('--on-ac',ac&&lum>.5?'#161616':'#fff')}
 // ---------- Hojas modales ----------
 function sheet(h){$('#sh').innerHTML=h;$('#ov').classList.add('show')}
-function close(){$('#ov').classList.remove('show');try{stopCam();clearInterval(QT.t)}catch(e){}}
+function close(){$('#ov').classList.remove('show');try{stopCam();clearInterval(QT.t);clearInterval(PT.t)}catch(e){}}
 function settings(){sheet(`<h1 style="font-size:24px">Ajustes</h1>
 <h2>Apariencia</h2><div class="list"><div class="row"><div class="t"><b>Liquid Glass</b><span class="sub">Superficies translúcidas en barras y paneles</span></div><button class="tog ${st.set.glass?'on':''}" data-a="glass" aria-label="Liquid Glass"></button></div>
 <div class="row"><div class="t"><b>Sonidos</b><span class="sub">Un toque suave al pulsar y al completar acciones</span></div><button class="tog ${st.set.sound===true?'on':''}" data-a="sound" aria-label="Sonidos"></button></div>
@@ -525,7 +532,7 @@ function sync(){if(SY.last!==st.tab){if(SY.last==='home')foldReset();SY.last=st.
  nav.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('on',i===ai);i===ai?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
  $('.bub').style.width=s.w+'px';B.t=s.x(ai);spring()}
 function shell(){$('#app').innerHTML=TABS.map(k=>`<section class="view" id="v-${k}"></section>`).join('');nav.innerHTML='<i class="bub"></i>'+TABS.map(k=>`<button data-a="tab" data-id="${k}" aria-label="${LBL[k]}">${ico(k)}<span>${LBL[k]}</span>${k==='ach'?'<b class="bdg" id="bd-ach"></b>':''}</button>`).join('')}
-function render(){if(!$('#v-home'))shell();const y=TABS.map(k=>$('#v-'+k).scrollTop);paneHome();paneMenu();paneSess();paneAch();paneRew();badge(pend().length);stk();TABS.forEach((k,i)=>$('#v-'+k).scrollTop=y[i]);sync();B.ready=true;if(typeof AS!=='undefined'&&AS.open&&AS.mode==='add')alist()}
+function render(){if(!$('#v-home'))shell();const y=TABS.map(k=>$('#v-'+k).scrollTop);paneHome();paneMenu();paneSess();paneAch();paneRew();badge(pend().length);outDot();stk();TABS.forEach((k,i)=>$('#v-'+k).scrollTop=y[i]);sync();B.ready=true;if(typeof AS!=='undefined'&&AS.open&&AS.mode==='add')alist()}
 nav.addEventListener('pointerdown',e=>{const r=nav.getBoundingClientRect(),a=nav.querySelectorAll('button')[TABS.indexOf(st.tab)];B.drag={id:e.pointerId,sx:e.clientX,rx:e.clientX-r.left-nav.clientLeft,bx:B.x,on:false,t:e.timeStamp,onb:!!(a&&a.contains(e.target)),sm:false}});
 nav.addEventListener('pointermove',e=>{const d=B.drag;if(!d||e.pointerId!==d.id)return;const dx=e.clientX-d.sx;
  if(!d.on){if(Math.abs(dx)<7)return;d.on=true;d.sm=!d.onb;nav.setPointerCapture(e.pointerId);cancelAnimationFrame(B.raf);hap(6)}
@@ -641,7 +648,7 @@ document.addEventListener('input',e=>{if(e.target.id!=='accent-c')return;const v
  document.querySelectorAll('.swb[data-id]').forEach(b=>{b.classList.remove('on');b.setAttribute('aria-pressed','false')});const l=e.target.parentNode;l.classList.add('on');l.style.setProperty('--c',v)});
 
 // ===== Enviar / recibir puntos por QR (un solo uso) =====
-const QT={t:0,exp:10*60*1000};
+const QT={t:0,exp:10*60*1000},PT={t:0};
 I.ach='<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5v2a3 3 0 0 0 3 3M16 6h3v2a3 3 0 0 1-3 3M12 13v4M9 20h6M10 17h4"/>';I.rew='<rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9v11M4 13h16M12 9c-2-4-6-3-5 0 .5 1.5 3 1 5 0zm0 0c2-4 6-3 5 0-.5 1.5-3 1-5 0z"/>';I.send='<path d="M12 19V5M6 11l6-6 6 6"/>';I.recv='<path d="M12 5v14M6 13l6 6 6-6"/>';I.ok='<path d="M5 12.5l4.5 4.5L19 7.5"/>';
 const rid=()=>Array.from(crypto.getRandomValues(new Uint8Array(8)),b=>(b%36).toString(36)).join('');
 const loaded={};
@@ -655,20 +662,32 @@ function qrSvg(text){const q=qrcode(0,'M');q.addData(text);q.make();const n=q.ge
 const left=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
 const saveAll=()=>{save('adj');save('out');save('used')};
 function movs(){if(!st.adj.length)return '';return fold('mov','Movimientos',st.adj.length,`<div class="list">${st.adj.slice(0,5).map(m=>`<div class="row"><div class="t"><b>${m.label?esc(m.label):(m.pts>0?'Recibido':'Enviado')+(m.who?(m.pts>0?' de ':' · ')+esc(m.who):'')}</b><span class="sub">${dt(m.date)}</span></div><span class="pill">${m.pts>0?'+':''}${fmt(m.pts)} pts</span></div>`).join('')}</div>`)}
-function pendRows(){const now=Date.now();return st.out.map(o=>`<div class="row"><div class="t"><b>${fmt(o.pts)} pts</b><span class="sub">${o.exp>now?'Vigente · caduca en '+left(o.exp-now):'Caducado'}</span></div><div style="display:flex;gap:6px">${o.exp>now?`<button class="chip" data-a="qshow" data-id="${o.id}">Ver QR</button>`:`<button class="chip" data-a="qrefund" data-id="${o.id}">Recuperar</button>`}</div></div>`).join('')}
+// Punto de aviso en «Enviar» cuando hay QR caducados cuyos puntos se pueden recuperar
+function outDot(){const btn=document.querySelector('[data-a="wsend"]'),now=Date.now(),has=st.out.some(o=>o.exp<=now);
+ if(btn){let d=btn.querySelector('.nd');
+  if(has){if(!d){d=document.createElement('i');d.className='nd';d.setAttribute('aria-hidden','true');btn.appendChild(d)}btn.setAttribute('aria-label','Enviar. Tienes puntos por recuperar')}
+  else{if(d)d.remove();btn.removeAttribute('aria-label')}}
+ clearTimeout(outDot.t);const nx=st.out.map(o=>o.exp-now).filter(x=>x>0);if(nx.length)outDot.t=setTimeout(outDot,Math.min(...nx)+300)}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)outDot()});
+function pendTick(){const els=document.querySelectorAll('[data-qx]');if(!els.length){clearInterval(PT.t);return}const now=Date.now();
+ els.forEach(e=>{const r=+e.dataset.qx-now,t=r>0?'Vigente · caduca en '+left(r):'Caducado';if(e.textContent!==t)e.textContent=t;
+  if(r<=0){const bx=e.closest('.row')?.querySelector('[data-qb]');if(bx&&!bx.dataset.dead){bx.dataset.dead='1';bx.innerHTML=`<button class="chip" data-a="qrefund" data-id="${bx.dataset.qb}">Recuperar</button>`}}});outDot()}
+function pendRows(){const now=Date.now();return st.out.map(o=>`<div class="row"><div class="t"><b>${fmt(o.pts)} pts</b><span class="sub" data-qx="${o.exp}">${o.exp>now?'Vigente · caduca en '+left(o.exp-now):'Caducado'}</span></div><div style="display:flex;gap:6px" data-qb="${o.id}">${o.exp>now?`<button class="chip" data-a="qshow" data-id="${o.id}">Ver QR</button>`:`<button class="chip" data-a="qrefund" data-id="${o.id}">Recuperar</button>`}</div></div>`).join('')}
 function sendSheet(){const bal=stats().bal;
  sheet(`<h1 style="font-size:24px">Enviar puntos</h1><p class="sub">Saldo: <b>${fmt(bal)}</b> pts. Se descuentan al generar el QR y solo lo puede canjear una persona.</p>
  <h2>Cantidad</h2><input type="number" id="qa" inputmode="decimal" step="0.25" min="0" placeholder="Puntos a enviar"><p class="ferr" id="qerr"></p>
  <h2>Tu nombre (opcional)</h2><input type="text" id="qn" maxlength="20" placeholder="Para que sepan quién lo envía" value="${esc(st.set.name||'')}">
  <div style="display:grid;gap:8px;margin-top:14px"><button class="btn" data-a="qgen">Generar QR</button></div>
- ${st.out.length?`<h2>QR pendientes</h2><div class="list">${pendRows()}</div>`:''}`)}
+ ${st.out.length?`<h2>QR pendientes</h2><div class="list">${pendRows()}</div>`:''}`);clearInterval(PT.t);if(st.out.length){pendTick();PT.t=setInterval(pendTick,1000)}}
 async function qshow(id){const o=st.out.find(x=>x.id===id);if(!o)return;
  sheet(`<div class="center"><p class="sub">Preparando QR…</p></div>`);
  try{await libQR()}catch(e){return sheet(`<h1 style="font-size:24px">Sin conexión</h1><p class="sub">Necesito conectarme una vez para cargar el generador de QR. Inténtalo de nuevo con internet.</p><button class="btn sec" data-a="close">Cerrar</button>`)}
- sheet(`<div class="qrcard" id="qc"><div class="qlbl">Sushi Wallet</div><div class="qamt">${fmt(o.pts)} pts</div>${qrSvg(payload(o))}<div class="qfoot" id="qf"></div></div>
+ sheet(`<div class="qrcard" id="qc"><div class="qlbl">Sushi Wallet</div><div class="qamt">${fmt(o.pts)} pts</div>${qrSvg(payload(o))}<div class="qfoot" id="qf" role="timer"></div><div class="qbar"><i id="qbi"></i></div></div>
  <p class="sub center" style="margin:10px 0 14px">Pide que escaneen este código con Sushi Wallet → Recibir. Un solo uso.</p>
  <div style="display:grid;gap:8px"><button class="btn" data-a="close">Listo</button><button class="btn sec" id="qrf" data-a="qrefund" data-id="${o.id}" ${o.exp>Date.now()?'disabled':''}>${o.exp>Date.now()?'Recuperar puntos al caducar':'Recuperar puntos'}</button></div>`);
- clearInterval(QT.t);const tick=()=>{const f=$('#qf'),c=$('#qc');if(!f){clearInterval(QT.t);return}const r=o.exp-Date.now();if(r<=0){f.textContent='Caducado';c.classList.add('dead');clearInterval(QT.t);const b=$('#qrf');if(b){b.disabled=false;b.textContent='Recuperar puntos'}}else f.textContent='Caduca en '+left(r)};tick();QT.t=setInterval(tick,1000)}
+ clearInterval(QT.t);const tick=()=>{const f=$('#qf'),c=$('#qc');if(!f){clearInterval(QT.t);return}const r=o.exp-Date.now(),bi=$('#qbi');
+  if(r<=0){f.textContent='Caducado';c.classList.remove('low');c.classList.add('dead');if(bi)bi.style.width='0';clearInterval(QT.t);const b=$('#qrf');if(b){b.disabled=false;b.textContent='Recuperar puntos'}outDot()}
+  else{const t='Caduca en '+left(r);if(f.textContent!==t)f.textContent=t;if(bi)bi.style.width=Math.min(100,r/QT.exp*100)+'%';c.classList.toggle('low',r<=60000)}};tick();QT.t=setInterval(tick,250)}
 function recvSheet(){
  sheet(`<h1 style="font-size:24px">Recibir puntos</h1><p class="sub">Escanea el QR de la otra persona (puntos o un canje).</p>
  <div class="scanbox" id="sb"><video id="cam" playsinline muted></video></div><p class="sub center" id="cs">Iniciando cámara…</p>
