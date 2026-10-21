@@ -1091,7 +1091,7 @@ const WR_ERR={config:'Wrapped todavía no está configurado: faltan la URL y la 
 const wrErrText=c=>WR_ERR[c]||'No se pudo completar la operación. Inténtalo de nuevo.';
 /*WR-CORE-END*/
 
-const WR={sb:null,uid:null,room:null,players:{},items:{},res:null,rp:{},draws:{},conn:'idle',saving:0,busy:{},chain:Promise.resolve(),seq:0,ch:null,chn:0,fatal:'',mirror:'',seen:{},claim:'',mode:'solo',loadTk:0,uiKey:'',kicked:0,t:0};
+const WR={sb:null,uid:null,room:null,players:{},items:{},res:null,rp:{},draws:{},conn:'idle',saving:0,busy:{},chain:Promise.resolve(),seq:0,ch:null,chn:0,fatal:'',mirror:'',seen:{},claim:'',mode:'solo',loadTk:0,uiKey:'',kicked:0,t:0,off:0,hbT:0,cdT:0,cdS:'',beating:0,clean:'',cleanTm:0};
 const wrConfigured=()=>/^https:\/\/\S+$/.test(WR_CONFIG.url)&&String(WR_CONFIG.anonKey).length>20&&!/service_role/i.test(WR_CONFIG.anonKey);
 const wrMe=()=>WR.players[WR.uid]||null;
 const wrActive=()=>Object.values(WR.players).filter(p=>p.status==='playing'||p.status==='finished').sort((a,b)=>Date.parse(a.joined_at)-Date.parse(b.joined_at));
@@ -1126,7 +1126,7 @@ function wrFail(e){const el=$('#wrerr'),m=wrErrText(e&&e.code);
  else toast('No se pudo completar',m)}
 
 // ---------- Estado de la sala: carga completa + Realtime ----------
-function wrDrop(){if(WR.ch&&WR.sb){try{WR.sb.removeChannel(WR.ch)}catch(e){}}WR.ch=null;WR.room=null;WR.players={};WR.items={};WR.res=null;WR.rp={};WR.draws={};WR.fatal='';WR.conn='idle';WR.uiKey='';WR.claim='';WR.seen={};WR.loadTk++}
+function wrDrop(){clearInterval(WR.hbT);WR.hbT=0;clearInterval(WR.cdT);WR.cdT=0;WR.cdS='';if(WR.ch&&WR.sb){try{WR.sb.removeChannel(WR.ch)}catch(e){}}WR.ch=null;WR.room=null;WR.players={};WR.items={};WR.res=null;WR.rp={};WR.draws={};WR.fatal='';WR.conn='idle';WR.uiKey='';WR.claim='';WR.seen={};WR.loadTk++}
 function wrGone(msg){wrDrop();Store.set('wr',null);wrMirror();paneSess();sheet(`<div class="center"><h1 style="font-size:24px">Sala no disponible</h1><p class="sub">${esc(msg)}</p></div><button class="btn" data-a="close">Entendido</button>`)}
 function wrKicked(){if(WR.kicked)return;WR.kicked=1;wrDrop();Store.set('wr',null);wrMirror();paneSess();sheet(`<div class="center"><h1 style="font-size:24px">Te han expulsado</h1><p class="sub">${esc(wrErrText('kicked'))}</p></div><button class="btn" data-a="close">Entendido</button>`)}
 async function wrLoad(){const tk=++WR.loadTk,sb=WR.sb,id=WR.room&&WR.room.id,u=WR.uid;if(!id)return;
@@ -1134,6 +1134,7 @@ async function wrLoad(){const tk=++WR.loadTk,sb=WR.sb,id=WR.room&&WR.room.id,u=W
  if(tk!==WR.loadTk||!WR.room)return;
  const bad=R.find(x=>x.error);if(bad)throw Object.assign(new Error(bad.error.message||'net'),{code:'network'});
  const [r,p,i,res,rp,d]=R,mine=(p.data||[]).find(x=>x.user_id===u);
+ if(!r.data&&WR.res&&WR.room.status==='completed'){if(!WR.cleanTm&&WR.clean!=='ok')wrWaitClean(id);return}   // borrada del servidor: ya no hay nada que cargar
  if(!r.data){if(mine&&mine.status==='kicked')return wrKicked();return wrGone('Esta sala ya no existe o no tienes acceso a ella.')}
  if(!mine||mine.status==='left'||mine.status==='kicked')return mine&&mine.status==='kicked'?wrKicked():wrGone('Ya no formas parte de esta sala.');
  WR.room=r.data;WR.players=Object.fromEntries(p.data.map(x=>[x.user_id,x]));WR.items=Object.fromEntries(i.data.map(x=>[x.user_id+'|'+x.dish_id,x]));
@@ -1167,10 +1168,10 @@ function wrMirror(){let sig='';
   else{st.sess.items=items;st.sess.order=mine.map(i=>i.dish_id)}}
  else if(st.sess&&st.sess.wrapped)st.sess=null;
  const ch=sig!==WR.mirror;WR.mirror=sig;return ch}
-function wrApplyUI(){const r=WR.room;if(!r)return;const me=wrMe();
+function wrApplyUI(){const r=WR.room;if(!r)return;const me=wrMe();wrHb();
  if(me&&me.status==='kicked')return wrKicked();
- const mc=wrMirror(),key=[r.status,me&&me.status,WR.fatal,!!WR.res,Object.keys(WR.rp).length,WR.claim].join('|');
- if(r.status)Store.set('wr',{id:r.id});
+ const mc=wrMirror(),key=[r.status,me&&me.status,WR.fatal,!!WR.res,Object.keys(WR.rp).length,WR.claim,WR.clean].join('|');
+ if(r.status&&r.status!=='completed'&&r.status!=='expired')Store.set('wr',{id:r.id});
  if(key!==WR.uiKey){WR.uiKey=key;paneSess();if(r.status==='active'&&me)wrDrawPrompt();if(r.status==='completed')wrCredit();return}
  wrPaintRoom();wrPaintConn();if(mc&&WR.inSess())refreshSess(true);wrDrawPrompt();if(r.status==='completed')wrCredit()}
 
@@ -1180,7 +1181,7 @@ async function wrOpen(id,o={}){
  wrDrop();WR.kicked=0;WR.room={id,code:o.code||''};WR.conn='loading';Store.set('wr',{id});st.tab='sess';sync();paneSess();
  try{await wrInit();await wrLoad();if(WR.room&&WR.room.id===id){wrSub();wrApplyUI()}}
  catch(e){if(WR.room){WR.fatal=wrErrText(e.code);WR.conn='off'}wrChanged()}}
-function wrExit(){wrDrop();Store.set('wr',null);wrMirror();paneSess()}
+function wrExit(){if(WR.room&&WR.room.status==='expired'&&WR.sb)wrRpc('wr_ack_expired',{p_room:WR.room.id}).catch(()=>{});wrDrop();Store.set('wr',null);wrMirror();paneSess()}
 function wrRetry(){if(!WR.room)return;WR.fatal='';WR.conn='loading';if(WR.claim==='err')WR.claim='';wrPaintConn();
  (async()=>{try{await wrInit();await wrLoad();if(WR.room){wrSub();wrApplyUI()}}catch(e){WR.conn='off';if(WR.room&&!wrMe())WR.fatal=wrErrText(e.code);wrChanged()}})()}
 const wrWake=()=>{if(!WR.room||!WR.sb||!WR.uid)return;wrLoad().then(()=>{if(WR.conn!=='ok'&&WR.room)wrSub()}).catch(()=>{WR.conn='off';wrPaintConn()})};
@@ -1200,17 +1201,17 @@ async function wrApplyQty(id,dl,o){const d=dish(id);if(!d||!WR.live())return;
 
 // ---------- Interfaz ----------
 const wrPlayerRow=(p,mode)=>{const me=p.user_id===WR.uid,host=WR.room.host_id===p.user_id,iam=WR.room.host_id===WR.uid,play=mode==='play';
- return `<div class="row"${play?` data-a="wrdet" data-id="${p.user_id}" role="button" tabindex="0"`:''}><div class="t"><b>${esc(p.nick)}${me?' (tú)':''}</b><span class="sub">${host?'Anfitrión · ':''}${play?`<i class="wrdot ${p.status}"></i>${p.status==='finished'?'Sesión terminada':'Jugando'}`:'En la sala'}</span></div>${play?`<span class="pill">${wrC(wrScore(p.user_id))} pts</span>`:''}${iam&&!me&&WR.room.status!=='completed'?`<button class="chip" data-a="wrkick" data-id="${p.user_id}">Expulsar</button>`:''}</div>`};
+ return `<div class="row"${play?` data-a="wrdet" data-id="${p.user_id}" role="button" tabindex="0"`:''}><div class="t"><b>${esc(p.nick)}${me?' (tú)':''}</b><span class="sub">${host?'Anfitrión · ':''}${play?`<i class="wrdot ${p.status}"></i>${p.status==='finished'?'Listo':'Jugando'}`:'En la sala'}</span></div>${play?`<span class="pill">${wrC(wrScore(p.user_id))} pts</span>`:''}${iam&&!me&&WR.room.status!=='completed'?`<button class="chip" data-a="wrkick" data-id="${p.user_id}">Expulsar</button>`:''}</div>`};
 const wrDrawCard=d=>`<div class="card" style="margin-top:12px"><div class="sub">Ruleta de la sala</div><div class="wrdn">${esc(d.dish_name)}</div><div class="sub">${esc(d.dish_category||'')}${d.dish_category?' · ':''}${wrC(d.unit_cents)} pts por pieza</div><div class="wrbtns" style="margin-top:10px"><button class="chip" data-a="wrdraw" data-id="${d.id}">Añadir a mi registro</button><button class="chip" data-a="wrdrawx" data-id="${d.id}">Descartar</button></div></div>`;
 function wrLobbyHTML(){const r=WR.room,ps=wrActive(),host=r.host_id===WR.uid,max=r.max_players||WR_MAX_PLAYERS;
  return `<div class="card" style="text-align:center"><div class="sub">Código de invitación</div><div class="wrcode">${esc(r.code)}</div><div class="wrbtns"><button class="chip" data-a="wrcopy">Copiar código</button><button class="chip" data-a="wrqr">Compartir QR</button></div></div>
 <div class="card" style="margin-top:12px"><div class="wrhd"><b>Jugadores</b><span class="pill">${ps.length}/${max} plazas${ps.length>=max?' · llena':''}</span></div><div class="list" style="margin-top:6px">${ps.map(p=>wrPlayerRow(p,'lobby')).join('')}</div></div>
 ${host?`<button class="btn" data-a="wrstart" style="margin-top:12px"${wrCanStart(r.status,ps.length)?'':' disabled'}>Comenzar sesión</button><p class="sub" style="text-align:center;margin:8px 0 0">${ps.length<WR_MIN_TO_START?'Hacen falta al menos 2 jugadores para comenzar.':'Al comenzar no se admiten más jugadores.'}</p>`:`<p class="sub" style="text-align:center;margin-top:14px">Esperando a que el anfitrión comience la sesión…</p>`}`}
 function wrRoomHTML(){const ps=wrActive(),host=WR.room.host_id===WR.uid,dr=Object.values(WR.draws).find(d=>d.status==='pending');
- return `<div class="card"><div class="wrhd"><div><div class="sub">Puntuación global</div><b class="wrg">${wrC(wrGlobal())}</b></div><span class="pill">${ps.length} jugadores</span></div><div class="list" style="margin-top:8px">${ps.map(p=>wrPlayerRow(p,'play')).join('')}</div>${host&&WR.room.status==='active'?`<button class="chip" style="margin-top:10px" data-a="wrroul">${ico('dice')} Ruleta de la sala</button>`:''}</div>${dr&&WR.live()?wrDrawCard(dr):''}`}
+ return `<div class="card"><div class="wrhd"><div><div class="sub">Puntuación global</div><b class="wrg">${wrC(wrGlobal())}</b></div><span class="pill">${ps.filter(p=>p.status==='finished').length}/${ps.length} listos</span></div><div class="list" style="margin-top:8px">${ps.map(p=>wrPlayerRow(p,'play')).join('')}</div>${host&&WR.room.status==='active'?`<button class="chip" style="margin-top:10px" data-a="wrroul">${ico('dice')} Ruleta de la sala</button>`:''}</div>${dr&&WR.live()?wrDrawCard(dr):''}`}
 function wrPaintRoom(){const el=$('#wr-room');if(!el||!WR.room||!WR.room.status)return;el.innerHTML=WR.room.status==='waiting'?wrLobbyHTML():wrRoomHTML()}
 function wrClaimHTML(m){if(!m)return'';const ok=m.applied_at&&st.adj.some(x=>x.id==='wr:'+m.room_id);
- if(ok)return `<div class="card" style="margin-top:12px;text-align:center"><b>+${wrC(m.total_cents)} pts</b><div class="sub">Añadidos a tu saldo personal.</div></div>`;
+ if(ok)return `<div class="card" style="margin-top:12px;text-align:center"><b>+${wrC(m.total_cents)} pts</b><div class="sub">Guardados en este dispositivo (tu saldo es local y no se sincroniza entre dispositivos).</div><div class="sub" style="margin-top:6px">${WR.clean==='ok'?'Los datos de la partida se han eliminado del servidor.':'Esperando a que todos confirmen para borrar los datos de la partida del servidor…'}</div></div>`;
  if(WR.claim==='err')return `<div class="card" style="margin-top:12px;text-align:center"><div class="sub">No se pudo confirmar tu recompensa con el servidor.</div><button class="chip" data-a="wrretry" style="margin-top:8px">Reintentar</button></div>`;
  return `<div class="card" style="margin-top:12px;text-align:center"><div class="sub">Registrando tu recompensa…</div></div>`}
 function wrResultsHTML(){const res=WR.res,rows=Object.values(WR.rp).sort((a,b)=>a.place-b.place||a.nick.localeCompare(b.nick));
@@ -1225,12 +1226,12 @@ function wrPane(){const p=$('#v-sess'),y=p.scrollTop,r=WR.room,host=r.host_id===
  if(WR.fatal)h=head('Wrapped','Sala')+`<div class="empty"><h3>No se pudo conectar</h3><p>${esc(WR.fatal)}</p><div class="wrbtns"><button class="btn" data-a="wrretry" style="display:inline-block;width:auto;margin:0">Reintentar</button><button class="btn sec" data-a="wrexit" style="display:inline-block;width:auto;margin:0">Volver al menú</button></div></div>`;
  else if(!r.status)h=head('Wrapped','Sala')+`<div class="empty"><h3>Conectando…</h3><p>Recuperando el estado de la sala.</p></div>`;
  else if(r.status==='waiting')h=head('Wrapped','Sala de espera',`<span id="wr-conn"></span><button class="chip" data-a="wrleave">${host?'Cerrar sala':'Salir'}</button>`)+`<div id="wr-room"></div>`;
- else if(r.status==='active'){play=true;h=head('Wrapped','Sala '+esc(r.code),`<span id="wr-conn"></span>`)+`<div id="wr-room"></div><section class="hero"><div class="lbl">Tus puntos</div><div class="scorebox"><i class="glow" id="glow"></i><div class="score" id="score">0</div></div><div class="hsum" id="hsum"></div><button class="fin off" id="fin" data-a="wrfinish">Terminé mi participación</button><span class="sr" id="sr" aria-live="polite"></span></section><div class="reg"><h2>Platos registrados</h2><div class="rl" id="l-sess"></div></div>${WR.live()?`<button class="fab" data-a="addopen" aria-label="Añadir sushi">${ico('sess')}</button>`:''}`}
+ else if(r.status==='active'){play=true;h=head('Wrapped','Sala '+esc(r.code),`<span id="wr-conn"></span>`)+`<div id="wr-room"></div><div id="wr-cd"></div><section class="hero"><div class="lbl">Tus puntos</div><div class="scorebox"><i class="glow" id="glow"></i><div class="score" id="score">0</div></div><div class="hsum" id="hsum"></div><button class="fin" id="fin" data-a="wrfinish">Finalizado</button><span class="sr" id="sr" aria-live="polite"></span></section><div class="reg"><h2>Platos registrados</h2><div class="rl" id="l-sess"></div></div>${WR.live()?`<button class="fab" data-a="addopen" aria-label="Añadir sushi">${ico('sess')}</button>`:''}`}
  else if(r.status==='completed')h=wrResultsHTML();
  else h=head('Wrapped','Sala')+`<div class="empty"><h3>Sala caducada</h3><p>${esc(wrErrText('room_closed'))}</p><button class="btn" data-a="wrexit">Volver al menú</button></div>`;
  p.innerHTML=h;
  if(play){const t=totals().p;S.cur=t;S.to=t;cancelAnimationFrame(S.raf);clearTimeout(S.tm);regList();sum();paintScore(t)}
- wrPaintRoom();wrPaintConn();p.scrollTop=y}
+ wrPaintRoom();wrPaintConn();WR.cdS='';wrCdPaint();p.scrollTop=y}
 IC.solo='<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.6-5.4 7-5.4s6.2 1.8 7 5.4"/>';
 IC.group='<circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.5c.6-3.2 3-4.8 6-4.8s5.4 1.6 6 4.8"/><circle cx="17" cy="9.5" r="2.5"/><path d="M17 14.5c2.2.1 3.8 1.5 4.3 4"/>';
 const WSG={x:0,v:0,t:0,raf:0,drag:null,ready:false,ro:null};
@@ -1239,7 +1240,7 @@ const wrSegPaint=()=>{const el=wrSegEl(),bub=el&&el.querySelector('.wrbub');if(!
 function wrSegTarget(){const el=wrSegEl();if(!el)return;const b=el.querySelectorAll('button')[WR.mode==='wrapped'?1:0],bub=el.querySelector('.wrbub');if(!b||!bub)return;bub.style.width=b.offsetWidth+'px';WSG.t=b.offsetLeft}
 function wrSegSpring(){cancelAnimationFrame(WSG.raf);if(rm.matches||!WSG.ready){WSG.x=WSG.t;WSG.v=0;wrSegPaint();return}let last=performance.now();
  const step=now=>{const dt=Math.min(.032,(now-last)/1000);last=now;WSG.v+=(380*(WSG.t-WSG.x)-24*WSG.v)*dt;WSG.x+=WSG.v*dt;wrSegPaint();if(Math.abs(WSG.t-WSG.x)<.3&&Math.abs(WSG.v)<8){WSG.x=WSG.t;WSG.v=0;wrSegPaint();return}WSG.raf=requestAnimationFrame(step)};WSG.raf=requestAnimationFrame(step)}
-const wrBody=m=>m==='wrapped'?`<h3>Sesión compartida</h3><p>Juega con otras personas (hasta 4) y compartid una puntuación global. Cuando todos terminéis, los puntos se reparten y se añade una bonificación según la clasificación.</p>${wrConfigured()?'':`<p class="ferr">Wrapped aún no está configurado en esta copia de la app (ver WRAPPED.md).</p>`}<div style="display:grid;gap:8px;max-width:280px;margin:14px auto 0"><button class="btn" data-a="wrnew" style="display:block;width:100%;margin:0">Crear sala</button><button class="btn sec" data-a="wrjoinsheet" style="display:block;width:100%;margin:0">Unirse a una sala</button></div>`:(WR.soloHtml||'');
+const wrBody=m=>m==='wrapped'?`<h3>Sesión compartida</h3><p>Juega con otras personas (hasta 4) y compartid una puntuación global. Cuando todos estéis listos durante 5 segundos, los puntos se reparten y se añade una bonificación según la clasificación.</p>${wrConfigured()?'':`<p class="ferr">Wrapped aún no está configurado en esta copia de la app (ver WRAPPED.md).</p>`}<div style="display:grid;gap:8px;max-width:280px;margin:14px auto 0"><button class="btn" data-a="wrnew" style="display:block;width:100%;margin:0">Crear sala</button><button class="btn sec" data-a="wrjoinsheet" style="display:block;width:100%;margin:0">Unirse a una sala</button></div>`:(WR.soloHtml||'');
 function wrSegHtml(){const m=WR.mode,bt=(id,ic,l)=>`<button role="radio" aria-checked="${m===id}" data-a="wrmode" data-id="${id}">${ico(ic)}<span>${l}</span></button>`;
  return `<div class="wrseg" role="radiogroup" aria-label="Modalidad de sesión"><i class="wrbub"></i>${bt('solo','solo','Solo')}${bt('wrapped','group','Wrapped')}</div>`}
 function wrSetMode(id){if(id!=='solo'&&id!=='wrapped')return;const el=wrSegEl(),body=$('#wr-body');
@@ -1270,11 +1271,49 @@ function wrDrawPrompt(){const d=Object.values(WR.draws).find(x=>x.status==='pend
  if($('#ov').classList.contains('show')||AS.open)return;WR.seen[d.id]=1;
  sheet(`<h1 style="font-size:24px">Ruleta de la sala</h1><p class="sub" style="margin:2px 0 0">El anfitrión te ha asignado un plato.</p><div class="rlw win" role="status"><span class="rlcat">${esc(d.dish_category||'')}</span><b class="rlname">${esc(d.dish_name)}</b></div><div class="rlp" style="text-align:center"><span class="pill rec">${wrC(d.unit_cents)} pts por pieza</span></div><div style="display:grid;gap:8px;margin-top:12px"><button class="btn" data-a="wrdraw" data-id="${d.id}">Añadir a mi registro</button><button class="btn sec" data-a="wrdrawx" data-id="${d.id}">Ahora no</button></div>`);hap([10,30,14]);snd('win')}
 
+
+// ---------- Conexión validada por el servidor + cuenta atrás de 5 s (el servidor decide; esto solo la muestra) ----------
+function wrHb(){const on=!!(WR.room&&WR.room.status==='active'&&wrMe()&&WR.sb&&!WR.fatal&&['playing','finished'].includes(wrMe().status));
+ if(on&&!WR.hbT){WR.hbT=setInterval(wrBeat,1000);WR.cdT=setInterval(wrCdPaint,250);wrBeat()}
+ else if(!on&&WR.hbT){clearInterval(WR.hbT);WR.hbT=0;clearInterval(WR.cdT);WR.cdT=0}}
+async function wrBeat(){if(WR.beating||!WR.room||!WR.sb)return;WR.beating=1;const id=WR.room.id;
+ try{const t0=Date.now(),r=await wrRpc('wr_heartbeat',{p_room:id}),t1=Date.now();if(!WR.room||WR.room.id!==id)return;
+  WR.off=Date.parse(r.now)-(t0+t1)/2;if(WR.conn==='off'){WR.conn='ok';wrPaintConn()}
+  if(r.status!=='active'){await wrLoad();return}
+  const ca=r.countdown_at||null;if((WR.room.countdown_at||null)!==ca)WR.room={...WR.room,countdown_at:ca};wrCdPaint()}
+ catch(e){if(WR.room){WR.conn='off';wrPaintConn();wrCdPaint()}}
+ finally{WR.beating=0}}
+function wrCdPaint(){const el=$('#wr-cd');if(!el)return;const r=WR.room,ca=r&&r.status==='active'&&r.countdown_at;
+ let h='';if(ca&&WR.conn==='ok'){const left=5000-(Date.now()+(WR.off||0)-Date.parse(ca)),n=Math.max(1,Math.min(5,Math.ceil(left/1000)));
+  h=`<div class="card" style="margin-top:12px;text-align:center"><div class="sub">Todos listos · la partida se cierra en</div><b class="wrbig">${n}</b><div class="sub">Se cancela si alguien se desmarca o pierde la conexión.</div></div>`}
+ if(h!==WR.cdS){WR.cdS=h;el.innerHTML=h}}
+
+// ---------- Confirmación de la recompensa y borrado de los datos temporales ----------
+const wrSaved=rid=>{try{return JSON.parse(localStorage.getItem('sw:adj')||'[]').some(x=>x.id===rid)}catch(e){return false}};   // lectura real del almacenamiento local
+async function wrFinalize(id){let cleaned=false;
+ try{const x=await wrRpc('wr_claim_reward',{p_room:id},{retry:true});if(WR.room&&WR.room.id===id&&WR.rp[WR.uid])WR.rp[WR.uid]={...WR.rp[WR.uid],...x};cleaned=!!x.cleaned}
+ catch(e){if(e.code==='room_not_found'||e.code==='not_member')cleaned=true;else throw e}
+ if(cleaned)await wrDone(id);else wrWaitClean(id)}
+function wrWaitClean(id){clearTimeout(WR.cleanTm);WR.clean='wait';
+ WR.cleanTm=setTimeout(async()=>{WR.cleanTm=0;let ok=false;try{ok=await wrRpc('wr_cleanup_check',{p_room:id})===true}catch(e){}if(ok)wrDone(id);else wrWaitClean(id)},3000)}
+async function wrDone(id){clearTimeout(WR.cleanTm);WR.cleanTm=0;let ok=false;
+ try{ok=await wrRpc('wr_cleanup_check',{p_room:id},{retry:true})===true}catch(e){}
+ if(!ok)return wrWaitClean(id);                        // no se afirma «limpio» hasta verificarlo en el servidor
+ let gone=false;                                       // identidad anónima temporal: la borra una Edge Function (service_role solo en el servidor)
+ try{const s=(await WR.sb.auth.getSession()).data.session;
+  if(!s)gone=true;else{const r=await fetch(WR_CONFIG.url+'/functions/v1/wr-delete-identity',{method:'POST',headers:{Authorization:'Bearer '+s.access_token,apikey:WR_CONFIG.anonKey,'Content-Type':'application/json'}}),j=await r.json();
+   gone=!!j.deleted||!!j.reason;if(j.deleted)await WR.sb.auth.signOut({scope:'local'})}}catch(e){}
+ Store.set('wrpend',gone?null:{id,idn:1});WR.clean='ok';
+ if(WR.room&&WR.room.id===id&&WR.room.status==='completed')paneSess()}
+async function wrResume(id){try{const p=Store.get('wrpend',null);if(!(p&&p.idn))await wrInit();else if(!WR.sb)await wrInit();if(p&&p.idn)await wrDone(id);else await wrFinalize(id)}catch(e){}}
+
 // ---------- Recompensa: comprobante único por sala, idempotente ----------
 async function wrCredit(){const m=WR.rp[WR.uid];if(!m||WR.crediting||WR.claim==='ok')return;WR.crediting=true;
  try{const rid='wr:'+m.room_id;
-  if(!m.applied_at&&!st.adj.some(x=>x.id===rid)){st.adj.unshift({id:rid,date:Date.now(),pts:m.total_cents/100,who:'',k:'wr',label:'Wrapped · sala '+(WR.room?WR.room.code:'')});saveAll();render();hap([14,50,22]);toast('Recompensa Wrapped','+'+wrC(m.total_cents)+' pts en tu saldo')}
-  if(!m.applied_at){const x=await wrRpc('wr_claim_reward',{p_room:m.room_id},{retry:true});WR.rp[WR.uid]={...m,...x}}
+  if(!st.adj.some(x=>x.id===rid)){st.adj.unshift({id:rid,date:Date.now(),pts:m.total_cents/100,who:'',k:'wr',label:'Wrapped · sala '+(WR.room?WR.room.code:'')});saveAll();render();hap([14,50,22]);toast('Recompensa Wrapped','+'+wrC(m.total_cents)+' pts en tu saldo')}
+  if(!wrSaved(rid))throw new Error('local');          // solo se confirma al servidor si el navegador la guardó de verdad
+  Store.set('wrpend',{id:m.room_id});Store.set('wr',null);
+  await wrFinalize(m.room_id);
   WR.claim='ok'}
  catch(e){WR.claim='err'}
  finally{WR.crediting=false;if(WR.room&&WR.room.status==='completed')paneSess()}}
@@ -1284,7 +1323,7 @@ const _paneSess=paneSess,_changeQty=changeQty,_sum=sum,_totals=totals,_regList=r
 paneSess=function(){if(WR.room)return wrPane();_paneSess();wrPicker()};
 changeQty=function(id,dl,o){if(!WR.inSess())return _changeQty(id,dl,o);if(!WR.live()){toast('Participación cerrada','Ya has terminado tu parte de la partida');return}wrEnqueue(id,dl,o||{})};
 totals=function(){if(!WR.inSess())return _totals();let p=0,c=0,k=0;for(const i of Object.values(WR.items))if(i.user_id===WR.uid&&i.qty>0){p+=i.qty*i.unit_cents/100;c+=i.qty;k++}return{p,c,k}};
-sum=function(){_sum();if(!WR.inSess())return;const f=$('#fin'),h=$('#hsum');if(!f)return;const done=wrMe().status!=='playing';f.disabled=done;f.classList.toggle('off',done);f.tabIndex=done?-1:0;if(done&&h)h.innerHTML+=' · Terminada'};
+sum=function(){_sum();if(!WR.inSess())return;const f=$('#fin'),h=$('#hsum');if(!f)return;const done=wrMe().status!=='playing';f.disabled=false;f.classList.remove('off');f.tabIndex=0;f.textContent=done?'Listo · toca para seguir jugando':'Finalizado';f.setAttribute('aria-pressed',String(done));if(done&&h)h.innerHTML+=' · Listo'};
 regList=function(){_regList();if(!WR.inSess())return;const L=$('#l-sess');if(!L)return;const x=Object.values(WR.items).filter(i=>i.user_id===WR.uid&&i.qty>0&&!dish(i.dish_id));if(!x.length)return;const n=L.querySelector('.none');if(n)n.remove();L.insertAdjacentHTML('beforeend',x.map(i=>`<div class="rr" style="cursor:default"><div class="t"><b>${esc(i.dish_name)}</b><small>${pieces(i.qty)}</small></div><div class="v">${fmt(i.qty*i.unit_cents/100)}<small> pts</small></div></div>`).join(''))};
 A.regedit=function(id){if(WR.inSess()&&!WR.live())return;_regedit(id)};
 // «Iniciar sesión» del Inicio ahora lleva al selector Solo/Wrapped en vez de crear una sesión Solo directamente.
@@ -1311,10 +1350,11 @@ Object.assign(A,{
  wrleave2(id,b){wrGo('leave',b,'Saliendo…',async()=>{try{await wrRpc('wr_leave_room',{p_room:WR.room.id},{retry:true});close();wrExit()}catch(e){close();toast('No se pudo salir',wrErrText(e.code))}})},
  wrkick(id){const p=WR.players[id];if(!p)return;sheet(`<h1 style="font-size:24px">¿Expulsar a ${esc(p.nick)}?</h1><p class="sub">No podrá volver a esta sala${WR.room.status==='active'?' y su aportación dejará de contar en la puntuación global':''}.</p><div style="display:grid;gap:8px"><button class="btn" data-a="wrkick2" data-id="${id}">Expulsar</button><button class="btn sec" data-a="close">Cancelar</button></div>`)},
  wrkick2(id,b){wrGo('kick'+id,b,'Expulsando…',async()=>{try{await wrRpc('wr_kick',{p_room:WR.room.id,p_user:id});close();await wrLoad()}catch(e){close();toast('No se pudo expulsar',wrErrText(e.code))}})},
- wrfinish(){if(!WR.live())return;const t=totals();sheet(`<h1 style="font-size:24px">¿Terminar tu participación?</h1><p class="sub">Tu aportación (${fmt(t.p)} pts) quedará cerrada y no podrás modificarla. El reparto se hará cuando todos hayan terminado.</p><div style="display:grid;gap:8px"><button class="btn" data-a="wrfin2">Terminar</button><button class="btn sec" data-a="close">Volver</button></div>`)},
- wrfin2(id,b){wrGo('fin',b,'Terminando…',async()=>{try{await wrRpc('wr_finish_participation',{p_room:WR.room.id},{retry:true});close();await wrLoad()}catch(e){close();toast('No se pudo terminar',wrErrText(e.code))}})},
+ wrfinish(id,b){if(!WR.room||WR.room.status!=='active')return;const me=wrMe();if(!me||!['playing','finished'].includes(me.status))return;const to=me.status==='playing';
+  wrGo('ready',b,'…',async()=>{try{await wrRpc('wr_set_ready',{p_room:WR.room.id,p_ready:to},{retry:true});hap(to?[14,40]:10);await wrLoad()}
+   catch(e){toast('No se pudo actualizar',wrErrText(e.code));if(e.code!=='network'&&e.code!=='timeout')wrLoad().catch(()=>{})}})},
  wrdet(id){const p=WR.players[id];if(!p)return;const its=Object.values(WR.items).filter(i=>i.user_id===id&&i.qty>0).sort((a,b)=>b.qty*b.unit_cents-a.qty*a.unit_cents);
-  sheet(`<h1 style="font-size:24px">${esc(p.nick)}</h1><div class="sub">${p.status==='finished'?'Sesión terminada':'Jugando'} · ${wrC(wrScore(id))} pts</div><div class="list" style="margin:14px 0">${its.map(i=>`<div class="row"><div class="t"><b>${esc(i.dish_name)}</b><span class="sub">${i.qty} × ${wrC(i.unit_cents)}</span></div><span class="pill">${wrC(i.qty*i.unit_cents)}</span></div>`).join('')||'<div class="empty">Todavía no ha registrado nada</div>'}</div><button class="btn sec" data-a="close">Cerrar</button>`)},
+  sheet(`<h1 style="font-size:24px">${esc(p.nick)}</h1><div class="sub">${p.status==='finished'?'Listo':'Jugando'} · ${wrC(wrScore(id))} pts</div><div class="list" style="margin:14px 0">${its.map(i=>`<div class="row"><div class="t"><b>${esc(i.dish_name)}</b><span class="sub">${i.qty} × ${wrC(i.unit_cents)}</span></div><span class="pill">${wrC(i.qty*i.unit_cents)}</span></div>`).join('')||'<div class="empty">Todavía no ha registrado nada</div>'}</div><button class="btn sec" data-a="close">Cerrar</button>`)},
  wrroul(){if(!WR.room||WR.room.host_id!==WR.uid||WR.room.status!=='active')return;const ps=wrActive().filter(p=>p.status==='playing');
   sheet(`<h1 style="font-size:24px">Ruleta de la sala</h1><p class="sub">Asigna un plato al azar de la carta. El jugador decide si lo añade a su registro.</p><div class="list" style="margin:14px 0"><button class="row" style="width:100%;text-align:left" data-a="wrspin" data-id="all"><div class="t"><b>A todos los jugadores</b><span class="sub">Un plato aleatorio para cada uno</span></div></button>${ps.map(p=>`<button class="row" style="width:100%;text-align:left" data-a="wrspin" data-id="${p.user_id}"><div class="t"><b>Solo a ${esc(p.nick)}${p.user_id===WR.uid?' (tú)':''}</b></div></button>`).join('')}</div><button class="btn sec" data-a="close">Cerrar</button>`)},
  wrspin(id,b){wrGo('spin',b,'…',async()=>{const pool=rlAll();if(!pool.length){toast('La carta está vacía','Importa platos desde Ajustes');return}
@@ -1335,7 +1375,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)wrWake()})
 addEventListener('online',wrWake);addEventListener('offline',()=>{if(WR.room){WR.conn='off';wrPaintConn()}});
 addEventListener('hashchange',wrHash);
 paneSess();wrHash();
-(function wrBoot(){const s=Store.get('wr',null);if(s&&s.id&&wrConfigured()&&!st.sess)wrOpen(s.id)})();
+(function wrBoot(){if(wrConfigured()){const p=Store.get('wrpend',null);if(p&&p.id){Store.set('wr',null);wrResume(p.id);return}}const s=Store.get('wr',null);if(s&&s.id&&wrConfigured()&&!st.sess)wrOpen(s.id)})();
 </script>
 </body>
 </html>
