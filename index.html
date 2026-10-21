@@ -445,6 +445,9 @@ body.glass #sh .qrcard{box-shadow:0 0 0 1px rgba(255,255,255,.4),0 30px 60px -26
  #sh,#as{border-radius:30px;max-width:600px}
  #as.edit{padding-bottom:20px}
 }
+/* Editar un registro: al sumar o restar, el desenfoque se aparta un instante y vuelve */
+body.glass .ao.show.peek .scrim{opacity:.06;transition:opacity .14s ease}
+@media(min-width:760px){.ao:has(#as.edit){align-items:flex-end;padding-bottom:28px}}
 @media(prefers-reduced-motion:reduce){#sh{animation:none}#ov.show{animation:none}}
 </style>
 </head>
@@ -653,8 +656,11 @@ function openPanel(mode,id){if(AS.open||!st.sess)return;if(mode==='edit'&&!dish(
  Object.assign(AS,{open:true,mode,q:'',cat:'Todas',lim:40,sel:null,qty:1,id:id||null,opener:document.activeElement});
  pnl.className=mode;pnl.style.transform='';pnl.innerHTML=mode==='add'?addHTML():editHTML();
  if(mode==='add'){alist();afoot()}else editUpdate();
- appEl.inert=true;nav.inert=true;ao.setAttribute('aria-hidden','false');ao.classList.add('show');pnl.focus({preventScroll:true})}
-function closePanel(){if(!AS.open)return;AS.open=false;ao.classList.remove('show');ao.setAttribute('aria-hidden','true');appEl.inert=false;nav.inert=false;
+ appEl.inert=true;nav.inert=true;ao.setAttribute('aria-hidden','false');ao.classList.add('show');pnl.focus({preventScroll:true});
+ if(mode==='edit'){const v=$('#v-sess'),s=$('#score');if(v&&s){const r=s.getBoundingClientRect();if(r.bottom<60||r.top>innerHeight*.5)v.scrollTo({top:0,behavior:rm.matches?'auto':'smooth'})}}}
+let PK=0;
+function peek(){ao.classList.add('peek');clearTimeout(PK);PK=setTimeout(()=>ao.classList.remove('peek'),1100)}
+function closePanel(){if(!AS.open)return;clearTimeout(PK);ao.classList.remove('peek');AS.open=false;ao.classList.remove('show');ao.setAttribute('aria-hidden','true');appEl.inert=false;nav.inert=false;
  const o=AS.opener;AS.opener=null;if(o&&o.isConnected&&o.focus)o.focus({preventScroll:true})}
 Object.assign(A,{
  addopen(){openPanel('add')},
@@ -667,8 +673,8 @@ Object.assign(A,{
  qdec(){if(AS.sel&&AS.qty>1){AS.qty--;afoot()}},
  pgo(){if(AS.busy||!AS.sel||!st.sess)return;const d=dish(AS.sel);if(!d)return;AS.busy=true;const n=AS.qty,id=d.id;AS.sel=null;
   changeQty(id,n,{top:true,delay:160});closePanel();setTimeout(()=>{AS.busy=false},420)},
- reginc(){changeQty(AS.id,1)},
- regdec(){if((st.sess?.items[AS.id]||0)>1)changeQty(AS.id,-1)},
+ reginc(){changeQty(AS.id,1);peek()},
+ regdec(){if((st.sess?.items[AS.id]||0)>1){changeQty(AS.id,-1);peek()}},
  regdel(){const n=st.sess?.items[AS.id]||0;if(n)changeQty(AS.id,-n);closePanel()}
 });
 document.addEventListener('input',e=>{if(e.target.id==='aq'){AS.q=e.target.value;AS.lim=40;alist();$('#al').scrollTop=0}});
