@@ -84,7 +84,7 @@ button{touch-action:manipulation}
 .view::after{content:"";display:block;height:150px}
 .view.l{transform:translate3d(-22px,0,0)}
 .view.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
-header{padding:calc(env(safe-area-inset-top,0px) + 19px) 0 12px;align-items:flex-end}
+header{padding:calc(env(safe-area-inset-top,0px) + 26px) 0 12px;align-items:flex-end}
 .hx{display:flex;gap:8px;align-items:center}
 .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx2);font-weight:600}
 h1{font:600 36px/1.1 ui-serif,"New York","Iowan Old Style",Georgia,serif;letter-spacing:-.02em}
@@ -388,6 +388,16 @@ body.fx-trans::before{content:"";position:fixed;inset:0;z-index:-1;pointer-event
 .fb{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .34s cubic-bezier(.2,.8,.2,1),visibility 0s .34s}
 .fold.open .fb{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .34s cubic-bezier(.2,.8,.2,1),visibility 0s}
 .fbi{overflow:hidden;min-height:0}.fbi>*:first-child{margin-top:10px}.fbi>*:last-child{margin-bottom:4px}
+
+@keyframes nudge{0%,100%{transform:scale(1);box-shadow:0 0 0 0 color-mix(in srgb,var(--ac) 0%,transparent)}50%{transform:scale(1.04);box-shadow:0 0 0 7px color-mix(in srgb,var(--ac) 20%,transparent)}}
+#v-sess[data-idle] #fin:not(.off){animation:nudge 2.2s ease-in-out infinite;background:color-mix(in srgb,var(--ac) 16%,transparent)}
+@media(prefers-reduced-motion:reduce){#v-sess[data-idle] #fin:not(.off){animation:none}}
+.none .sym{vertical-align:middle;position:relative;top:-1px;margin:0 4px;font-size:0}.none .sym svg{width:12px;height:12px;stroke-width:3.2}
+
+/* ===== Cristal líquido al tocar ===== */
+#lg{position:fixed;left:0;top:0;z-index:80;pointer-events:none;opacity:0;transform:scale(.9);transition:transform .4s cubic-bezier(.3,1.7,.5,1),opacity .22s ease;-webkit-backdrop-filter:saturate(190%) brightness(1.12);backdrop-filter:saturate(190%) brightness(1.12);background:radial-gradient(circle at var(--px,50%) var(--py,50%),rgba(255,255,255,.44),rgba(255,255,255,.13) 42%,rgba(255,255,255,.05) 75%),linear-gradient(160deg,color-mix(in srgb,var(--ac) 14%,transparent),transparent 60%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.32),inset 0 2px 1px rgba(255,255,255,.55),inset 0 -10px 16px -8px rgba(255,255,255,.22),0 12px 28px -10px rgba(0,0,0,.5)}
+#lg.on{opacity:1;transform:scale(var(--sx,1.04),var(--sy,1.04))}
+@media(prefers-reduced-motion:reduce){#lg{transition:opacity .15s}#lg.on{transform:none}}
 </style>
 </head>
 <body>
@@ -401,7 +411,7 @@ body.fx-trans::before{content:"";position:fixed;inset:0;z-index:-1;pointer-event
 const Store={get(k,d){try{const v=localStorage.getItem('sw:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){if(Store.off)return;try{localStorage.setItem('sw:'+k,JSON.stringify(v))}catch(e){}}};
 // ---------- Estado ----------
 const st={adj:Store.get('adj',[]),out:Store.get('out',[]),used:Store.get('used',[]),tab:'home',catalog:Store.get('catalog',[]),pts:Store.get('pts',{}),hist:Store.get('hist',[]),sess:Store.get('sess',null),set:Store.get('set',{glass:true,theme:'auto'}),q:'',cat:'Todas',lim:60,all:false,shown:0};
-Object.assign(st,{rw:Store.get('rw',[]),red:Store.get('red',[]),ach:Store.get('ach',{c:{},seen:[]}),cnt:Store.get('cnt',{created:0}),rhAll:false,fold:Store.get('fold',{})});
+Object.assign(st,{rw:Store.get('rw',[]),red:Store.get('red',[]),ach:Store.get('ach',{c:{},seen:[]}),cnt:Store.get('cnt',{created:0}),rhAll:false,fold:{}});
 st.ach.c=st.ach.c||{};st.ach.seen=st.ach.seen||[];
 const $=s=>document.querySelector(s);
 const fmt=n=>(+n).toLocaleString('es-ES',{maximumFractionDigits:2});
@@ -416,7 +426,7 @@ const dt=t=>new Date(t).toLocaleString('es-ES',{day:'numeric',month:'short',hour
 const I={piece:'<rect x="3.5" y="8" width="17" height="9" rx="4.5"/>',dish:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/>',tag:'<path d="M3.5 12.5V4.5h8l8.5 8.5-8 8z"/><circle cx="8" cy="9" r="1"/>',find:'<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',home:'<path d="M4 11l8-7 8 7v9H4z"/>',menu:'<path d="M5 4h14v16H5zM9 9h6M9 13h6"/>',sess:'<path d="M12 5v14M5 12h14"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>'};
 const ico=n=>`<svg viewBox="0 0 24 24">${I[n]||IC[n]||I.dish}</svg>`;
 // ---------- Aplicar preferencias ----------
-function applyPrefs(){document.body.classList.toggle('glass',!!st.set.glass);['trans','tint','edge'].forEach(k=>document.body.classList.toggle('fx-'+k,st.set[k]!==false));const r=document.documentElement;st.set.theme==='auto'?r.removeAttribute('data-theme'):r.setAttribute('data-theme',st.set.theme);
+function applyPrefs(){document.body.classList.toggle('glass',!!st.set.glass);['trans','tint','edge','lg'].forEach(k=>document.body.classList.toggle('fx-'+k,st.set[k]!==false));const r=document.documentElement;st.set.theme==='auto'?r.removeAttribute('data-theme'):r.setAttribute('data-theme',st.set.theme);
   const ac=/^#[0-9a-f]{6}$/i.test(st.set.accent||'')?st.set.accent:'';ac?r.style.setProperty('--ac',ac):r.style.removeProperty('--ac');
   const L=ac?[1,3,5].map(i=>{let c=parseInt(ac.substr(i,2),16)/255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)}):[0,0,0],lum=.2126*L[0]+.7152*L[1]+.0722*L[2];r.style.setProperty('--on-ac',ac&&lum>.5?'#161616':'#fff')}
 // ---------- Hojas modales ----------
@@ -427,7 +437,7 @@ function settings(){sheet(`<h1 style="font-size:24px">Ajustes</h1>
 <div class="row"><div class="t"><b>Sonidos</b><span class="sub">Un toque suave al pulsar y al completar acciones</span></div><button class="tog ${st.set.sound===true?'on':''}" data-a="sound" aria-label="Sonidos"></button></div>
 <div class="row"><div class="t"><b>Vibración</b><span class="sub">Respuesta háptica al tocar (según el dispositivo)</span></div><button class="tog ${st.set.haptic!==false?'on':''}" data-a="haptic" aria-label="Vibración"></button></div>
 <div class="row"><div class="t"><b>Tema</b></div><select id="theme" style="width:auto">${[['auto','Automático'],['light','Claro'],['dark','Oscuro']].map(([v,l])=>`<option value="${v}" ${st.set.theme===v?'selected':''}>${l}</option>`).join('')}</select></div>${accentRow()}</div>
-<h2>Superficies</h2><div class="list"><div class="row"><div class="t"><b>Transparencia</b><span class="sub">Tarjetas semitransparentes que dejan ver el fondo</span></div><button class="tog ${st.set.trans!==false?'on':''}" data-a="fx" data-id="trans" aria-label="Transparencia"></button></div><div class="row"><div class="t"><b>Color en las tarjetas</b><span class="sub">Un toque del color del tema en tarjetas, etiquetas e iconos</span></div><button class="tog ${st.set.tint!==false?'on':''}" data-a="fx" data-id="tint" aria-label="Color en las tarjetas"></button></div><div class="row"><div class="t"><b>Bordes con brillo</b><span class="sub">Luz suave en los bordes y sombra bajo las tarjetas</span></div><button class="tog ${st.set.edge!==false?'on':''}" data-a="fx" data-id="edge" aria-label="Bordes con brillo"></button></div></div>
+<h2>Superficies</h2><div class="list"><div class="row"><div class="t"><b>Transparencia</b><span class="sub">Tarjetas semitransparentes que dejan ver el fondo</span></div><button class="tog ${st.set.trans!==false?'on':''}" data-a="fx" data-id="trans" aria-label="Transparencia"></button></div><div class="row"><div class="t"><b>Color en las tarjetas</b><span class="sub">Un toque del color del tema en tarjetas, etiquetas e iconos</span></div><button class="tog ${st.set.tint!==false?'on':''}" data-a="fx" data-id="tint" aria-label="Color en las tarjetas"></button></div><div class="row"><div class="t"><b>Bordes con brillo</b><span class="sub">Luz suave en los bordes y sombra bajo las tarjetas</span></div><button class="tog ${st.set.edge!==false?'on':''}" data-a="fx" data-id="edge" aria-label="Bordes con brillo"></button></div><div class="row"><div class="t"><b>Cristal líquido al tocar</b><span class="sub">Los botones se iluminan como cristal al pulsarlos</span></div><button class="tog ${st.set.lg!==false?'on':''}" data-a="fx" data-id="lg" aria-label="Cristal líquido al tocar"></button></div></div>
 <h2>Carta y puntuaciones</h2><div class="list"><button class="row" style="width:100%;text-align:left" data-a="import"><div class="t"><b>Importar o añadir platos</b></div></button><button class="row" style="width:100%;text-align:left" data-a="resetpts"><div class="t"><b>Restablecer puntuaciones editadas</b><span class="sub">${Object.keys(st.pts).length} personalizadas. El historial no cambia.</span></div></button></div>
 <h2>Información</h2><p class="sub">Sushi Wallet v0.1. Tus datos se guardan solo en este navegador (sin sincronización entre dispositivios). Los puntos son un sistema personal, no una medida nutricional.</p>
 <h2>Zona de peligro</h2><div class="list"><button class="row" style="width:100%;text-align:left" data-a="resetall"><div class="t"><b style="color:#ff5a4f">Resetear todo el progreso</b><span class="sub">Borra sesiones, puntos, logros, canjes y ajustes</span></div></button></div>`.replace('dispositivios','dispositivos'))}
@@ -511,7 +521,7 @@ const slot=()=>{const b=nav.querySelectorAll('button');return{w:b[0].offsetWidth
 function paint(){const sp=Math.min(.16,Math.abs(B.v)/5200),g=B.drag?.on?1.07:1;$('.bub').style.transform=`translate3d(${B.x}px,0,0) scale(${g+sp},${g-sp*.7})`}
 function spring(){cancelAnimationFrame(B.raf);if(rm.matches||!B.ready){B.x=B.t;B.v=0;paint();return}let last=performance.now();
  const step=now=>{const dt=Math.min(.032,(now-last)/1000);last=now;B.v+=(380*(B.t-B.x)-24*B.v)*dt;B.x+=B.v*dt;paint();if(Math.abs(B.t-B.x)<.3&&Math.abs(B.v)<8){B.x=B.t;B.v=0;paint();return}B.raf=requestAnimationFrame(step)};B.raf=requestAnimationFrame(step)}
-function sync(){const ai=TABS.indexOf(st.tab),s=slot();TABS.forEach((k,i)=>{const p=$('#v-'+k);p.classList.toggle('on',i===ai);p.classList.toggle('l',i<ai);p.setAttribute('aria-hidden',i!==ai);p.inert=i!==ai});
+function sync(){if(SY.last!==st.tab){if(SY.last==='home')foldReset();SY.last=st.tab}const ai=TABS.indexOf(st.tab),s=slot();TABS.forEach((k,i)=>{const p=$('#v-'+k);p.classList.toggle('on',i===ai);p.classList.toggle('l',i<ai);p.setAttribute('aria-hidden',i!==ai);p.inert=i!==ai});
  nav.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('on',i===ai);i===ai?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
  $('.bub').style.width=s.w+'px';B.t=s.x(ai);spring()}
 function shell(){$('#app').innerHTML=TABS.map(k=>`<section class="view" id="v-${k}"></section>`).join('');nav.innerHTML='<i class="bub"></i>'+TABS.map(k=>`<button data-a="tab" data-id="${k}" aria-label="${LBL[k]}">${ico(k)}<span>${LBL[k]}</span>${k==='ach'?'<b class="bdg" id="bd-ach"></b>':''}</button>`).join('')}
@@ -564,7 +574,7 @@ function setScore(to,o={}){cancelAnimationFrame(S.raf);clearTimeout(S.tm);S.to=t
 // -- Registro de la sesión --
 function regIds(){const s=st.sess;if(!s)return[];const it=s.items,o=(s.order||[]).filter(i=>it[i]>0);for(const i in it)if(it[i]>0&&!o.includes(i))o.push(i);return o.filter(i=>dish(i))}
 function regList(){const L=$('#l-sess');if(!L||!st.sess)return;const ids=regIds();
- L.innerHTML=ids.length?ids.map(id=>{const d=dish(id),n=st.sess.items[id],i=esc(id);return `<div class="rr" role="button" tabindex="0" data-a="regedit" data-id="${i}" aria-label="Editar ${esc(d.name)}, ${pieces(n)}"><div class="t"><b>${esc(d.name)}</b><small>${pieces(n)}</small></div><div class="v">${fmt(n*pts(d))}<small> pts</small></div></div>`}).join(''):`<div class="none">Aún no has añadido nada.<br>Toca <b class="sym">+</b> para empezar.</div>`}
+ L.innerHTML=ids.length?ids.map(id=>{const d=dish(id),n=st.sess.items[id],i=esc(id);return `<div class="rr" role="button" tabindex="0" data-a="regedit" data-id="${i}" aria-label="Editar ${esc(d.name)}, ${pieces(n)}"><div class="t"><b>${esc(d.name)}</b><small>${pieces(n)}</small></div><div class="v">${fmt(n*pts(d))}<small> pts</small></div></div>`}).join(''):`<div class="none">Aún no has añadido nada.<br>Toca <b class="sym"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></b> para empezar.</div>`}
 function refreshSess(anim,delay){if(!st.sess||!$('#l-sess'))return;const p=$('#v-sess'),y=p.scrollTop;regList();sum();p.scrollTop=y;setScore(totals().p,{animate:anim,delay});if(AS.open&&AS.mode==='edit')editUpdate()}
 // Única vía para modificar cantidades: actualiza estado, orden, historial de la sesión y guarda al instante.
 function changeQty(id,dl,o={}){if(!st.sess||!dl)return;const d=dish(id);if(!d)return;const s=st.sess,cur=s.items[id]||0,n=Math.max(0,cur+dl),real=n-cur;if(!real)return;
@@ -839,11 +849,31 @@ const fold=(k,t,n,inner)=>`<section class="fold${st.fold[k]?' open':''}"><button
 function ferr(id,msg,inp){const e=$(id);if(e)e.textContent=msg;const i=$(inp);if(i){i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');i.focus({preventScroll:true})}hapErr()}
 document.addEventListener('input',e=>{const m={qa:'#qerr',qp:'#qperr',imp:'#iperr'}[e.target.id];if(m){const x=$(m);if(x)x.textContent=''}});
 Object.assign(A,{
- fold(k,b){st.fold[k]=!st.fold[k];save('fold');const f=b.closest('.fold');f.classList.toggle('open',!!st.fold[k]);b.setAttribute('aria-expanded',!!st.fold[k]);hap(6)},
+ fold(k,b){st.fold[k]=!st.fold[k];const f=b.closest('.fold');f.classList.toggle('open',!!st.fold[k]);b.setAttribute('aria-expanded',!!st.fold[k]);hap(6)},
  resetall(){sheet(`<div class="center"><div class="rbig dg">${ico('trash')}</div><h1 style="font-size:24px;margin:10px 0 6px">¿Borrar todo el progreso?</h1><p class="sub">Se eliminarán sesiones, puntos, movimientos, logros, canjes, historial y ajustes de este dispositivo. No se puede deshacer.</p></div><div style="display:grid;gap:8px;margin-top:14px"><button class="btn dng" data-a="resetall2">Continuar</button><button class="btn sec" data-a="close">Cancelar</button></div>`)},
  resetall2(){hapErr();sheet(`<div class="center"><div class="rbig dg">${ico('trash')}</div><h1 style="font-size:24px;margin:10px 0 6px">Última confirmación</h1><p class="sub">Se borrará absolutamente todo y la app volverá a empezar desde cero.</p></div><div style="display:grid;gap:8px;margin-top:14px"><button class="btn dng" data-a="resetgo">Sí, borrar todo</button><button class="btn sec" data-a="close">No, volver</button></div>`)},
  resetgo(){Store.off=true;try{Object.keys(localStorage).filter(k=>k.startsWith('sw:')).forEach(k=>localStorage.removeItem(k));sessionStorage.clear()}catch(e){}location.replace(location.pathname)}
 });
+const SY={last:null};
+function foldReset(){st.fold={};document.querySelectorAll('#v-home .fold.open').forEach(f=>{f.classList.remove('open');const h=f.querySelector('.fh');if(h)h.setAttribute('aria-expanded','false')})}
+// ===== Botón de finalizar: late suavemente tras 3 s sin tocar nada =====
+let IDLE=0;
+function idleArm(){const v=$('#v-sess');if(!v)return;v.removeAttribute('data-idle');clearTimeout(IDLE);IDLE=setTimeout(()=>{const f=$('#fin');if(st.tab==='sess'&&st.sess&&f&&!f.classList.contains('off')&&!AS.open&&!$('#ov.show'))v.setAttribute('data-idle','')},3000)}
+['pointerdown','touchstart','keydown','wheel'].forEach(t=>addEventListener(t,idleArm,{passive:true,capture:true}));
+addEventListener('scroll',idleArm,{passive:true,capture:true});
+// ===== Cristal líquido al tocar: una lente de cristal que se infla bajo el dedo =====
+const LG={box:null,t0:0,id:null,tm:0};
+function lgBox(){if(!LG.box){const d=document.createElement('div');d.id='lg';d.setAttribute('aria-hidden','true');document.body.appendChild(d);LG.box=d}return LG.box}
+function lgOff(){if(LG.id===null)return;LG.id=null;clearTimeout(LG.tm);LG.tm=setTimeout(()=>LG.box&&LG.box.classList.remove('on'),Math.max(0,150-(performance.now()-LG.t0)))}
+document.addEventListener('pointerdown',e=>{if(st.set.lg===false||(e.pointerType==='mouse'&&e.button!==0))return;
+ const t=e.target.closest('button:not(:disabled),[data-a],[role=button],.swb');if(!t||t.closest('nav,#toast'))return;
+ const r=t.getBoundingClientRect();if(r.width>innerWidth*.96&&r.height>150)return;
+ const b=lgBox(),cs=getComputedStyle(t);let br=cs.borderTopLeftRadius;if(!parseFloat(br))br='16px';
+ clearTimeout(LG.tm);b.style.cssText=`left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;border-radius:${br};--sx:${1+12/Math.max(r.width,24)};--sy:${1+12/Math.max(r.height,24)};--px:${e.clientX-r.left}px;--py:${e.clientY-r.top}px`;
+ LG.id=e.pointerId;LG.t0=performance.now();LG.r=r;void b.offsetWidth;b.classList.add('on')},{passive:true});
+document.addEventListener('pointermove',e=>{if(LG.id!==e.pointerId||!LG.box)return;LG.box.style.setProperty('--px',(e.clientX-LG.r.left)+'px');LG.box.style.setProperty('--py',(e.clientY-LG.r.top)+'px')},{passive:true});
+['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,lgOff,{passive:true}));
+addEventListener('scroll',()=>{if(LG.id!==null){LG.id=null;LG.box&&LG.box.classList.remove('on')}},{passive:true,capture:true});
 // ===== Sin zoom (iOS ignora user-scalable=no) + respuesta háptica =====
 ['gesturestart','gesturechange','gestureend'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 document.addEventListener('touchmove',e=>{if(e.touches.length>1||(e.scale&&e.scale!==1))e.preventDefault()},{passive:false});
@@ -855,7 +885,7 @@ function hap(ms){if(st.set.haptic===false)return;const n=Date.now();if(n-HP.last
  try{if(!HP.el){const l=document.createElement('label');l.setAttribute('aria-hidden','true');l.style.cssText='position:fixed;left:-99px;top:-99px;opacity:0;pointer-events:none';const i=document.createElement('input');i.type='checkbox';i.setAttribute('switch','');l.appendChild(i);document.body.appendChild(l);HP.el=l}HP.el.click()}catch(e){}}
 document.addEventListener('pointerdown',e=>{const b=e.target.closest('button:not(:disabled),[data-a],[role=button],.swb');if(b&&!b.closest('nav')){hap(8);snd('tap')}},{passive:true});
 nav.addEventListener('pointerdown',()=>{hap(10);snd('nav')},{passive:true});
-applyPrefs();render();$('#v-menu').addEventListener('scroll',stk,{passive:true});hashClaim();setTimeout(()=>checkAch(),900);
+applyPrefs();render();idleArm();$('#v-menu').addEventListener('scroll',stk,{passive:true});hashClaim();setTimeout(()=>checkAch(),900);
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 // Carga automática de carta.txt (misma carpeta del repositorio)
 fetch('carta.txt',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(t=>{const rows=t?parseImport(t):[];if(rows.length){addDishes(rows,'carta.txt');render()}}).catch(()=>{});
