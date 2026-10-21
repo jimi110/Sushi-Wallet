@@ -482,6 +482,13 @@ body.fx-edge .rlw.win{box-shadow:inset 0 0 0 1.5px var(--ac),0 12px 28px -20px #
 .wrg,.wrbig{display:block;font:500 44px/1.1 ui-serif,"New York",Georgia,serif;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .wrbig{font-size:64px;margin-top:2px}
 .wrdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:var(--ac)}
+/* Selector Solo/Wrapped: misma estética que la barra inferior, con burbuja arrastrable */
+.wrseg{position:relative;display:flex;width:min(100%,300px);margin:0 auto 10px;padding:6px;border-radius:26px;background:var(--card);box-shadow:0 6px 24px #0002;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+body.glass .wrseg{background:color-mix(in srgb,var(--card) 55%,transparent);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);box-shadow:inset 0 1px 0 #ffffff55,0 8px 30px #0002}
+.wrseg button{flex:1;position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;padding:8px 0;min-height:52px;border-radius:20px;color:var(--tx2);background:none!important;transition:color .2s}
+.wrseg button[aria-checked=true]{color:var(--tx)}.wrseg button[aria-checked=true] svg{color:var(--ac)}
+.wrbub{position:absolute;left:0;top:6px;bottom:6px;z-index:1;border-radius:22px;background:var(--fill);pointer-events:none;padding:.08em .1em .2em;margin:-.08em -.1em -.2em;will-change:transform;transform-origin:50% 60%}
+body.glass .wrbub{background:linear-gradient(180deg,#ffffff70,#ffffff1c 60%,#ffffff2e);-webkit-backdrop-filter:blur(8px) saturate(200%);backdrop-filter:blur(8px) saturate(200%);box-shadow:inset 0 1px 0 #fffc,inset 0 -1px 1px #0002,inset 0 0 10px #ffffff40,0 6px 16px -4px #0003}
 .wrdot.finished{background:var(--tx2)}
 .wr1{background:color-mix(in srgb,var(--ac) 10%,transparent);border-radius:16px}
 .wrdn{font:600 22px/1.2 ui-serif,"New York",Georgia,serif;margin:4px 0}
@@ -595,7 +602,7 @@ function countUp(){const el=$('#tot');if(!el)return;const to=stats().bal,from=st
 function paneMenu(){const p=$('#v-menu');if(!st.catalog.length){p.innerHTML=head('Carta','Catálogo')+`<div class="card empty"><h3>La carta está vacía</h3><p>Importa los platos desde Ajustes o añade uno a mano.</p><button class="btn" data-a="import">Importar carta</button></div>`;return}
  p.innerHTML=head('Carta',st.catalog.length+' platos')+`<div class="stick">${tools('menu')}</div><div class="list" id="l-menu"></div><div id="m-menu"></div>`;list('menu')}
 function paneSess(){const p=$('#v-sess'),y=p.scrollTop;
- if(!st.sess){S.cur=0;cancelAnimationFrame(S.raf);clearTimeout(S.tm);p.innerHTML=head('Sesión','Registro en vivo')+`<div class="empty"><h3>Registra tu comida</h3><p>Empieza una sesión y suma piezas mientras comes.</p><button class="btn" data-a="start">Comenzar sesión</button></div>`+rlEntry();p.scrollTop=y;return}
+ if(!st.sess){S.cur=0;cancelAnimationFrame(S.raf);clearTimeout(S.tm);p.innerHTML=head('Sesión','Registro en vivo')+`<div class="empty"><h3>Registra tu comida</h3><p>Empieza una sesión y suma piezas mientras comes.</p><button class="btn" data-a="start">Comenzar sesión</button></div>`;p.scrollTop=y;return}
  p.innerHTML=head('Sesión','Desde '+dt(st.sess.start),'<button class="chip" data-a="cancel">Cancelar</button>')+
  `<section class="hero"><div class="lbl">Puntos de la sesión</div><div class="scorebox"><i class="glow" id="glow"></i><div class="score" id="score">0</div></div><div class="hsum" id="hsum"></div><button class="fin off" id="fin" data-a="finish">Finalizar y guardar</button><span class="sr" id="sr" aria-live="polite"></span></section>${rlEntry()}<div class="reg"><h2>Platos registrados</h2><div class="rl" id="l-sess"></div></div><button class="fab" data-a="addopen" aria-label="Añadir sushi">${ico('sess')}</button>`;
  const t=totals().p;S.cur=t;S.to=t;cancelAnimationFrame(S.raf);clearTimeout(S.tm);regList();sum();paintScore(t);p.scrollTop=y}
@@ -968,7 +975,7 @@ const LG={box:null,t0:0,id:null,tm:0};
 function lgBox(){if(!LG.box){const d=document.createElement('div');d.id='lg';d.setAttribute('aria-hidden','true');document.body.appendChild(d);LG.box=d}return LG.box}
 function lgOff(){if(LG.id===null)return;LG.id=null;clearTimeout(LG.tm);LG.tm=setTimeout(()=>LG.box&&LG.box.classList.remove('on'),Math.max(0,150-(performance.now()-LG.t0)))}
 document.addEventListener('pointerdown',e=>{if(st.set.lg===false||(e.pointerType==='mouse'&&e.button!==0))return;
- const t=e.target.closest('button:not(:disabled),[data-a],[role=button],.swb');if(!t||t.closest('nav,#toast'))return;
+ const t=e.target.closest('button:not(:disabled),[data-a],[role=button],.swb');if(!t||t.closest('nav,.wrseg,#toast'))return;
  const r=t.getBoundingClientRect();if(r.width>innerWidth*.96&&r.height>150)return;
  const b=lgBox(),cs=getComputedStyle(t);let br=cs.borderTopLeftRadius;if(!parseFloat(br))br='16px';
  clearTimeout(LG.tm);b.style.cssText=`left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;border-radius:${br};--sx:${1+12/Math.max(r.width,24)};--sy:${1+12/Math.max(r.height,24)};--px:${e.clientX-r.left}px;--py:${e.clientY-r.top}px`;
@@ -985,7 +992,7 @@ const HP={el:null,last:0};
 function hap(ms){if(st.set.haptic===false)return;const n=Date.now();if(n-HP.last<35)return;HP.last=n;
  try{if(navigator.vibrate&&navigator.vibrate(ms||8))return}catch(e){}
  try{if(!HP.el){const l=document.createElement('label');l.setAttribute('aria-hidden','true');l.style.cssText='position:fixed;left:-99px;top:-99px;opacity:0;pointer-events:none';const i=document.createElement('input');i.type='checkbox';i.setAttribute('switch','');l.appendChild(i);document.body.appendChild(l);HP.el=l}HP.el.click()}catch(e){}}
-document.addEventListener('pointerdown',e=>{const b=e.target.closest('button:not(:disabled),[data-a],[role=button],.swb');if(b&&!b.closest('nav')){hap(8);snd('tap')}},{passive:true});
+document.addEventListener('pointerdown',e=>{const b=e.target.closest('button:not(:disabled),[data-a],[role=button],.swb');if(b&&!b.closest('nav,.wrseg')){hap(8);snd('tap')}},{passive:true});
 nav.addEventListener('pointerdown',()=>{hap(10);snd('nav')},{passive:true});
 // ===== Sushi Roulette =====
 IC.dice='<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 8.5h.01M15.5 8.5h.01M12 12h.01M8.5 15.5h.01M15.5 15.5h.01"/>';
@@ -1033,7 +1040,7 @@ function rlSpin(){if(RL.busy)return;const r=rlPick(RL.mode);
   RL.busy=false;RL.res=r.d.id;RL.lastCat=r.d.category||'Sin categoría';RL.recent.push(r.d.id);if(RL.recent.length>12)RL.recent.shift();RL.phase='done';
   rlRender();hap([10,30,14]);snd('win')})()}
 Object.assign(A,{
- rlopen(){RL.run++;RL.busy=false;RL.phase='idle';RL.res=null;rlRender()},
+ rlopen(){if(!st.sess)return;RL.run++;RL.busy=false;RL.phase='idle';RL.res=null;rlRender()},
  rlmode(id){if(RL.busy||!RLM.some(m=>m[0]===id))return;RL.mode=id;RL.phase='idle';RL.res=null;rlRender()},
  rlspin(){rlSpin()},
  rlall(){RL.mode='all';rlSpin()},
@@ -1058,7 +1065,7 @@ fetch('carta.txt',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(t=>{const r
 /* ---- CONFIGURACIÓN: rellena con los datos PÚBLICOS de tu proyecto Supabase ----
    Project Settings → API → «Project URL» y clave «anon»/«publishable».
    NUNCA pongas aquí la clave service_role. Ver WRAPPED.md. */
-const WR_CONFIG={url:'',anonKey:''};
+const WR_CONFIG={url:'https://eiuerlrrbfqbytfoqjzo.supabase.co',anonKey:'sb_publishable_UjxBFGVVc9CgEyi8PAMUpw_C2gPZau-'};
 /*WR-CORE-START*/
 // Porcentajes de bonificación por puesto (1.º, 2.º, 3.º, 4.º). Deben coincidir con wr_bonus_pct() en supabase/wrapped.sql,
 // que es la fuente de verdad: el servidor calcula y guarda el reparto; el cliente solo lo muestra.
@@ -1224,10 +1231,38 @@ function wrPane(){const p=$('#v-sess'),y=p.scrollTop,r=WR.room,host=r.host_id===
  p.innerHTML=h;
  if(play){const t=totals().p;S.cur=t;S.to=t;cancelAnimationFrame(S.raf);clearTimeout(S.tm);regList();sum();paintScore(t)}
  wrPaintRoom();wrPaintConn();p.scrollTop=y}
-function wrPicker(){if(st.sess)return;const e=$('#v-sess .empty');if(!e)return;const m=WR.mode;
- const seg=`<div class="rlm" role="radiogroup" aria-label="Modalidad de sesión" style="grid-template-columns:1fr 1fr;max-width:320px;margin:0 auto 6px"><button role="radio" aria-checked="${m==='solo'}" data-a="wrmode" data-id="solo">Solo</button><button role="radio" aria-checked="${m==='wrapped'}" data-a="wrmode" data-id="wrapped">Wrapped</button></div>`;
- if(m==='wrapped')e.innerHTML=`<h3>Sesión compartida</h3><p>Juega con otras personas (hasta 4) y compartid una puntuación global. Cuando todos terminéis, los puntos se reparten y se añade una bonificación según la clasificación.</p>${wrConfigured()?'':`<p class="ferr">Wrapped aún no está configurado en esta copia de la app (ver WRAPPED.md).</p>`}<div style="display:grid;gap:8px;max-width:280px;margin:14px auto 0"><button class="btn" data-a="wrnew" style="display:block;width:100%;margin:0">Crear sala</button><button class="btn sec" data-a="wrjoinsheet" style="display:block;width:100%;margin:0">Unirse a una sala</button></div>`;
- e.insertAdjacentHTML('afterbegin',seg)}
+IC.solo='<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.6-5.4 7-5.4s6.2 1.8 7 5.4"/>';
+IC.group='<circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.5c.6-3.2 3-4.8 6-4.8s5.4 1.6 6 4.8"/><circle cx="17" cy="9.5" r="2.5"/><path d="M17 14.5c2.2.1 3.8 1.5 4.3 4"/>';
+const WSG={x:0,v:0,t:0,raf:0,drag:null,ready:false,ro:null};
+const wrSegEl=()=>$('#v-sess .wrseg');
+const wrSegPaint=()=>{const el=wrSegEl(),bub=el&&el.querySelector('.wrbub');if(!bub)return;const sp=Math.min(.16,Math.abs(WSG.v)/5200),g=WSG.drag&&WSG.drag.on?1.07:1;bub.style.transform=`translate3d(${WSG.x}px,0,0) scale(${g+sp},${g-sp*.7})`};
+function wrSegTarget(){const el=wrSegEl();if(!el)return;const b=el.querySelectorAll('button')[WR.mode==='wrapped'?1:0],bub=el.querySelector('.wrbub');if(!b||!bub)return;bub.style.width=b.offsetWidth+'px';WSG.t=b.offsetLeft}
+function wrSegSpring(){cancelAnimationFrame(WSG.raf);if(rm.matches||!WSG.ready){WSG.x=WSG.t;WSG.v=0;wrSegPaint();return}let last=performance.now();
+ const step=now=>{const dt=Math.min(.032,(now-last)/1000);last=now;WSG.v+=(380*(WSG.t-WSG.x)-24*WSG.v)*dt;WSG.x+=WSG.v*dt;wrSegPaint();if(Math.abs(WSG.t-WSG.x)<.3&&Math.abs(WSG.v)<8){WSG.x=WSG.t;WSG.v=0;wrSegPaint();return}WSG.raf=requestAnimationFrame(step)};WSG.raf=requestAnimationFrame(step)}
+const wrBody=m=>m==='wrapped'?`<h3>Sesión compartida</h3><p>Juega con otras personas (hasta 4) y compartid una puntuación global. Cuando todos terminéis, los puntos se reparten y se añade una bonificación según la clasificación.</p>${wrConfigured()?'':`<p class="ferr">Wrapped aún no está configurado en esta copia de la app (ver WRAPPED.md).</p>`}<div style="display:grid;gap:8px;max-width:280px;margin:14px auto 0"><button class="btn" data-a="wrnew" style="display:block;width:100%;margin:0">Crear sala</button><button class="btn sec" data-a="wrjoinsheet" style="display:block;width:100%;margin:0">Unirse a una sala</button></div>`:(WR.soloHtml||'');
+function wrSegHtml(){const m=WR.mode,bt=(id,ic,l)=>`<button role="radio" aria-checked="${m===id}" data-a="wrmode" data-id="${id}">${ico(ic)}<span>${l}</span></button>`;
+ return `<div class="wrseg" role="radiogroup" aria-label="Modalidad de sesión"><i class="wrbub"></i>${bt('solo','solo','Solo')}${bt('wrapped','group','Wrapped')}</div>`}
+function wrSetMode(id){if(id!=='solo'&&id!=='wrapped')return;const el=wrSegEl(),body=$('#wr-body');
+ if(!el||!body||st.sess){WR.mode=id;paneSess();return}
+ if(WR.mode!==id){WR.mode=id;el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-checked',String(b.dataset.id===id)));body.innerHTML=wrBody(id)}
+ wrSegTarget();wrSegSpring()}
+function wrSegInit(){const el=wrSegEl();if(!el)return;cancelAnimationFrame(WSG.raf);WSG.drag=null;WSG.ready=false;if(WSG.ro)WSG.ro.disconnect();
+ const sync=()=>{if(WSG.drag)return;WSG.ready=false;wrSegTarget();wrSegSpring();WSG.ready=true};
+ if(window.ResizeObserver){WSG.ro=new ResizeObserver(sync);WSG.ro.observe(el)}else{sync()}
+ const slot=i=>el.querySelectorAll('button')[i],bub=()=>el.querySelector('.wrbub');
+ el.addEventListener('pointerdown',e=>{hap(10);snd('nav');const a=slot(WR.mode==='wrapped'?1:0),r=el.getBoundingClientRect();WSG.drag={id:e.pointerId,sx:e.clientX,bx:WSG.x,on:false,t:e.timeStamp,onb:!!(a&&a.contains(e.target)),sm:false}});
+ el.addEventListener('pointermove',e=>{const d=WSG.drag;if(!d||e.pointerId!==d.id)return;const dx=e.clientX-d.sx;
+  if(!d.on){if(Math.abs(dx)<7)return;d.on=true;d.sm=!d.onb;try{el.setPointerCapture(e.pointerId)}catch(_){}cancelAnimationFrame(WSG.raf);hap(6)}
+  const r=el.getBoundingClientRect(),w=bub().offsetWidth,lo=slot(0).offsetLeft,hi=slot(1).offsetLeft,p=WSG.x;
+  const tg=Math.max(lo,Math.min(hi,d.onb?d.bx+dx:e.clientX-r.left-el.clientLeft-w/2));
+  if(d.sm){WSG.x+=(tg-WSG.x)*.4;if(Math.abs(tg-WSG.x)<3)d.sm=false}else WSG.x=tg;
+  WSG.v=.6*WSG.v+.4*((WSG.x-p)/Math.max(.008,(e.timeStamp-d.t)/1000));d.t=e.timeStamp;wrSegPaint()});
+ const end=c=>{const d=WSG.drag;WSG.drag=null;if(!d||!d.on)return;const lo=slot(0).offsetLeft,pitch=slot(1).offsetLeft-lo,v=Math.max(-1800,Math.min(1800,WSG.v));
+  const i=c?(WR.mode==='wrapped'?1:0):Math.max(0,Math.min(1,Math.round((WSG.x-lo+v*.07)/pitch)));
+  B.skip=true;setTimeout(()=>B.skip=false,60);const nm=i?'wrapped':'solo';if(nm!==WR.mode){snd('nav');hap(10)}wrSetMode(nm)};
+ el.addEventListener('pointerup',()=>end(false));el.addEventListener('pointercancel',()=>end(true))}
+function wrPicker(){if(st.sess)return;const e=$('#v-sess .empty');if(!e)return;WR.soloHtml=e.innerHTML;
+ e.innerHTML=wrSegHtml()+`<div id="wr-body">${wrBody(WR.mode)}</div>`;wrSegInit()}
 function wrNickSheet(kind,code){const j=kind==='join';
  sheet(`<h1 style="font-size:24px">${j?'Unirse a una sala':'Crear sala'}</h1>${j?`<p class="sub">Introduce el código de invitación (8 caracteres).</p><input type="text" id="wrcodein" value="${esc(code||'')}" maxlength="9" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO" style="text-align:center;letter-spacing:.2em;font-weight:600;text-transform:uppercase">`:''}<p class="sub" style="margin-top:12px">Tu nombre en la partida</p><input type="text" id="wrnick" value="${esc(Store.get('wrnick',''))}" maxlength="20" placeholder="Jugador" autocomplete="nickname"><p class="ferr" id="wrerr"></p><div style="display:grid;gap:8px;margin-top:12px"><button class="btn" data-a="${j?'wrjoin':'wrcreate'}">${j?'Unirse':'Crear sala'}</button><button class="btn sec" data-a="close">Cancelar</button></div>`)}
 const wrNick=()=>{const n=($('#wrnick')?.value||'').trim().slice(0,20);Store.set('wrnick',n);return n};
@@ -1256,7 +1291,7 @@ A.regedit=function(id){if(WR.inSess()&&!WR.live())return;_regedit(id)};
 A.startgo=function(){if(st.sess||WR.room)return _startgo();st.tab='sess';sync();paneSess()};
 
 Object.assign(A,{
- wrmode(id){if(id!=='solo'&&id!=='wrapped')return;WR.mode=id;paneSess()},
+ wrmode(id){wrSetMode(id)},
  wrnew(){wrNickSheet('create')},
  wrjoinsheet(){wrNickSheet('join')},
  wrcreate(id,b){wrGo('create',b,'Creando sala…',async()=>{const nick=wrNick();try{await wrInit();const r=await wrRpc('wr_create_room',{p_nick:nick});close();await wrOpen(r.room_id,{code:r.code})}catch(e){wrFail(e)}})},
