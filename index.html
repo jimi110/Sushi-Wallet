@@ -841,7 +841,7 @@ async function qshow(id){const o=st.out.find(x=>x.id===id);if(!o)return;
   if(r<=0){f.textContent='Caducado';c.classList.remove('low');c.classList.add('dead');const qd=$('#qcd');if(qd)qd.style.opacity='.35';if(bi)bi.style.width='0';clearInterval(QT.t);const b=$('#qrf');if(b){b.disabled=false;b.textContent='Recuperar puntos'}outDot()}
   else{const t='Caduca en '+left(r);if(f.textContent!==t)f.textContent=t;if(bi)bi.style.width=Math.min(100,r/QT.exp*100)+'%';c.classList.toggle('low',r<=60000)}};tick();QT.t=setInterval(tick,250)}
 function recvSheet(){
- sheet(`<h1 style="font-size:24px">Recibir puntos</h1><p class="sub">Escanea el QR de la otra persona (puntos o un canje).</p>
+ sheet(`<h1 style="font-size:24px">Recibir puntos</h1><p class="sub">Escanea el QR de la otra persona: puntos, un canje o una invitación a una sala.</p>
  <div class="scanbox" id="sb"><video id="cam" playsinline muted></video></div><p class="sub center" id="cs">Iniciando cámara…</p>
  <h2>¿Sin cámara o está lejos?</h2><input type="text" id="qp" placeholder="Escribe el código (ABCD-EFGH) o pega el enlace" autocapitalize="characters" autocomplete="off"><p class="ferr" id="qperr"></p><div style="display:grid;gap:8px;margin-top:10px"><button class="btn sec" data-a="qpaste">Canjear código</button></div>`);startCam()}
 let cam={s:null,raf:0,on:false};
@@ -865,7 +865,9 @@ function parse(txt){let t=String(txt||'').trim();const i=t.indexOf('#sw=');if(i>
 const codeOf=id=>{const u=String(id).toUpperCase();return u.slice(0,4)+'-'+u.slice(4)};
 function parseCode(txt){const t=String(txt||'').trim();if(!/^[A-Za-z0-9]{4}[\s-]?[A-Za-z0-9]{4}$/.test(t))return null;return{id:t.replace(/[^A-Za-z0-9]/g,'').toLowerCase(),pts:0,name:'',exp:0,byCode:1}}
 function fail(t,sub){stopCam();sheet(`<div class="center"><h1 style="font-size:24px">${t}</h1><p class="sub">${sub}</p></div><div style="display:grid;gap:8px;margin-top:14px"><button class="btn" data-a="wrecv">Escanear otro</button><button class="btn sec" data-a="close">Cerrar</button></div>`);return true}
-function claim(txt){const rq=parseR(txt);if(rq)return claimR(rq);const o=parse(txt)||parseCode(txt);if(!o)return false;stopCam();
+function parseRoom(txt){const t=String(txt||'').trim(),m=/#wr=([A-Za-z0-9]{8})(?![A-Za-z0-9])/.exec(t)||/^wr=([A-Za-z0-9]{8})$/i.exec(t);return m?m[1].toUpperCase():''}
+function claim(txt){const rq=parseR(txt);if(rq)return claimR(rq);
+ const rm=parseRoom(txt);if(rm){stopCam();const e=wrJoinCode(rm);return e?fail('No puedes unirte ahora',e):true}const o=parse(txt)||parseCode(txt);if(!o)return false;stopCam();
  if(st.out.some(x=>x.id===o.id))return fail('Es tu propio código','Este QR lo generaste tú. Pide a otra persona que lo escanee.');
  if(st.used.includes(o.id))return fail('Código ya usado','Este QR ya se canjeó en este dispositivo.');
  sheet('<div class="center"><p class="sub">Canjeando…</p></div>');claimSrv(o);return true}
@@ -876,6 +878,7 @@ async function claimSrv(o){
   snd('ok');st.tab='home';render();setTimeout(()=>checkAch(),600);
   sheet(`<div class="center"><div class="okmark">${ico('ok')}</div><h1 style="font-size:28px">+${fmt(pts)} puntos</h1><p class="sub">${who?'De '+esc(who)+'. ':''}Ya están en tu cartera.</p></div><button class="btn" data-a="close" style="margin-top:14px">Genial</button>`)}
  catch(e){const M={ticket_not_found:['Código no válido','Este QR no está registrado (puede ser un QR antiguo). Pide uno nuevo.'],ticket_used:['Código ya usado','Este QR ya lo canjeó otra persona.'],ticket_expired:['Código caducado','Pide a la otra persona que genere uno nuevo.'],own_ticket:['Es tu propio código','Este QR lo generaste tú. Pide a otra persona que lo escanee.']}[e.code];
+  if(e.code==='ticket_not_found'&&o.byCode){const rc=o.id.toUpperCase();if(wrCodeRe.test(rc)&&!wrJoinCode(rc))return}
   if(e.code==='ticket_not_found'&&o.byCode)return fail('Código no válido','Revisa que esté bien escrito. Puede que ya se haya canjeado o que haya caducado.');
   M?fail(M[0],M[1]):fail('No se pudo canjear',wrErrText(e.code)+' Tu saldo no ha cambiado.')}}
 Object.assign(A,{
@@ -1477,7 +1480,7 @@ Object.assign(A,{
  wrexit:wrExit,
  wrdone(){const b0=WR.b0;wrExit();WR.b0=undefined;st.tab='home';if(typeof b0==='number')st.shown=b0;render()},
  wrcopy(){const c=WR.room&&WR.room.code;if(!c)return;(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast('Código copiado',c)).catch(()=>{const t=document.createElement('textarea');t.value=c;document.body.appendChild(t);t.select();try{document.execCommand('copy');toast('Código copiado',c)}catch(e){toast('No se pudo copiar','Selecciona el código manualmente')}t.remove()})},
- async wrqr(){const code=WR.room.code,url=/^https?:$/.test(location.protocol)?location.origin+location.pathname+'#wr='+code:code;
+ async wrqr(){const code=WR.room.code,url=/^https?:$/.test(location.protocol)?location.origin+location.pathname+'#wr='+code:'wr='+code;
   sheet('<div class="center"><p class="sub">Preparando QR…</p></div>');
   try{await libQR()}catch(e){return sheet(`<h1 style="font-size:24px">Sin conexión</h1><p class="sub">Necesito conectarme una vez para cargar el generador de QR.</p><button class="btn sec" data-a="close">Cerrar</button>`)}
   sheet(`<h1 style="font-size:24px">Invitación a la sala</h1><div class="qrcard"><div class="qlbl">Código</div><div class="qamt" style="letter-spacing:.12em">${esc(code)}</div>${qrSvg(url)}<div class="qfoot">Escanéalo con la cámara para unirte</div></div><div style="display:grid;gap:8px;margin-top:14px"><button class="btn sec" data-a="close">Cerrar</button></div>`)},
@@ -1551,8 +1554,9 @@ async function syncOut(){if(!st.out.length)return;try{await wrInit();const r=awa
 {const _ss=sendSheet;sendSheet=function(){_ss.apply(this,arguments);if(!SYNC.skip)syncOut()};A.wsend=sendSheet}
 // ---------- Arranque: invitación por enlace/QR y recuperación de la sala tras recargar ----------
 function wrHash(){const m=/^#wr=([A-Za-z0-9]{8})$/.exec(location.hash);if(!m)return;history.replaceState(null,'',location.pathname+location.search);
- if((st.sess&&!st.sess.wrapped)||WR.room)return toast('Sala Wrapped','Termina tu sesión actual para unirte a otra');
- st.tab='sess';sync();WR.mode='wrapped';paneSess();wrNickSheet('join',m[1].toUpperCase())}
+ const e=wrJoinCode(m[1].toUpperCase());if(e)toast('Sala Wrapped',e)}
+function wrJoinCode(code){if((st.sess&&!st.sess.wrapped)||WR.room)return 'Termina tu sesión actual para unirte a otra.';
+ st.tab='sess';sync();WR.mode='wrapped';paneSess();wrNickSheet('join',code);return ''}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)wrWake()});
 addEventListener('online',wrWake);addEventListener('offline',()=>{if(WR.room){WR.conn='off';wrPaintConn()}});
 addEventListener('hashchange',wrHash);
