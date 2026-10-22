@@ -1169,21 +1169,22 @@ fetch('carta.txt',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(t=>{const r
    NUNCA pongas aquí la clave service_role. Ver WRAPPED.md. */
 const WR_CONFIG={url:'https://eiuerlrrbfqbytfoqjzo.supabase.co',anonKey:'sb_publishable_UjxBFGVVc9CgEyi8PAMUpw_C2gPZau-'};
 /*WR-CORE-START*/
-// Bonificación por puesto (1.º, 2.º, 3.º, 4.º), solo sobre la parte compartida. Debe coincidir con wr_bonus_pct() en supabase/wrapped.sql,
+// Bonificación por puesto (1.º, 2.º, 3.º, 4.º) sobre lo aportado por el jugador. Debe coincidir con wr_bonus_pct() en supabase/wrapped.sql,
 // que es la fuente de verdad: el servidor calcula y guarda el reparto; el cliente solo lo muestra.
-const WR_BONUS=[7.5,5,2.5,0],WR_MAX_PLAYERS=4,WR_MIN_TO_START=2,WR_MIN_FOR_BONUS=2;
-const wrBonusPct=(place,n)=>n<WR_MIN_FOR_BONUS?0:(WR_BONUS[place-1]??0);
+const WR_BONUS={2:[20,0],3:[20,7.5,0],4:[20,10,5,0]},WR_MAX_PLAYERS=4,WR_MIN_TO_START=2,WR_MIN_FOR_BONUS=2;
+const wrBonusPct=(place,n)=>n<WR_MIN_FOR_BONUS?0:((WR_BONUS[Math.min(n,4)]||[])[place-1]??0);
 const wrCodeRe=/^[A-HJ-NP-Z2-9]{8}$/;                       // sin I, O, 0, 1
 const wrNormCode=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 // Reparto en céntimos de punto (2 decimales, la precisión de la app). players: [{id,cents,joined}]
-// Individual = 80 % de lo aportado · Fondo C = 20 % de G · Compartida = C/N · Bonus = Compartida × % de puesto (solo sobre la compartida).
+// Individual = 80 % de lo aportado · Fondo C = 20 % de G · Compartida = C/N · Bonus = Aportado × % de puesto.
 // Redondeo: mitad hacia arriba; el resto del fondo, 1 céntimo a los primeros del orden.
+const wrR25=c=>Math.floor((c*2+25)/50)*25;   // céntimos → múltiplo de 25 (0,25 pts), mitad hacia arriba
 function wrDistribute(players){const n=players.length;if(!n)return{n:0,global:0,credited:0,rows:[]};
  const g=players.reduce((a,p)=>a+p.cents,0),cmp=(a,b)=>a<b?-1:a>b?1:0;
  const order=[...players].sort((a,b)=>b.cents-a.cents||cmp(a.joined,b.joined)||cmp(a.id,b.id));
  const place=p=>1+players.filter(x=>x.cents>p.cents).length;          // empates comparten puesto (1,1,3,4)
  const fund=Math.floor((g*20+50)/100),q=Math.floor(fund/n),r=fund-q*n;
- const rows=order.map((p,i)=>{const indiv=Math.floor((p.cents*80+50)/100),shared=q+(i<r?1:0),pl=place(p),pct=wrBonusPct(pl,n),bonus=Math.floor((shared*pct*10+500)/1000);
+ const rows=order.map((p,i)=>{const indiv=wrR25(p.cents*.8),shared=wrR25(fund/n),pl=place(p),pct=wrBonusPct(pl,n),bonus=wrR25(p.cents*pct/100);
   return{id:p.id,place:pl,contrib:p.cents,indiv,shared,pct,bonus,total:indiv+shared+bonus}});
  return{n,global:g,credited:rows.reduce((a,x)=>a+x.total,0),rows}}
 // Estados de sala permitidos (mismas transiciones que el trigger wr_rooms_guard)
@@ -1334,7 +1335,7 @@ function wrResultsHTML(){const res=WR.res,rows=Object.values(WR.rp).sort((a,b)=>
  return head('Wrapped','Partida finalizada',`<button class="chip" data-a="wrdone">Ir a mis puntos</button>`)+
  `<div class="card" style="text-align:center"><h1 style="font-size:26px;margin:0 0 4px">¡Partida finalizada!</h1><p class="sub" style="margin:0">${res.players} participantes · Reparto completado correctamente</p><div class="sub" style="margin-top:14px">Puntuación global</div><b class="wrbig">${wrC(res.global_cents)}</b></div>
 <h2 style="margin:22px 4px 8px">Clasificación</h2><div class="list">${rows.map(x=>`<div class="row${x.place===1?' wr1':''}"><div class="t"><b>${x.place}.º ${esc(x.nick)}${x.user_id===WR.uid?' (tú)':''}</b><span class="sub">Aportados: ${wrC(x.contrib_cents)}<br>Individual (80 %): ${wrC(x.indiv_cents)}<br>Parte compartida: ${wrC(x.base_cents)}<br>Bonus por puesto (+${wrP(x.bonus_pct)} %): ${wrC(x.bonus_cents)}</span></div><span class="pill${x.place===1?' rec':''}">${wrC(x.total_cents)} pts</span></div>`).join('')}</div>
-<p class="sub" style="margin:12px 4px">Cómo se calcula: el 80 % de lo que aportas es tu componente individual. El 20 % de la puntuación global (${wrC(res.global_cents)}) forma un fondo que se reparte a partes iguales entre los ${res.players} jugadores: es tu parte compartida. El bonus por puesto (${pc}) se aplica solo sobre tu parte compartida. Recompensa final = individual + compartida + bonus. Total acreditado: ${wrC(res.credited_cents)}.</p>
+${fold('wrcalc','Cómo se calcula','',`<p class="sub" style="margin:0">el 80 % de lo que aportas es tu componente individual. El 20 % de la puntuación global (${wrC(res.global_cents)}) forma un fondo que se reparte a partes iguales entre los ${res.players} jugadores: es tu parte compartida. El bonus por puesto (${pc}) se aplica solo sobre tu parte compartida. Recompensa final = individual + compartida + bonus. Total acreditado: ${wrC(res.credited_cents)}.</p>`)}
 ${wrClaimHTML(WR.rp[WR.uid])}<button class="btn" data-a="wrdone" style="margin-top:12px">Ir a mis puntos</button>`}
 function wrPane(){const p=$('#v-sess'),y=p.scrollTop,r=WR.room,host=r.host_id===WR.uid;let h,play=false;wrMirror();
  if(WR.fatal)h=head('Wrapped','Sala')+`<div class="empty"><h3>No se pudo conectar</h3><p>${esc(WR.fatal)}</p><div class="wrbtns"><button class="btn" data-a="wrretry" style="display:inline-block;width:auto;margin:0">Reintentar</button><button class="btn sec" data-a="wrexit" style="display:inline-block;width:auto;margin:0">Volver al menú</button></div></div>`;
