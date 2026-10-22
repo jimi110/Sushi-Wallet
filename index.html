@@ -87,7 +87,9 @@ button{touch-action:manipulation}
 header{padding:calc(env(safe-area-inset-top,0px) + 26px) 0 12px;align-items:flex-end}
 .hx{display:flex;gap:8px;align-items:center;flex:none}
 header>div:first-child{min-width:0}header h1{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.wrnet{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;padding:3px 4px 3px 14px;border-radius:99px;background:color-mix(in srgb,var(--tx) 7%,transparent);border:.5px solid var(--line);min-height:40px}.wrnet:empty{display:none}.wrnet .sub{min-width:0;white-space:nowrap}
+.wrnet{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;padding:3px 4px 3px 14px;border-radius:99px;background:color-mix(in srgb,var(--tx) 7%,transparent);border:.5px solid var(--line);min-height:40px}@keyframes wrsvp{50%{opacity:.35}}
+.wrsv{display:inline-flex;align-items:center;gap:5px;margin-left:10px;vertical-align:middle;font:500 12px/1 -apple-system,system-ui,sans-serif;letter-spacing:0;color:color-mix(in srgb,var(--tx) 55%,transparent);opacity:0;transition:opacity .2s;pointer-events:none}.wrsv.on{opacity:1}.wrsv i{width:6px;height:6px;border-radius:50%;background:var(--ac);animation:wrsvp 1s ease-in-out infinite}
+.wrnet:empty{display:none}.wrnet .sub{min-width:0;white-space:nowrap}
 .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx2);font-weight:600}
 h1{font:600 36px/1.1 ui-serif,"New York","Iowan Old Style",Georgia,serif;letter-spacing:-.02em}
 h2{font:600 13px/1 -apple-system,"SF Pro Text",system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2);margin:28px 0 10px}
@@ -1298,7 +1300,8 @@ const wrWake=()=>{if(!WR.room||!WR.sb||!WR.uid)return;wrLoad().then(()=>{if(WR.c
 
 // ---------- Registro de platos (reutiliza el panel «Añadir sushi» y la lista de Solo) ----------
 function wrPaintConn(){const e=$('#wr-conn');if(!e)return;
- e.innerHTML=WR.conn==='ok'?(WR.saving?'<span class="sub">Guardando…</span>':''):`<span class="sub">${WR.conn==='loading'?'Conectando…':'Sin conexión'}</span>${WR.conn==='loading'?'':'<button class="chip" data-a="wrretry">Reintentar</button>'}`}
+ const sv=$('#wr-sv');if(sv)sv.classList.toggle('on',WR.saving>0&&WR.conn==='ok');
+ e.innerHTML=WR.conn==='ok'?'':`<span class="sub">${WR.conn==='loading'?'Conectando…':'Sin conexión'}</span>${WR.conn==='loading'?'':'<button class="chip" data-a="wrretry">Reintentar</button>'}`}
 function wrEnqueue(id,dl,o){WR.chain=WR.chain.then(()=>wrApplyQty(id,dl,o)).catch(()=>{})}
 async function wrApplyQty(id,dl,o){const d=dish(id);if(!d||!WR.live())return;
  const k=WR.uid+'|'+id,cur=WR.items[k]?WR.items[k].qty:0,n=Math.max(0,Math.min(99,cur+dl));if(n===cur)return;
@@ -1337,7 +1340,7 @@ function wrPane(){const p=$('#v-sess'),y=p.scrollTop,r=WR.room,host=r.host_id===
  if(WR.fatal)h=head('Wrapped','Sala')+`<div class="empty"><h3>No se pudo conectar</h3><p>${esc(WR.fatal)}</p><div class="wrbtns"><button class="btn" data-a="wrretry" style="display:inline-block;width:auto;margin:0">Reintentar</button><button class="btn sec" data-a="wrexit" style="display:inline-block;width:auto;margin:0">Volver al menú</button></div></div>`;
  else if(!r.status)h=head('Wrapped','Sala')+`<div class="empty"><h3>Conectando…</h3><p>Recuperando el estado de la sala.</p></div>`;
  else if(r.status==='waiting')h=head('Wrapped','Sala de espera',`<button class="chip" data-a="wrleave">${host?'Cerrar sala':'Salir'}</button>`)+`<div id="wr-conn" class="wrnet"></div><div id="wr-room"></div>`;
- else if(r.status==='active'){play=true;h=head('Wrapped','Sala '+esc(r.code))+`<div id="wr-conn" class="wrnet"></div><div id="wr-room"></div><div id="wr-cd"></div><section class="hero"><div class="lbl">Tus puntos</div><div class="scorebox"><i class="glow" id="glow"></i><div class="score" id="score">0</div></div><div class="hsum" id="hsum"></div><button class="fin" id="fin" data-a="wrfinish">Finalizado</button><span class="sr" id="sr" aria-live="polite"></span></section><div class="reg"><h2>Platos registrados</h2><div class="rl" id="l-sess"></div></div>${WR.live()?`<button class="fab" data-a="addopen" aria-label="Añadir sushi">${ico('sess')}</button>`:''}`}
+ else if(r.status==='active'){play=true;h=head('Wrapped','Sala '+esc(r.code)).replace('<h1>Wrapped</h1>','<h1>Wrapped<span id="wr-sv" class="wrsv" aria-live="polite"><i></i>Guardando</span></h1>')+`<div id="wr-conn" class="wrnet"></div><div id="wr-room"></div><div id="wr-cd"></div><section class="hero"><div class="lbl">Tus puntos</div><div class="scorebox"><i class="glow" id="glow"></i><div class="score" id="score">0</div></div><div class="hsum" id="hsum"></div><button class="fin" id="fin" data-a="wrfinish">Finalizado</button><span class="sr" id="sr" aria-live="polite"></span></section><div class="reg"><h2>Platos registrados</h2><div class="rl" id="l-sess"></div></div>${WR.live()?`<button class="fab" data-a="addopen" aria-label="Añadir sushi">${ico('sess')}</button>`:''}`}
  else if(r.status==='completed')h=wrResultsHTML();
  else h=head('Wrapped','Sala')+`<div class="empty"><h3>Sala caducada</h3><p>${esc(wrErrText('room_closed'))}</p><button class="btn" data-a="wrexit">Volver al menú</button></div>`;
  p.innerHTML=h;
