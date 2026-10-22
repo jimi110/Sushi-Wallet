@@ -531,6 +531,12 @@ body.ez-on #v-sess .score{font-size:min(160px,36vw,18vh,calc(88vw/(var(--n,3)*.7
 body.ez-on #v-sess{overflow:hidden;overscroll-behavior:none;touch-action:none;padding-bottom:0}
 @media(max-height:780px){.ez-b{min-height:84px}.ez-b svg{width:54px;height:54px}.ez-t b{font-size:26px}}
 @media(max-height:680px){.ez-b{min-height:66px}.ez-b svg{width:42px;height:42px}.ez-t b{font-size:22px}.ez-t span{font-size:14px}}
+.ez-me{flex:1;min-width:0;text-align:center}
+.ez-me .lbl{font-size:14px;color:var(--tx2)}
+.ez-me .scorebox{margin:0;padding:0}
+body.ez-on #v-sess .ez-me .score{font-size:44px;padding:0}
+body.ez-wr #v-sess .hero{padding-top:10px}
+body.ez-wr #v-sess .fin{margin:0 auto}
 @media(prefers-reduced-motion:reduce){.ez-body,.ez-tg svg,.ez-b,.ez-cb{transition:none}}
 </style>
 </head>
@@ -817,15 +823,16 @@ async function qshow(id){const o=st.out.find(x=>x.id===id);if(!o)return;
  sheet(`<div class="center"><p class="sub">Preparando QR…</p></div>`);
  try{await libQR()}catch(e){return sheet(`<h1 style="font-size:24px">Sin conexión</h1><p class="sub">Necesito conectarme una vez para cargar el generador de QR. Inténtalo de nuevo con internet.</p><button class="btn sec" data-a="close">Cerrar</button>`)}
  sheet(`<div class="qrcard" id="qc"><div class="qlbl">Sushi Wallet</div><div class="qamt">${fmt(o.pts)} pts</div>${qrSvg(payload(o))}<div class="qfoot" id="qf" role="timer"></div><div class="qbar"><i id="qbi"></i></div></div>
- <p class="sub center" style="margin:10px 0 14px">Pide que escaneen este código con Sushi Wallet → Recibir. Un solo uso.</p>
+ <p class="sub center" style="margin:10px 0 6px">Escanea el QR con Sushi Wallet → Recibir. Un solo uso.</p>
+ <div class="card" id="qcd" style="text-align:center;margin:0 0 14px"><div class="sub">¿Está lejos? Que escriba este código en Recibir</div><div class="wrcode">${codeOf(o.id)}</div><div class="wrbtns"><button class="chip" data-a="qcopy" data-id="${o.id}">Copiar código</button></div><div class="sub" style="margin-top:6px">Es el mismo del QR: si uno se canjea, el otro deja de valer.</div></div>
  <div style="display:grid;gap:8px"><button class="btn" data-a="close">Listo</button><button class="btn sec" id="qrf" data-a="qrefund" data-id="${o.id}" ${o.exp>Date.now()?'disabled':''}>${o.exp>Date.now()?'Recuperar puntos al caducar':'Recuperar puntos'}</button></div>`);
  clearInterval(QT.t);const tick=()=>{const f=$('#qf'),c=$('#qc');if(!f){clearInterval(QT.t);return}const r=o.exp-Date.now(),bi=$('#qbi');
-  if(r<=0){f.textContent='Caducado';c.classList.remove('low');c.classList.add('dead');if(bi)bi.style.width='0';clearInterval(QT.t);const b=$('#qrf');if(b){b.disabled=false;b.textContent='Recuperar puntos'}outDot()}
+  if(r<=0){f.textContent='Caducado';c.classList.remove('low');c.classList.add('dead');const qd=$('#qcd');if(qd)qd.style.opacity='.35';if(bi)bi.style.width='0';clearInterval(QT.t);const b=$('#qrf');if(b){b.disabled=false;b.textContent='Recuperar puntos'}outDot()}
   else{const t='Caduca en '+left(r);if(f.textContent!==t)f.textContent=t;if(bi)bi.style.width=Math.min(100,r/QT.exp*100)+'%';c.classList.toggle('low',r<=60000)}};tick();QT.t=setInterval(tick,250)}
 function recvSheet(){
  sheet(`<h1 style="font-size:24px">Recibir puntos</h1><p class="sub">Escanea el QR de la otra persona (puntos o un canje).</p>
  <div class="scanbox" id="sb"><video id="cam" playsinline muted></video></div><p class="sub center" id="cs">Iniciando cámara…</p>
- <h2>¿Sin cámara?</h2><input type="text" id="qp" placeholder="Pega aquí el código o el enlace"><p class="ferr" id="qperr"></p><div style="display:grid;gap:8px;margin-top:10px"><button class="btn sec" data-a="qpaste">Canjear código</button></div>`);startCam()}
+ <h2>¿Sin cámara o está lejos?</h2><input type="text" id="qp" placeholder="Escribe el código (ABCD-EFGH) o pega el enlace" autocapitalize="characters" autocomplete="off"><p class="ferr" id="qperr"></p><div style="display:grid;gap:8px;margin-top:10px"><button class="btn sec" data-a="qpaste">Canjear código</button></div>`);startCam()}
 let cam={s:null,raf:0,on:false};
 function stopCam(){cam.on=false;cancelAnimationFrame(cam.raf);if(cam.s){cam.s.getTracks().forEach(t=>t.stop());cam.s=null}}
 async function startCam(){const msg=t=>{const e=$('#cs');if(e)e.textContent=t};
@@ -844,8 +851,10 @@ async function startCam(){const msg=t=>{const e=$('#cs');if(e)e.textContent=t};
 function parse(txt){let t=String(txt||'').trim();const i=t.indexOf('#sw=');if(i>=0)t=decodeURIComponent(t.slice(i+4));else if(/^sw=/.test(t))t=decodeURIComponent(t.slice(3));
  const p=t.split('|');if(p[0]!=='SW1'||p.length<5)return null;const pts=parseFloat(p[2]),exp=parseInt(p[4],10);
  if(!(pts>0)||!p[1]||!(exp>0))return null;let name='';try{name=decodeURIComponent(p[3])}catch(e){}return{id:p[1],pts,name,exp}}
+const codeOf=id=>{const u=String(id).toUpperCase();return u.slice(0,4)+'-'+u.slice(4)};
+function parseCode(txt){const t=String(txt||'').trim();if(!/^[A-Za-z0-9]{4}[\s-]?[A-Za-z0-9]{4}$/.test(t))return null;return{id:t.replace(/[^A-Za-z0-9]/g,'').toLowerCase(),pts:0,name:'',exp:0,byCode:1}}
 function fail(t,sub){stopCam();sheet(`<div class="center"><h1 style="font-size:24px">${t}</h1><p class="sub">${sub}</p></div><div style="display:grid;gap:8px;margin-top:14px"><button class="btn" data-a="wrecv">Escanear otro</button><button class="btn sec" data-a="close">Cerrar</button></div>`);return true}
-function claim(txt){const rq=parseR(txt);if(rq)return claimR(rq);const o=parse(txt);if(!o)return false;stopCam();
+function claim(txt){const rq=parseR(txt);if(rq)return claimR(rq);const o=parse(txt)||parseCode(txt);if(!o)return false;stopCam();
  if(st.out.some(x=>x.id===o.id))return fail('Es tu propio código','Este QR lo generaste tú. Pide a otra persona que lo escanee.');
  if(st.used.includes(o.id))return fail('Código ya usado','Este QR ya se canjeó en este dispositivo.');
  sheet('<div class="center"><p class="sub">Canjeando…</p></div>');claimSrv(o);return true}
@@ -856,9 +865,11 @@ async function claimSrv(o){
   snd('ok');st.tab='home';render();setTimeout(()=>checkAch(),600);
   sheet(`<div class="center"><div class="okmark">${ico('ok')}</div><h1 style="font-size:28px">+${fmt(pts)} puntos</h1><p class="sub">${who?'De '+esc(who)+'. ':''}Ya están en tu cartera.</p></div><button class="btn" data-a="close" style="margin-top:14px">Genial</button>`)}
  catch(e){const M={ticket_not_found:['Código no válido','Este QR no está registrado (puede ser un QR antiguo). Pide uno nuevo.'],ticket_used:['Código ya usado','Este QR ya lo canjeó otra persona.'],ticket_expired:['Código caducado','Pide a la otra persona que genere uno nuevo.'],own_ticket:['Es tu propio código','Este QR lo generaste tú. Pide a otra persona que lo escanee.']}[e.code];
+  if(e.code==='ticket_not_found'&&o.byCode)return fail('Código no válido','Revisa que esté bien escrito. Puede que ya se haya canjeado o que haya caducado.');
   M?fail(M[0],M[1]):fail('No se pudo canjear',wrErrText(e.code)+' Tu saldo no ha cambiado.')}}
 Object.assign(A,{
  wsend:sendSheet,wrecv:recvSheet,qshow,
+ qcopy(id){const c=codeOf(id);(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast('Código copiado',c)).catch(()=>{const t=document.createElement('textarea');t.value=c;document.body.appendChild(t);t.select();try{document.execCommand('copy');toast('Código copiado',c)}catch(e){toast('No se pudo copiar','Selecciona el código manualmente')}t.remove()})},
  qgen(id,b){const v=parseFloat($('#qa').value),bal=stats().bal;
   if(!(v>0))return ferr('#qerr','Escribe una cantidad mayor que 0.','#qa');
   if(v>bal+1e-9)return ferr('#qerr','No tienes suficientes puntos. Tu saldo es '+fmt(bal)+' pts.','#qa');
@@ -1317,11 +1328,11 @@ const wrP=x=>String(x).replace('.',',');
 function wrResultsHTML(){const res=WR.res,rows=Object.values(WR.rp).sort((a,b)=>a.place-b.place||a.nick.localeCompare(b.nick));
  if(!res||!rows.length)return head('Wrapped','Partida finalizada')+`<div class="empty"><h3>Calculando resultados…</h3><p>Un momento, por favor.</p></div>`;
  const pc=((res.rule&&res.rule.bonus_pct)||[]).slice(0,res.players).map((p,i)=>`${i+1}.º +${wrP(p)} %`).join(', ');
- return head('Wrapped','Partida finalizada',`<button class="chip" data-a="wrexit">Volver al menú</button>`)+
+ return head('Wrapped','Partida finalizada',`<button class="chip" data-a="wrdone">Ir a mis puntos</button>`)+
  `<div class="card" style="text-align:center"><h1 style="font-size:26px;margin:0 0 4px">¡Partida finalizada!</h1><p class="sub" style="margin:0">${res.players} participantes · Reparto completado correctamente</p><div class="sub" style="margin-top:14px">Puntuación global</div><b class="wrbig">${wrC(res.global_cents)}</b></div>
 <h2 style="margin:22px 4px 8px">Clasificación</h2><div class="list">${rows.map(x=>`<div class="row${x.place===1?' wr1':''}"><div class="t"><b>${x.place}.º ${esc(x.nick)}${x.user_id===WR.uid?' (tú)':''}</b><span class="sub">Aportados: ${wrC(x.contrib_cents)}<br>Individual (80 %): ${wrC(x.indiv_cents)}<br>Parte compartida: ${wrC(x.base_cents)}<br>Bonus por puesto (+${wrP(x.bonus_pct)} %): ${wrC(x.bonus_cents)}</span></div><span class="pill${x.place===1?' rec':''}">${wrC(x.total_cents)} pts</span></div>`).join('')}</div>
 <p class="sub" style="margin:12px 4px">Cómo se calcula: el 80 % de lo que aportas es tu componente individual. El 20 % de la puntuación global (${wrC(res.global_cents)}) forma un fondo que se reparte a partes iguales entre los ${res.players} jugadores: es tu parte compartida. El bonus por puesto (${pc}) se aplica solo sobre tu parte compartida. Recompensa final = individual + compartida + bonus. Total acreditado: ${wrC(res.credited_cents)}.</p>
-${wrClaimHTML(WR.rp[WR.uid])}<button class="btn sec" data-a="wrexit" style="margin-top:12px">Volver al menú de sesiones</button>`}
+${wrClaimHTML(WR.rp[WR.uid])}<button class="btn" data-a="wrdone" style="margin-top:12px">Ir a mis puntos</button>`}
 function wrPane(){const p=$('#v-sess'),y=p.scrollTop,r=WR.room,host=r.host_id===WR.uid;let h,play=false;wrMirror();
  if(WR.fatal)h=head('Wrapped','Sala')+`<div class="empty"><h3>No se pudo conectar</h3><p>${esc(WR.fatal)}</p><div class="wrbtns"><button class="btn" data-a="wrretry" style="display:inline-block;width:auto;margin:0">Reintentar</button><button class="btn sec" data-a="wrexit" style="display:inline-block;width:auto;margin:0">Volver al menú</button></div></div>`;
  else if(!r.status)h=head('Wrapped','Sala')+`<div class="empty"><h3>Conectando…</h3><p>Recuperando el estado de la sala.</p></div>`;
@@ -1410,7 +1421,7 @@ async function wrResume(id){try{const p=Store.get('wrpend',null);if(!(p&&p.idn))
 // ---------- Recompensa: comprobante único por sala, idempotente ----------
 async function wrCredit(){const m=WR.rp[WR.uid];if(!m||WR.crediting||WR.claim==='ok')return;WR.crediting=true;
  try{const rid='wr:'+m.room_id;
-  if(!st.adj.some(x=>x.id===rid)){st.adj.unshift({id:rid,date:Date.now(),pts:m.total_cents/100,who:'',k:'wr',label:'Wrapped · sala '+(WR.room?WR.room.code:'')});saveAll();render();hap([14,50,22]);toast('Recompensa Wrapped','+'+wrC(m.total_cents)+' pts en tu saldo')}
+  if(!st.adj.some(x=>x.id===rid)){WR.b0=stats().bal;st.adj.unshift({id:rid,date:Date.now(),pts:m.total_cents/100,who:'',k:'wr',label:'Wrapped · sala '+(WR.room?WR.room.code:'')});saveAll();render();hap([14,50,22]);toast('Recompensa Wrapped','+'+wrC(m.total_cents)+' pts en tu saldo')}
   wrRecordHist(m);
   if(!wrSaved(rid))throw new Error('local');          // solo se confirma al servidor si el navegador la guardó de verdad
   Store.set('wrpend',{id:m.room_id});Store.set('wr',null);
@@ -1441,6 +1452,7 @@ Object.assign(A,{
  wrresume(id){close();wrOpen(id)},
  wrretry:wrRetry,
  wrexit:wrExit,
+ wrdone(){const b0=WR.b0;wrExit();WR.b0=undefined;st.tab='home';if(typeof b0==='number')st.shown=b0;render()},
  wrcopy(){const c=WR.room&&WR.room.code;if(!c)return;(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast('Código copiado',c)).catch(()=>{const t=document.createElement('textarea');t.value=c;document.body.appendChild(t);t.select();try{document.execCommand('copy');toast('Código copiado',c)}catch(e){toast('No se pudo copiar','Selecciona el código manualmente')}t.remove()})},
  async wrqr(){const code=WR.room.code,url=/^https?:$/.test(location.protocol)?location.origin+location.pathname+'#wr='+code:code;
   sheet('<div class="center"><p class="sub">Preparando QR…</p></div>');
@@ -1483,13 +1495,19 @@ function ezHtml(){return `<div class="ez-top"><button class="ez-tg" data-a="ezto
 <div class="ez-body" id="ez-body"><div class="ez-in"><div class="ez-grid">${EZB.map(([id,k,n])=>`<button class="ez-b" data-a="ezadd" data-id="${id}" aria-label="Añadir ${n}">${EZI[k]}<span class="ez-t"><span>${n}</span><b>${fmt(dish(id).points)}<small> pts</small></b></span></button>`).join('')}</div>
 <div class="ez-cu"><div class="ez-stp" role="group" aria-label="Puntos personalizados"><button data-a="ezcm" id="ez-cm" aria-label="Menos puntos">−</button><output id="ez-cv" aria-live="polite"></output><button data-a="ezcp" id="ez-cp" aria-label="Más puntos">+</button></div><button class="ez-cb" data-a="ezcadd">Añadir personalizado</button></div></div></div>`}
 function ezLayout(){const d=$('#ez');if(!d||d.hidden)return;const n=$('#nav'),r=n.getBoundingClientRect();d.style.bottom=Math.max(8,Math.round(innerHeight-r.top+8))+'px';document.documentElement.style.setProperty('--ezh',Math.ceil(d.offsetHeight+innerHeight-r.top+16)+'px')}
+// Wrapped + modo fácil: «Tus puntos» y su número suben junto a la puntuación global; el botón de finalizar ocupa el sitio del texto.
+function ezWrBack(){document.body.classList.remove('ez-wr');const me=$('#ez-me');if(!me)return;const h=$('#v-sess .hero');
+ if(h){const l=me.querySelector('.lbl'),b=me.querySelector('.scorebox');if(b)h.insertBefore(b,h.querySelector('.hsum')||h.querySelector('.fin'));if(l)h.insertBefore(l,h.firstChild)}me.remove()}
+function ezWrPlace(){if(!ezOk()||!WR.room)return ezWrBack();const hd=$('#wr-room .wrhd'),h=$('#v-sess .hero');if(!hd||!h)return;
+ let me=$('#ez-me');if(!me||!hd.contains(me)){if(me)ezWrBack();me=document.createElement('div');me.id='ez-me';me.className='ez-me';hd.insertBefore(me,hd.children[1]||null)}
+ const l=h.querySelector(':scope > .lbl'),b=h.querySelector(':scope > .scorebox');if(l)me.appendChild(l);if(b)me.appendChild(b);document.body.classList.add('ez-wr')}
 function ezPaint(){const d=$('#ez');if(!d||d.hidden)return;d.classList.toggle('closed',!!st.set.ezc);d.querySelector('.ez-tg').setAttribute('aria-expanded',String(!st.set.ezc));
  $('#ez-cv').textContent=fmt(EZ.cu)+(EZ.cu===1?' pt':' pts');$('#ez-cm').disabled=EZ.cu<=.5;$('#ez-cp').disabled=EZ.cu>=20;$('#ez-undo').disabled=!EZ.stack.length;ezLayout()}
 function ezDock(){const ok=ezOk();document.body.classList.toggle('ez-on',ok);let d=$('#ez');
- if(!ok){if(d)d.hidden=true;return}
+ if(!ok){if(d)d.hidden=true;ezWrBack();return}
  if(!d){d=document.createElement('div');d.id='ez';d.className='ez-dock';d.innerHTML=ezHtml();document.body.appendChild(d);if(window.ResizeObserver)new ResizeObserver(ezLayout).observe(d);addEventListener('resize',ezLayout)}
  d.hidden=false;const vs=$('#v-sess');if(vs)vs.scrollTop=0;const sid=st.sess?String(st.sess.id):'';if(EZ.sid!==sid){EZ.sid=sid;const g=Store.get('ezs',null);EZ.stack=g&&g.id===sid&&Array.isArray(g.a)?g.a:[]}
- ezPaint()}
+ ezPaint();ezWrPlace()}
 function ezSave(){Store.set('ezs',{id:EZ.sid,a:EZ.stack.slice(-100)})}
 function ezQty(id){return WR.room&&WR.inSess()?(WR.items[WR.uid+'|'+id]?.qty||0):(st.sess?.items?.[id]||0)}
 function ezAdd(id){if(!ezOk()||!dish(id))return;changeQty(id,1,{top:true});EZ.stack.push(id);if(EZ.stack.length>100)EZ.stack.shift();ezSave();ezPaint();hap(10);snd('tap')}
@@ -1501,7 +1519,7 @@ Object.assign(A,{
  ezcp(){EZ.cu=Math.min(20,EZ.cu+.5);ezPaint();hap(6)},
  ezcadd(){ezAdd(ezCid(EZ.cu))},
  ezundo(){if(!ezOk())return;let id;while(EZ.stack.length){const c=EZ.stack.pop();if(ezQty(c)>0){id=c;break}}ezSave();ezPaint();if(!id)return hapErr();changeQty(id,-1);hap(14);snd('tap')}});
-{const _p=paneSess;paneSess=function(){_p.apply(this,arguments);ezDock()};const _s=sync;sync=function(){_s.apply(this,arguments);ezDock()}}
+{const _w=wrPaintRoom;wrPaintRoom=function(){ezWrBack();_w.apply(this,arguments);ezWrPlace()};const _p=paneSess;paneSess=function(){_p.apply(this,arguments);ezDock()};const _s=sync;sync=function(){_s.apply(this,arguments);ezDock()}}
 
 // ---------- Tickets QR verificados en Supabase (ver supabase/tickets.sql) ----------
 Object.assign(WR_ERR,{invalid_ticket:'No se pudo registrar el ticket. Inténtalo de nuevo.',invalid_points:'Cantidad no válida.',not_owner:'Este ticket no es tuyo.',ticket_active:'El ticket sigue vigente.'});
