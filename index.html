@@ -494,6 +494,44 @@ body.glass .wrbub{background:linear-gradient(180deg,#ffffff70,#ffffff1c 60%,#fff
 .wrdot.finished{background:var(--tx2)}
 .wr1{background:color-mix(in srgb,var(--ac) 10%,transparent);border-radius:16px}
 .wrdn{font:600 22px/1.2 ui-serif,"New York",Georgia,serif;margin:4px 0}
+
+/* ---- Modo fácil ---- */
+.ez-dock{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;width:min(94vw,520px);z-index:9;border-radius:26px;padding:4px 10px 10px;background:color-mix(in srgb,var(--card) 84%,transparent);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);box-shadow:0 14px 34px -10px #0007,0 0 0 .5px var(--line);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+#ez[hidden]{display:none!important}
+.ez-top{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px}
+.ez-tg,.ez-undo{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:99px;font-size:15px;font-weight:600;color:var(--tx);-webkit-tap-highlight-color:transparent}
+.ez-tg{padding-left:6px}
+.ez-undo{background:color-mix(in srgb,var(--tx) 8%,transparent);border:.5px solid var(--line)}
+.ez-undo:disabled{opacity:.35}
+.ez-tg svg,.ez-undo svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s}
+.ez-dock.closed .ez-tg svg{transform:rotate(180deg)}
+.ez-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .3s cubic-bezier(.2,.8,.2,1)}
+.ez-in{overflow:hidden;min-height:0;transition:visibility 0s}
+.ez-dock.closed .ez-body{grid-template-rows:0fr}
+.ez-dock.closed .ez-in{visibility:hidden;transition-delay:.3s}
+.ez-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ez-b{display:flex;align-items:center;gap:10px;min-height:108px;padding:10px 14px;border-radius:18px;text-align:left;background:color-mix(in srgb,var(--tx) 6%,transparent);border:.5px solid var(--line);color:var(--tx);-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.3,1.5,.5,1),background .15s}
+.ez-b:active{transform:scale(.95);background:color-mix(in srgb,var(--ac) 18%,transparent)}
+.ez-b svg{width:70px;height:70px;flex:none}
+.ez-t{display:flex;flex-direction:column;min-width:0;line-height:1.15}
+.ez-t span{font-size:17px;color:var(--tx2)}
+.ez-t b{font:600 32px/1.1 ui-serif,"New York",Georgia,serif;font-variant-numeric:tabular-nums}
+.ez-t small{font:500 14px system-ui,sans-serif;color:var(--tx2)}
+.ez-cu{display:flex;gap:8px;margin-top:8px}
+.ez-stp{display:flex;align-items:center;border-radius:16px;background:color-mix(in srgb,var(--tx) 6%,transparent);border:.5px solid var(--line)}
+.ez-stp button{width:44px;height:48px;font-size:22px;font-weight:500;color:var(--tx)}
+.ez-stp button:disabled{opacity:.3}
+.ez-stp output{min-width:56px;text-align:center;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+.ez-cb{flex:1;min-height:48px;border-radius:16px;font-size:15px;font-weight:600;background:var(--ac);color:var(--on-ac,#fff);transition:transform .18s cubic-bezier(.3,1.5,.5,1)}
+.ez-cb:active{transform:scale(.96)}
+body.ez-on #v-sess .reg,body.ez-on #v-sess .rlb,body.ez-on #v-sess .fab,body.ez-on #v-sess #hsum{display:none}
+body.ez-on #v-sess .hero{padding-top:2px}
+body.ez-on #v-sess .fin{display:block;margin:-8px auto 0}
+body.ez-on #v-sess .score{font-size:min(160px,36vw,18vh,calc(88vw/(var(--n,3)*.7)))}
+body.ez-on #v-sess{overflow:hidden;overscroll-behavior:none;touch-action:none;padding-bottom:0}
+@media(max-height:780px){.ez-b{min-height:84px}.ez-b svg{width:54px;height:54px}.ez-t b{font-size:26px}}
+@media(max-height:680px){.ez-b{min-height:66px}.ez-b svg{width:42px;height:42px}.ez-t b{font-size:22px}.ez-t span{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.ez-body,.ez-tg svg,.ez-b,.ez-cb{transition:none}}
 </style>
 </head>
 <body>
@@ -512,7 +550,10 @@ st.ach.c=st.ach.c||{};st.ach.seen=st.ach.seen||[];
 const $=s=>document.querySelector(s);
 const fmt=n=>(+n).toLocaleString('es-ES',{maximumFractionDigits:2});
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const dish=id=>st.catalog.find(d=>d.id===id);
+// ---------- Modo fácil: platos virtuales (no están en la carta; se resuelven por id) ----------
+const EZD=[['ez-gamba','Gamba',.5],['ez-sushi','Sushi',1],['ez-nigiri','Nigiri',1.5],['ez-temaki','Temaki',2]].map(([id,name,points])=>({id,name,points,category:'Modo fácil',description:'',ingredients:'',image:''}));
+function ezDish(id){if(typeof id!=='string'||id.slice(0,3)!=='ez-')return null;const f=EZD.find(d=>d.id===id);if(f)return f;const m=/^ez-c-(\d+(?:\.\d+)?)$/.exec(id);return m?{id,name:'Personalizado',points:+m[1],category:'Modo fácil',description:'',ingredients:'',image:''}:null}
+const dish=id=>ezDish(id)||st.catalog.find(d=>d.id===id);
 const pts=d=>st.pts[d.id]??d.points??1;
 const save=k=>Store.set(k,st[k==='set'?'set':k]);
 // ---------- Estadísticas (derivadas del historial) ----------
@@ -529,6 +570,7 @@ function applyPrefs(){document.body.classList.toggle('glass',!!st.set.glass);['t
 function sheet(h){$('#sh').innerHTML=h;$('#ov').classList.add('show')}
 function close(){$('#ov').classList.remove('show');try{stopCam();clearInterval(QT.t);clearInterval(PT.t)}catch(e){}}
 function settings(){sheet(`<h1 style="font-size:24px">Ajustes</h1>
+<h2>Sesión</h2><div class="list"><div class="row"><div class="t"><b>Modo fácil</b><span class="sub">Cambia el menú + por 4 botones rápidos (gamba, sushi, nigiri, temaki) y uno personalizado. Vale para Solo y Wrapped.</span></div><button class="tog ${st.set.easy?'on':''}" data-a="easy" aria-label="Modo fácil"></button></div></div>
 <h2>Apariencia</h2><div class="list"><div class="row"><div class="t"><b>Liquid Glass</b><span class="sub">Superficies translúcidas en barras y paneles</span></div><button class="tog ${st.set.glass?'on':''}" data-a="glass" aria-label="Liquid Glass"></button></div>
 <div class="row"><div class="t"><b>Sonidos</b><span class="sub">Un toque suave al pulsar y al completar acciones</span></div><button class="tog ${st.set.sound===true?'on':''}" data-a="sound" aria-label="Sonidos"></button></div>
 <div class="row"><div class="t"><b>Vibración</b><span class="sub">Respuesta háptica al tocar (según el dispositivo)</span></div><button class="tog ${st.set.haptic!==false?'on':''}" data-a="haptic" aria-label="Vibración"></button></div>
@@ -806,21 +848,33 @@ function fail(t,sub){stopCam();sheet(`<div class="center"><h1 style="font-size:2
 function claim(txt){const rq=parseR(txt);if(rq)return claimR(rq);const o=parse(txt);if(!o)return false;stopCam();
  if(st.out.some(x=>x.id===o.id))return fail('Es tu propio código','Este QR lo generaste tú. Pide a otra persona que lo escanee.');
  if(st.used.includes(o.id))return fail('Código ya usado','Este QR ya se canjeó en este dispositivo.');
- if(Date.now()>o.exp)return fail('Código caducado','Pide a la otra persona que genere uno nuevo.');
- st.used.unshift(o.id);st.used=st.used.slice(0,300);st.adj.unshift({id:o.id,date:Date.now(),pts:o.pts,who:o.name});saveAll();
- snd('ok');st.tab='home';render();setTimeout(()=>checkAch(),600);
- sheet(`<div class="center"><div class="okmark">${ico('ok')}</div><h1 style="font-size:28px">+${fmt(o.pts)} puntos</h1><p class="sub">${o.name?'De '+esc(o.name)+'. ':''}Ya están en tu cartera.</p></div><button class="btn" data-a="close" style="margin-top:14px">Genial</button>`);return true}
+ sheet('<div class="center"><p class="sub">Canjeando…</p></div>');claimSrv(o);return true}
+async function claimSrv(o){
+ try{await wrInit();const r=await wrRpc('sw_ticket_claim',{p_id:o.id},{retry:true});
+  const pts=r.pts_cents/100,who=r.name||o.name||'';
+  if(!st.used.includes(o.id)){st.used.unshift(o.id);st.used=st.used.slice(0,300);st.adj.unshift({id:o.id,date:Date.now(),pts,who});saveAll()}
+  snd('ok');st.tab='home';render();setTimeout(()=>checkAch(),600);
+  sheet(`<div class="center"><div class="okmark">${ico('ok')}</div><h1 style="font-size:28px">+${fmt(pts)} puntos</h1><p class="sub">${who?'De '+esc(who)+'. ':''}Ya están en tu cartera.</p></div><button class="btn" data-a="close" style="margin-top:14px">Genial</button>`)}
+ catch(e){const M={ticket_not_found:['Código no válido','Este QR no está registrado (puede ser un QR antiguo). Pide uno nuevo.'],ticket_used:['Código ya usado','Este QR ya lo canjeó otra persona.'],ticket_expired:['Código caducado','Pide a la otra persona que genere uno nuevo.'],own_ticket:['Es tu propio código','Este QR lo generaste tú. Pide a otra persona que lo escanee.']}[e.code];
+  M?fail(M[0],M[1]):fail('No se pudo canjear',wrErrText(e.code)+' Tu saldo no ha cambiado.')}}
 Object.assign(A,{
  wsend:sendSheet,wrecv:recvSheet,qshow,
- qgen(){const v=parseFloat($('#qa').value),bal=stats().bal;
+ qgen(id,b){const v=parseFloat($('#qa').value),bal=stats().bal;
   if(!(v>0))return ferr('#qerr','Escribe una cantidad mayor que 0.','#qa');
   if(v>bal+1e-9)return ferr('#qerr','No tienes suficientes puntos. Tu saldo es '+fmt(bal)+' pts.','#qa');
   const nm=$('#qn').value.trim();st.set.name=nm;save('set');
-  const o={id:rid(),pts:Math.round(v*100)/100,name:nm,exp:Date.now()+QT.exp};
-  st.out.unshift(o);st.adj.unshift({id:o.id,date:Date.now(),pts:-o.pts,who:''});saveAll();render();qshow(o.id)},
- qrefund(id){const i=st.out.findIndex(x=>x.id===id);if(i<0)return;const o=st.out[i];if(Date.now()<=o.exp)return;st.out.splice(i,1);
-  st.adj=st.adj.filter(m=>m.id!==id);saveAll();render();sendSheet()},
- qpaste(){if(!claim($('#qp').value))ferr('#qperr','Ese código no es válido.','#qp')}
+  const o={id:rid(),pts:Math.round(v*100)/100,name:nm,exp:Date.now()+QT.exp,srv:1};
+  return wrGo('qgen',b,'Generando…',async()=>{
+   try{await wrInit();await wrRpc('sw_ticket_create',{p_id:o.id,p_pts_cents:Math.round(o.pts*100),p_name:nm,p_ttl_seconds:Math.round(QT.exp/1000)})}
+   catch(e){return ferr('#qerr',wrErrText(e.code)+' No se han descontado puntos.','#qa')}
+   o.exp=Date.now()+QT.exp;st.out.unshift(o);st.adj.unshift({id:o.id,date:Date.now(),pts:-o.pts,who:''});saveAll();render();qshow(o.id)})},
+ qrefund(id,b){const o0=st.out.find(x=>x.id===id);if(!o0||Date.now()<=o0.exp)return;
+  return wrGo('refund'+id,b,'Comprobando…',async()=>{let used=false,gone=false;
+   try{await wrInit();const r=await wrRpc('sw_ticket_refund',{p_id:id},{retry:true});if(r&&r.result==='used')used=true}
+   catch(e){if(e.code==='ticket_not_found'){if(o0.srv)gone=true}else return toast('No se pudo recuperar',e.code==='ticket_active'?'El ticket sigue vigente. Espera unos segundos.':wrErrText(e.code))}
+   const i=st.out.findIndex(x=>x.id===id);if(i<0)return;st.out.splice(i,1);
+   if(!used&&!gone)st.adj=st.adj.filter(m=>m.id!==id);
+   saveAll();render();sendSheet();if(used)toast('Ya lo canjearon','Esos puntos no se pueden recuperar');else if(gone)toast('Ticket eliminado','Ya no existe en el servidor y no se pueden recuperar los puntos')})}, qpaste(){if(!claim($('#qp').value))ferr('#qperr','Ese código no es válido.','#qp')}
 });
 function hashClaim(){const h=location.hash;if(!/^#sw=/.test(h))return;const raw=h.slice(1);history.replaceState(null,'',location.pathname+location.search);claim(raw)}
 addEventListener('hashchange',hashClaim);
@@ -1414,6 +1468,46 @@ Object.assign(A,{
  wrdrawx(id,b){wrGo('drawx'+id,b,'…',async()=>{try{await wrRpc('wr_roulette_answer',{p_id:id,p_accept:false},{retry:true});delete WR.draws[id];close();wrPaintRoom()}catch(e){close();toast('No se pudo descartar',wrErrText(e.code))}})}
 });
 
+
+// ---------- Modo fácil: panel inferior con botones rápidos (Solo y Wrapped) ----------
+const EZ={sid:null,stack:[],cu:1};
+const EZI={
+ gamba:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 33C6 20 17 9 30 13c8 2 11 9 7 15" fill="none" stroke="#e8603a" stroke-width="10" stroke-linecap="round"/><path d="M9 33C6 20 17 9 30 13c8 2 11 9 7 15" fill="none" stroke="#ff8f66" stroke-width="7" stroke-linecap="round"/><path d="M9 33C6 20 17 9 30 13c8 2 11 9 7 15" fill="none" stroke="#c9472a" stroke-width="10" stroke-dasharray="1.4 5.2" stroke-dashoffset="2"/><path d="M37 28l7 1-2 7-6-4zM37 28l6 8" fill="#ff8f66" stroke="#e8603a" stroke-width="1.4" stroke-linejoin="round"/><circle cx="10.5" cy="30" r="1.6" fill="#2b1d18"/><path d="M8 35c-3 1-5 4-6 8M10 37c-1 3-1 5 0 8" fill="none" stroke="#e8603a" stroke-width="1.6" stroke-linecap="round"/><path d="M12 21c-3-4-4-8-3-12M14 18c-1-5 0-8 3-11" fill="none" stroke="#e8603a" stroke-width="1.4" stroke-linecap="round"/></svg>',
+ sushi:'<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="25" r="19" fill="#00000026"/><circle cx="24" cy="23" r="19" fill="#26352e"/><circle cx="24" cy="23" r="15" fill="#f7f4ec"/><g fill="#e4dfd0"><circle cx="13" cy="18" r="1"/><circle cx="35" cy="17" r="1"/><circle cx="14" cy="30" r="1"/><circle cx="34" cy="31" r="1"/><circle cx="24" cy="10.5" r="1"/><circle cx="24" cy="36" r="1"/><circle cx="19" cy="13" r="1"/><circle cx="30" cy="34" r="1"/></g><circle cx="24" cy="23" r="8.5" fill="#ff7a59"/><path d="M18 20c4-3 8-3 12 0M17 25c4 3 10 3 14 0" fill="none" stroke="#ffc3ae" stroke-width="1.3" stroke-linecap="round"/><circle cx="27.5" cy="25.5" r="3" fill="#8fd07a"/><circle cx="27.5" cy="25.5" r="1.4" fill="#c9eebb"/></svg>',
+ nigiri:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="25" width="38" height="14" rx="7" fill="#00000026" transform="translate(0 2)"/><rect x="5" y="25" width="38" height="14" rx="7" fill="#f7f4ec"/><path d="M9 36c8 2 22 2 30 0" fill="none" stroke="#e4dfd0" stroke-width="1.4" stroke-linecap="round"/><path d="M3 27c1-10 11-14 21-14s20 4 21 14c-8 4-34 4-42 0z" fill="#ff7a59"/><path d="M3 27c8 3 34 3 42 0" fill="none" stroke="#e8603a" stroke-width="1.6"/><path d="M12 17c3 3 4 7 4 11M20 14c2 4 3 8 3 13M29 14c0 4 1 8 1 13M37 17c-1 3-2 6-2 10" fill="none" stroke="#ffd2c4" stroke-width="1.7" stroke-linecap="round"/><rect x="21" y="14" width="6" height="24" rx="2" fill="#26352e" opacity=".92"/></svg>',
+ temaki:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M17 11l-1-8 7 2 1 8z" fill="#ff7a59"/><path d="M26 11l1-9 6 1-1 9z" fill="#7bc96f"/><path d="M33 12l4-7 5 3-4 8z" fill="#ffd166"/><ellipse cx="24" cy="14" rx="15" ry="5" fill="#f7f4ec"/><path d="M8 14c5 4 27 4 32 0L27 44c-1 3-5 3-6 0z" fill="#26352e"/><path d="M12 17l13 27M33 18L24 40" fill="none" stroke="#3f564b" stroke-width="1.6" stroke-linecap="round"/><path d="M9 15c5 3.5 25 3.5 30 0" fill="none" stroke="#e4dfd0" stroke-width="1.4"/></svg>'};
+const EZB=[['ez-gamba','gamba','Gamba'],['ez-sushi','sushi','Sushi'],['ez-nigiri','nigiri','Nigiri'],['ez-temaki','temaki','Temaki']];
+const ezCid=p=>'ez-c-'+(+p);
+function ezOk(){if(!st.set.easy||st.tab!=='sess')return false;if(WR.room)return !!(WR.inSess()&&WR.live());return !!(st.sess&&!st.sess.wrapped)}
+function ezHtml(){return `<div class="ez-top"><button class="ez-tg" data-a="eztoggle" aria-controls="ez-body"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg><b>Añadir sushi</b></button><button class="ez-undo" id="ez-undo" data-a="ezundo" aria-label="Deshacer el último"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7L4.5 11.5 9 16M5 11.5h9.5a5 5 0 010 10H11"/></svg>Deshacer</button></div>
+<div class="ez-body" id="ez-body"><div class="ez-in"><div class="ez-grid">${EZB.map(([id,k,n])=>`<button class="ez-b" data-a="ezadd" data-id="${id}" aria-label="Añadir ${n}">${EZI[k]}<span class="ez-t"><span>${n}</span><b>${fmt(dish(id).points)}<small> pts</small></b></span></button>`).join('')}</div>
+<div class="ez-cu"><div class="ez-stp" role="group" aria-label="Puntos personalizados"><button data-a="ezcm" id="ez-cm" aria-label="Menos puntos">−</button><output id="ez-cv" aria-live="polite"></output><button data-a="ezcp" id="ez-cp" aria-label="Más puntos">+</button></div><button class="ez-cb" data-a="ezcadd">Añadir personalizado</button></div></div></div>`}
+function ezLayout(){const d=$('#ez');if(!d||d.hidden)return;const n=$('#nav'),r=n.getBoundingClientRect();d.style.bottom=Math.max(8,Math.round(innerHeight-r.top+8))+'px';document.documentElement.style.setProperty('--ezh',Math.ceil(d.offsetHeight+innerHeight-r.top+16)+'px')}
+function ezPaint(){const d=$('#ez');if(!d||d.hidden)return;d.classList.toggle('closed',!!st.set.ezc);d.querySelector('.ez-tg').setAttribute('aria-expanded',String(!st.set.ezc));
+ $('#ez-cv').textContent=fmt(EZ.cu)+(EZ.cu===1?' pt':' pts');$('#ez-cm').disabled=EZ.cu<=.5;$('#ez-cp').disabled=EZ.cu>=20;$('#ez-undo').disabled=!EZ.stack.length;ezLayout()}
+function ezDock(){const ok=ezOk();document.body.classList.toggle('ez-on',ok);let d=$('#ez');
+ if(!ok){if(d)d.hidden=true;return}
+ if(!d){d=document.createElement('div');d.id='ez';d.className='ez-dock';d.innerHTML=ezHtml();document.body.appendChild(d);if(window.ResizeObserver)new ResizeObserver(ezLayout).observe(d);addEventListener('resize',ezLayout)}
+ d.hidden=false;const vs=$('#v-sess');if(vs)vs.scrollTop=0;const sid=st.sess?String(st.sess.id):'';if(EZ.sid!==sid){EZ.sid=sid;const g=Store.get('ezs',null);EZ.stack=g&&g.id===sid&&Array.isArray(g.a)?g.a:[]}
+ ezPaint()}
+function ezSave(){Store.set('ezs',{id:EZ.sid,a:EZ.stack.slice(-100)})}
+function ezQty(id){return WR.room&&WR.inSess()?(WR.items[WR.uid+'|'+id]?.qty||0):(st.sess?.items?.[id]||0)}
+function ezAdd(id){if(!ezOk()||!dish(id))return;changeQty(id,1,{top:true});EZ.stack.push(id);if(EZ.stack.length>100)EZ.stack.shift();ezSave();ezPaint();hap(10);snd('tap')}
+Object.assign(A,{
+ easy(){st.set.easy=!st.set.easy;save('set');settings();ezDock();hap(8)},
+ eztoggle(){st.set.ezc=!st.set.ezc;save('set');ezPaint();hap(8)},
+ ezadd(id){ezAdd(id)},
+ ezcm(){EZ.cu=Math.max(.5,EZ.cu-.5);ezPaint();hap(6)},
+ ezcp(){EZ.cu=Math.min(20,EZ.cu+.5);ezPaint();hap(6)},
+ ezcadd(){ezAdd(ezCid(EZ.cu))},
+ ezundo(){if(!ezOk())return;let id;while(EZ.stack.length){const c=EZ.stack.pop();if(ezQty(c)>0){id=c;break}}ezSave();ezPaint();if(!id)return hapErr();changeQty(id,-1);hap(14);snd('tap')}});
+{const _p=paneSess;paneSess=function(){_p.apply(this,arguments);ezDock()};const _s=sync;sync=function(){_s.apply(this,arguments);ezDock()}}
+
+// ---------- Tickets QR verificados en Supabase (ver supabase/tickets.sql) ----------
+Object.assign(WR_ERR,{invalid_ticket:'No se pudo registrar el ticket. Inténtalo de nuevo.',invalid_points:'Cantidad no válida.',not_owner:'Este ticket no es tuyo.',ticket_active:'El ticket sigue vigente.'});
+const SYNC={skip:0};
+async function syncOut(){if(!st.out.length)return;try{await wrInit();const r=await wrRpc('sw_ticket_status',{p_ids:st.out.map(o=>o.id)});const dead=new Set((r||[]).filter(x=>x.status==='claimed').map(x=>x.id));if(!dead.size)return;st.out=st.out.filter(o=>!dead.has(o.id));saveAll();render();if($('#qa')){SYNC.skip=1;try{sendSheet()}finally{SYNC.skip=0}}}catch(e){}}
+{const _ss=sendSheet;sendSheet=function(){_ss.apply(this,arguments);if(!SYNC.skip)syncOut()};A.wsend=sendSheet}
 // ---------- Arranque: invitación por enlace/QR y recuperación de la sala tras recargar ----------
 function wrHash(){const m=/^#wr=([A-Za-z0-9]{8})$/.exec(location.hash);if(!m)return;history.replaceState(null,'',location.pathname+location.search);
  if((st.sess&&!st.sess.wrapped)||WR.room)return toast('Sala Wrapped','Termina tu sesión actual para unirte a otra');
