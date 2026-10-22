@@ -244,7 +244,7 @@ p.sub:has(>svg){display:flex;align-items:center}
 .wbtns button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:99px;font-weight:600;font-size:15px;color:#f7f3ea;background:#ffffff1f;border:.5px solid #ffffff38;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 #ffffff2e}
 .wbtns button:active{transform:scale(.97)}
 .wbtns button{position:relative}
-.wbtns .nd{position:absolute;top:-2px;right:12px;width:12px;height:12px;border-radius:50%;background:#ff3b30;box-shadow:0 0 0 2px var(--card);pointer-events:none}
+.wbtns .nd{position:absolute;top:-6px;right:8px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:var(--ac);color:var(--on-ac,#fff);font:700 10px/17px -apple-system,system-ui,sans-serif;font-style:normal;text-align:center;pointer-events:none;box-shadow:0 0 0 2px var(--card)}
 .wbtns svg{width:18px;height:18px;stroke-width:2.2}
 .wallet .wf{margin-top:16px}
 .qrcard{position:relative;margin:16px auto 6px;max-width:300px;padding:18px 18px 14px;border-radius:28px;text-align:center;color:#161616;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(150deg,var(--ac),#ffd9a0 55%,var(--ac)) border-box;border:3px solid transparent;box-shadow:0 22px 44px -22px color-mix(in srgb,var(--ac) 80%,#000)}
@@ -814,11 +814,13 @@ const left=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+'
 const saveAll=()=>{save('adj');save('out');save('used')};
 function movs(){if(!st.adj.length)return '';return fold('mov','Movimientos',st.adj.length,`<div class="list">${st.adj.slice(0,5).map(m=>`<div class="row"><div class="t"><b>${m.label?esc(m.label):(m.pts>0?'Recibido':'Enviado')+(m.who?(m.pts>0?' de ':' · ')+esc(m.who):'')}</b><span class="sub">${dt(m.date)}</span></div><span class="pill">${m.pts>0?'+':''}${fmt(m.pts)} pts</span></div>`).join('')}</div>`)}
 // Punto de aviso en «Enviar» cuando hay QR caducados cuyos puntos se pueden recuperar
-function outDot(){const btn=document.querySelector('[data-a="wsend"]'),now=Date.now(),has=st.out.some(o=>o.exp<=now);
+const SYNC={skip:0,at:0,last:0,busy:0},VER=15000,POLL=30000;   // VER: margen por desfase de relojes antes de dar un QR caducado por definitivo
+// Aviso en «Enviar»: nº de QR caducados cuyos puntos se pueden recuperar. Solo cuenta los que el servidor ha confirmado que siguen sin canjear.
+function outDot(){const btn=document.querySelector('[data-a="wsend"]'),now=Date.now(),n=st.out.filter(o=>o.exp<=now&&o.exp+VER<=SYNC.at).length;
  if(btn){let d=btn.querySelector('.nd');
-  if(has){if(!d){d=document.createElement('i');d.className='nd';d.setAttribute('aria-hidden','true');btn.appendChild(d)}btn.setAttribute('aria-label','Enviar. Tienes puntos por recuperar')}
+  if(n>0){if(!d){d=document.createElement('i');d.className='nd';d.setAttribute('aria-hidden','true');btn.appendChild(d)}const t=n>99?'99+':String(n);if(d.textContent!==t)d.textContent=t;btn.setAttribute('aria-label','Enviar. '+n+(n===1?' envío por recuperar':' envíos por recuperar'))}
   else{if(d)d.remove();btn.removeAttribute('aria-label')}}
- clearTimeout(outDot.t);const nx=st.out.map(o=>o.exp-now).filter(x=>x>0);if(nx.length)outDot.t=setTimeout(outDot,Math.min(...nx)+300)}
+ clearTimeout(outDot.t);const nx=st.out.map(o=>o.exp+VER-now).filter(x=>x>0);if(nx.length)outDot.t=setTimeout(()=>{outDot();if(typeof outSched==='function')outSched()},Math.min(...nx)+300)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)outDot()});
 function pendTick(){const els=document.querySelectorAll('[data-qx]');if(!els.length){clearInterval(PT.t);return}const now=Date.now();
  els.forEach(e=>{const r=+e.dataset.qx-now,t=r>0?'Vigente · caduca en '+left(r):'Caducado';if(e.textContent!==t)e.textContent=t;
@@ -1549,9 +1551,20 @@ Object.assign(A,{
 
 // ---------- Tickets QR verificados en Supabase (ver supabase/tickets.sql) ----------
 Object.assign(WR_ERR,{invalid_ticket:'No se pudo registrar el ticket. Inténtalo de nuevo.',invalid_points:'Cantidad no válida.',not_owner:'Este ticket no es tuyo.',ticket_active:'El ticket sigue vigente.'});
-const SYNC={skip:0};
-async function syncOut(){if(!st.out.length)return;try{await wrInit();const r=await wrRpc('sw_ticket_status',{p_ids:st.out.map(o=>o.id)});const dead=new Set((r||[]).filter(x=>x.status==='claimed').map(x=>x.id));if(!dead.size)return;st.out=st.out.filter(o=>!dead.has(o.id));saveAll();render();if($('#qa')){SYNC.skip=1;try{sendSheet()}finally{SYNC.skip=0}}}catch(e){}}
-{const _ss=sendSheet;sendSheet=function(){_ss.apply(this,arguments);if(!SYNC.skip)syncOut()};A.wsend=sendSheet}
+const outLive=()=>st.out.filter(o=>o.exp+VER>SYNC.at);   // los ya verificados tras caducar no pueden cambiar: no se vuelven a consultar
+// Solo se consulta con la app a la vista, en Inicio, con algún QR aún por comprobar y como mucho una vez cada 30 s.
+const outOk=()=>!document.hidden&&st.tab==='home';
+async function syncOut(){const ids=outLive().map(o=>o.id);if(!ids.length||SYNC.busy||!outOk())return;SYNC.busy=1;const t=SYNC.last=Date.now();
+ try{await wrInit();const r=await wrRpc('sw_ticket_status',{p_ids:ids});SYNC.at=t;
+  const dead=new Set((r||[]).filter(x=>x.status==='claimed').map(x=>x.id));
+  if(!dead.size)return outDot();
+  st.out=st.out.filter(o=>!dead.has(o.id));saveAll();render();if($('#qa')){SYNC.skip=1;try{sendSheet()}finally{SYNC.skip=0}}}
+ catch(e){}finally{SYNC.busy=0;outSched()}}
+function outSched(){clearTimeout(outSched.t);if(!outOk()||!outLive().length||SYNC.busy)return;
+ outSched.t=setTimeout(()=>{outSched.t=0;syncOut()},Math.max(0,SYNC.last+POLL-Date.now()))}
+document.addEventListener('visibilitychange',outSched);
+{const _sy=sync;sync=function(){_sy.apply(this,arguments);outSched()}}
+{const _ss=sendSheet;sendSheet=function(){_ss.apply(this,arguments);if(!SYNC.skip)outSched()};A.wsend=sendSheet}
 // ---------- Arranque: invitación por enlace/QR y recuperación de la sala tras recargar ----------
 function wrHash(){const m=/^#wr=([A-Za-z0-9]{8})$/.exec(location.hash);if(!m)return;history.replaceState(null,'',location.pathname+location.search);
  const e=wrJoinCode(m[1].toUpperCase());if(e)toast('Sala Wrapped',e)}
@@ -1560,7 +1573,7 @@ function wrJoinCode(code){if((st.sess&&!st.sess.wrapped)||WR.room)return 'Termin
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)wrWake()});
 addEventListener('online',wrWake);addEventListener('offline',()=>{if(WR.room){WR.conn='off';wrPaintConn()}});
 addEventListener('hashchange',wrHash);
-paneSess();wrHash();
+paneSess();wrHash();outSched();
 (function wrBoot(){if(wrConfigured()){const p=Store.get('wrpend',null);if(p&&p.id){Store.set('wr',null);wrResume(p.id);return}}const s=Store.get('wr',null);if(s&&s.id&&wrConfigured()&&!st.sess)wrOpen(s.id)})();
 </script>
 </body>
