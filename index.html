@@ -522,6 +522,7 @@ body.glass .wrbub{background:linear-gradient(180deg,#ffffff70,#ffffff1c 60%,#fff
 .pzp.sel{box-shadow:inset 0 0 0 2px var(--ac)}
 .pzd{position:relative;z-index:1;display:block;height:22px;width:calc(30% + var(--s)*17%);border-radius:99px;background:color-mix(in srgb,var(--ac) calc(35% + var(--s)*16%),var(--card));box-shadow:inset 0 1px 0 #ffffff55}
 .pzg.done .pzc,.pzg.done .pzp{background:color-mix(in srgb,var(--ac) 16%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 50%,transparent)}
+.pzg .pzs.ok{background:#ff4f81;color:#fff;box-shadow:inset 0 1px 0 #ffffff66,0 8px 18px -8px #ff4f81}
 .pzr{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
 .capw{display:block;width:min(100%,300px);margin:10px auto 8px;border-radius:16px;overflow:hidden;background:color-mix(in srgb,var(--tx) 6%,transparent);border:.5px solid var(--line)}
 .capw canvas{display:block;width:100%;height:auto}
@@ -929,12 +930,12 @@ function pzFlip(g,c){const r=Math.floor(c/PZN),q=c%PZN;[[r,q],[r-1,q],[r+1,q],[r
 const pzSolved=g=>g.every((x,i)=>x===(i<15?i+1:0));
 function pzNew(t){let p;
  if(t==='lights'){const g=Array(PZN*PZN).fill(false),pool=[...g.keys()];for(let i=0;i<6;i++)g[pool.splice(rnd(pool.length),1)[0]]=true;p={t,g}}
- else if(t==='slide'){let g;do{g=[...Array(15).keys()].map(i=>i+1);g.push(0);let e=15,prev=-1;for(let i=0;i<10;i++){const r=Math.floor(e/4),c=e%4,nb=[];if(r>0)nb.push(e-4);if(r<3)nb.push(e+4);if(c>0)nb.push(e-1);if(c<3)nb.push(e+1);const o=nb.filter(x=>x!==prev),j=o[rnd(o.length)];g[e]=g[j];g[j]=0;prev=e;e=j}}while(pzSolved(g));p={t,g}}
+ else if(t==='slide'){let g;do{g=[...Array(15).keys()].map(i=>i+1);g.push(0);let e=15,prev=-1;for(let i=0;i<6;i++){const r=Math.floor(e/4),c=e%4,nb=[];if(r>0)nb.push(e-4);if(r<3)nb.push(e+4);if(c>0)nb.push(e-1);if(c<3)nb.push(e+1);const o=nb.filter(x=>x!==prev),j=o[rnd(o.length)];g[e]=g[j];g[j]=0;prev=e;e=j}}while(pzSolved(g));p={t,g}}
  else p={t:'hanoi',pg:[[3,2,1],[],[]],sel:-1};
  p.init=JSON.stringify(p.t==='hanoi'?p.pg:p.g);p.m=0;p.ok=false;p.step=QCF.k;QCF.pz=p;QCF.am=false}
 function pzCells(off){const p=QCF.pz,d=off?' disabled':'';
  if(p.t==='lights')return p.g.map((on,i)=>`<button class="pzc${on?' on':''}" data-a="pzt" data-id="${i}" aria-pressed="${on}" aria-label="Casilla ${Math.floor(i/PZN)+1}, ${i%PZN+1}"${d}></button>`).join('');
- if(p.t==='slide')return p.g.map((x,i)=>x?`<button class="pzc pzs" data-a="pzt" data-id="${i}" aria-label="Ficha ${x}"${d}>${x}</button>`:`<span class="pze" aria-hidden="true"></span>`).join('');
+ if(p.t==='slide')return p.g.map((x,i)=>x?`<button class="pzc pzs${x===i+1?' ok':''}" data-a="pzt" data-id="${i}" aria-label="Ficha ${x}"${d}>${x}</button>`:`<span class="pze" aria-hidden="true"></span>`).join('');
  return p.pg.map((c,i)=>`<button class="pzp${p.sel===i?' sel':''}" data-a="pzt" data-id="${i}" aria-label="Columna ${i+1}, ${c.length} piezas"${d}>${c.map(s=>`<i class="pzd" style="--s:${s}"></i>`).join('')}</button>`).join('')}
 function pzHtml(){const p=QCF.pz,cls=p.t==='slide'?' pz4':p.t==='hanoi'?' pz3':'';
  return `<h2>Escribe la cantidad para desbloquear el puzle</h2><input type="text" id="qcin" inputmode="decimal" autocomplete="off" placeholder="${QCF.v}"><p class="sub" id="pzi" style="margin-top:10px"></p><div class="pzg${cls}" id="pzg" role="group" aria-label="Puzle de confirmación">${pzCells(true)}</div><div class="pzr"><span class="pill" id="pzm"></span><button class="chip" data-a="pzreset">Reiniciar</button><button class="chip" data-a="pznew">Otro puzle</button></div>`}
