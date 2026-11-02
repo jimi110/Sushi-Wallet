@@ -883,6 +883,25 @@ async function claimSrv(o){
   if(e.code==='ticket_not_found'&&o.byCode){const rc=o.id.toUpperCase();if(wrCodeRe.test(rc)&&!wrJoinCode(rc))return}
   if(e.code==='ticket_not_found'&&o.byCode)return fail('Código no válido','Revisa que esté bien escrito. Puede que ya se haya canjeado o que haya caducado.');
   M?fail(M[0],M[1]):fail('No se pudo canjear',wrErrText(e.code)+' Tu saldo no ha cambiado.')}}
+// Confirmaciones escalonadas al enviar cantidades altas: ≥10.000 doble, ≥100.000 triple, ≥1.000.000 triple + escribir la cantidad
+const QCF={t1:1e4,t2:1e5,t3:1e6,v:0,nm:'',k:0,n:0};
+function qcSheet(){const v=QCF.v,k=QCF.k,n=QCF.n,last=k===n,big=v>=QCF.t3&&last,amt=fmt(v);
+ const T=big?'Confirmación importante':k===1?'Cantidad muy alta':last?'Última confirmación':'Segunda confirmación';
+ const P=big?`Estás a punto de enviar <b>${amt}</b> pts. Es una cantidad enorme. Quien escanee el QR o use el código se quedará con todos esos puntos y solo podrás recuperarlos si caduca sin usarse.`
+  :k===1?`Vas a enviar <b>${amt}</b> pts. Es mucho dinero: comprueba bien la cantidad antes de seguir.`
+  :last?`Se descontarán <b>${amt}</b> pts de tu saldo al generar el QR. Quien lo canjee se los quedará.`
+  :`¿Seguro que quieres enviar <b>${amt}</b> pts? Una vez canjeado el QR no se puede deshacer.`;
+ sheet(`<div class="center"><div class="rbig${big||last?' dg':''}">${ico('send')}</div><h1 style="font-size:24px;margin:10px 0 6px">${T}</h1><p class="sub">Confirmación ${k} de ${n}</p><div class="etot" style="margin:8px 0">${amt}<small>pts</small></div><p class="sub">${P}</p></div>
+ ${big?`<h2>Escribe la cantidad para confirmar</h2><input type="text" id="qcin" inputmode="decimal" autocomplete="off" placeholder="${v}"><p class="sub" style="margin-top:6px">Escribe exactamente ${v} para poder continuar.</p>`:''}
+ <div style="display:grid;gap:8px;margin-top:14px"><button class="btn" id="qcb" data-a="qcgo"${big?' disabled':''}>${last?'Sí, generar QR de '+amt+' pts':'Continuar'}</button><button class="btn sec" data-a="qcback">Volver y cambiar la cantidad</button></div>`);
+ if(big){const i=$('#qcin');if(i)setTimeout(()=>i.focus({preventScroll:true}),60)}}
+document.addEventListener('input',e=>{if(e.target.id!=='qcin')return;const b=$('#qcb');if(b)b.disabled=parseFloat(String(e.target.value).replace(',','.'))!==QCF.v});
+function qgenGo(amt,nm,b){const o={id:rid(),pts:amt,name:nm,exp:Date.now()+QT.exp,srv:1};
+ const back=m=>{if(!$('#qerr')){sendSheet();const e=$('#qa');if(e)e.value=amt}ferr('#qerr',m,'#qa')};
+ return wrGo('qgen',b,'Generando…',async()=>{
+  try{await wrInit();await wrRpc('sw_ticket_create',{p_id:o.id,p_pts_cents:Math.round(o.pts*100),p_name:nm,p_ttl_seconds:Math.round(QT.exp/1000)})}
+  catch(e){return back(wrErrText(e.code)+' No se han descontado puntos.')}
+  o.exp=Date.now()+QT.exp;st.out.unshift(o);st.adj.unshift({id:o.id,date:Date.now(),pts:-o.pts,who:''});saveAll();render();qshow(o.id)})}
 Object.assign(A,{
  wsend:sendSheet,wrecv:recvSheet,qshow,
  qcopy(id){const c=codeOf(id);(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast('Código copiado',c)).catch(()=>{const t=document.createElement('textarea');t.value=c;document.body.appendChild(t);t.select();try{document.execCommand('copy');toast('Código copiado',c)}catch(e){toast('No se pudo copiar','Selecciona el código manualmente')}t.remove()})},
@@ -890,11 +909,13 @@ Object.assign(A,{
   if(!(v>0))return ferr('#qerr','Escribe una cantidad mayor que 0.','#qa');
   if(v>bal+1e-9)return ferr('#qerr','No tienes suficientes puntos. Tu saldo es '+fmt(bal)+' pts.','#qa');
   const nm=$('#qn').value.trim();st.set.name=nm;save('set');
-  const o={id:rid(),pts:Math.round(v*100)/100,name:nm,exp:Date.now()+QT.exp,srv:1};
-  return wrGo('qgen',b,'Generando…',async()=>{
-   try{await wrInit();await wrRpc('sw_ticket_create',{p_id:o.id,p_pts_cents:Math.round(o.pts*100),p_name:nm,p_ttl_seconds:Math.round(QT.exp/1000)})}
-   catch(e){return ferr('#qerr',wrErrText(e.code)+' No se han descontado puntos.','#qa')}
-   o.exp=Date.now()+QT.exp;st.out.unshift(o);st.adj.unshift({id:o.id,date:Date.now(),pts:-o.pts,who:''});saveAll();render();qshow(o.id)})},
+  const amt=Math.round(v*100)/100;
+  if(amt>=QCF.t1){QCF.v=amt;QCF.nm=nm;QCF.k=1;QCF.n=amt>=QCF.t2?3:2;return qcSheet()}
+  return qgenGo(amt,nm,b)},
+ qcgo(id,b){if(QCF.k<QCF.n){QCF.k++;hap(10);return qcSheet()}
+  if(QCF.n===3&&QCF.v>=QCF.t3){const x=parseFloat(String($('#qcin')?.value||'').replace(',','.'));if(x!==QCF.v)return hapErr()}
+  return qgenGo(QCF.v,QCF.nm,b)},
+ qcback(){const v=QCF.v;QCF.k=0;sendSheet();const e=$('#qa');if(e)e.value=v},
  qrefund(id,b){const o0=st.out.find(x=>x.id===id);if(!o0||Date.now()<=o0.exp)return;
   return wrGo('refund'+id,b,'Comprobando…',async()=>{let used=false,gone=false;
    try{await wrInit();const r=await wrRpc('sw_ticket_refund',{p_id:id},{retry:true});if(r&&r.result==='used')used=true}
